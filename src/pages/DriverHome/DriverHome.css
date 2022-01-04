@@ -1,0 +1,28 @@
+
+h1{
+    font-family: 'courier prime', monospace;
+    font-size: 96px;
+    background-color: hsl(184, 19%, 83%);
+    /*user-select: none;*/
+}
+
+ul{
+    list-style: none;
+    column-count: 2;
+    column-gap: 60px;
+}
+
+li:not(:last-child){
+    margin-bottom: 40px;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header{
+    display: flex;
+    flex-direction: row;
+}

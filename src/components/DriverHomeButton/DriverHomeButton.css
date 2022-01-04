@@ -1,0 +1,14 @@
+article{
+    background-color: #120D31;
+    width: 580px    ;
+    height: 120px;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+p {
+    font-family: 'courier prime', monospace;
+    font-size: 48px;
+}
