@@ -18,6 +18,7 @@
     background-color: #80CED7;
 }
 
-h1 {
+.header-title {
     color: #0075A2;
+    background: #80CED7;
 }

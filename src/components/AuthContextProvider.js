@@ -3,8 +3,8 @@ import {createContext, useState} from 'react'
 export const AuthContext = createContext({})
 
 export default function AuthContextProvider({children}){
-    const[isAuth, toggleIsAuth] = useState(false);
-    const[name, setName] = useState();
+    const[isAuth, toggleIsAuth] = useState(true);
+    const[name, setName] = useState("driver");
     function login(){
         toggleIsAuth(true);
     }

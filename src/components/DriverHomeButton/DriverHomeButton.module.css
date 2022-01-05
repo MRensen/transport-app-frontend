@@ -1,0 +1,24 @@
+.abled-button{
+    background-color: hsl(248, 58%, 12%);
+    width: 580px    ;
+    height: 120px;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.disabled-button{
+    background-color: hsl(249, 1%, 43%);
+    width: 580px    ;
+    height: 120px;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.p {
+    font-family: 'courier prime', monospace;
+    font-size: 48px;
+}

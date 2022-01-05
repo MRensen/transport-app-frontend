@@ -1,13 +1,17 @@
 import {useHistory} from "react-router-dom";
-import "./DriverHomeButton.css";
+import styles from "./DriverHomeButton.module.css";
 
-export default function DriverHomeButton({text}){
+export default function DriverHomeButton({text, disabled=false}){
     const history = useHistory();
+    let classVariable;
+    if(disabled){
+        classVariable = "disabled-button";
+    } else {
+        classVariable = "abled-button";
+    }
     return(
-        <li>
-        <article onClick={() => {history.push("/driver/"+text)}}>
-            <p>{text}</p>
-        </article>
-        </li>
+        <button className={styles[classVariable]} disabled={disabled} onClick={() => {history.push("/driver/"+text)}}>
+            <p className={styles.p}>{text}</p>
+        </button>
     )
 }

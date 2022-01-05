@@ -1,6 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
 
-main {
+
+.main {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -18,14 +18,14 @@ main {
 .title:hover{
     background-color: hsl(184, 19%, 73%);
 }
-label{
+.label{
     display: inline-block;
     width: 300px;
     font-family: "courier prime", monospace;
     font-size: 36px;
 }
 
-input{
+.input{
     height: 50px;
     width: 365px;
 }
