@@ -3,33 +3,26 @@ import {useContext, useEffect, useState} from "react";
 import axios from "axios";
 import HeaderPlain from "../../components/Header/Header";
 import {useHistory} from "react-router-dom";
-import {AuthContext} from "../../components/AuthContextProvider";
+import {AuthContext} from "../../components/Context/AuthContextProvider";
 
 export default function LoginPage() {
-    // const [data, setData] = useState();
-    // useEffect(() => {
-    //     async function getData(){
-    //         try {
-    //             const result = await axios.post(
-    //                 "http://localhost:8080/authenticateuser",
-    //
-    //                 )
-    //             setData(result);
-    //             console.log(data);
-    //         } catch (e) {
-    //             console.log(e.getMessage)
-    //         }
-    //     }
-    //     getData();
-    // },[])
+
     const [passwordValue, setPasswordValue] = useState();
     const [nameValue, setNameValue] = useState();
     const history = useHistory();
-    const {setName, login} = useContext(AuthContext);
+    const {setData, data, login} = useContext(AuthContext);
+
+    async function getData() {
+        const result = await axios.get(`http://localhost:8080/drivers/${nameValue}`);
+        setData(result.data);
+        console.log(result.data.username);
+    }
+
     function applyLogin(){
         console.log("logging in")
-        if(nameValue === "driver" && passwordValue === "password"){
-            setName(nameValue);
+        if(nameValue === "driverusername" && passwordValue === "password"){
+            getData()
+            //setData(nameValue);
             login();
             history.push("/driver/home")
         }

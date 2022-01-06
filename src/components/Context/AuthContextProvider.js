@@ -4,7 +4,7 @@ export const AuthContext = createContext({})
 
 export default function AuthContextProvider({children}){
     const[isAuth, toggleIsAuth] = useState(true);
-    const[name, setName] = useState("driver");
+    const[data, setData] = useState({"id":2002,"username":"driverusername","route":null,"firstName":"Mark","lastName":"Rensen","street":"Doesburgseweg","houseNumber":"26","city":"Wehl","employeeNumber":1000000,"driverLicenseNumber":"xxx111xxx","phoneNumber":"0612334566","regularTruck":"97bph8","password":"password","enabled":true});
     function login(){
         toggleIsAuth(true);
     }
@@ -12,16 +12,17 @@ export default function AuthContextProvider({children}){
     function logout(){
         toggleIsAuth(false);
     }
-    const data = {
+    const value = {
+        id : '2001',
         loggedIn: isAuth,
         login,
         logout,
-        name,
-        setName
+        data,
+        setData
     }
     return(
         <AuthContext.Provider
-            value={data}>
+            value={value}>
             {children}
         </AuthContext.Provider>
     )

@@ -1,9 +1,12 @@
 import {HeaderAcceptDecline} from "../../../components/Header/Header";
 import {useHistory} from "react-router-dom";
 import styles from "./StopRit.module.css";
+import {useContext} from "react";
+import {RitContext} from "../../../components/Context/RitContextProvider";
 
 export default function StopRit() {
     const history = useHistory();
+    const {unregisterRit} = useContext(RitContext);
     return (
         <>
             <HeaderAcceptDecline
@@ -12,7 +15,7 @@ export default function StopRit() {
                     history.push("/driver/home")
                 }}
                 acceptFunction={() => {
-                    console.log("accept: nog niks geimplementeerd (mischien de context leeg maken?)")
+                    unregisterRit();
                     history.push("/driver/home")
                 }}
             />

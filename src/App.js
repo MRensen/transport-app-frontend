@@ -4,14 +4,13 @@ import {Route, Switch} from "react-router-dom";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import DriverHome from "./pages/DriverPages/DriverHome/DriverHome";
 import {useContext} from "react";
-import {AuthContext} from "./components/AuthContextProvider";
+import {AuthContext} from "./components/Context/AuthContextProvider";
 import PrivateRoute from "./components/PrivateRoute";
 import StartRit from "./pages/DriverPages/StartRit/StartRit";
 import StopRit from "./pages/DriverPages/StopRit/StopRit";
 
 
 function App() {
-    const {loggedIn, name} = useContext(AuthContext);
     return (
         <Switch>
             <Route path="/" exact>
