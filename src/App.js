@@ -8,6 +8,7 @@ import {AuthContext} from "./components/Context/AuthContextProvider";
 import PrivateRoute from "./components/PrivateRoute";
 import StartRit from "./pages/DriverPages/StartRit/StartRit";
 import StopRit from "./pages/DriverPages/StopRit/StopRit";
+import DriverAccount from "./pages/DriverPages/DriverAccount/DriverAccount";
 
 
 function App() {
@@ -24,6 +25,9 @@ function App() {
             </PrivateRoute>
             <PrivateRoute path="/driver/stop rit" role="driver">
                 <StopRit/>
+            </PrivateRoute>
+            <PrivateRoute path="/driver/account" role="driver">
+                <DriverAccount/>
             </PrivateRoute>
             {/*{(loggedIn && (name === "driver")) &&*/}
             {/*<Route path="/driver/home">*/}

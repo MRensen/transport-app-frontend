@@ -1,0 +1,65 @@
+body{
+    font-family: 'courier prime', monospace;
+}
+.main{
+    display: flex;
+    flex-direction: row;
+}
+
+.aside{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 50px;
+    width: 50vw;
+    height: 80vh;
+}
+
+.right-main{
+    width: 50vw;
+    height: 80vh;
+}
+.form {
+    display: flex;
+    flex-direction: row;
+}
+
+.image{
+    height: 250px;
+    width: 340px;
+    background-color: #C4C4C4;
+    margin: 30px;
+}
+
+.image-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.foto-wijzigen{
+    font-size: 36px;
+    width: 280px;
+    height: 115px;
+}
+
+.label{
+    display: inline-block;
+    width: 300px;
+    font-family: "courier prime", monospace;
+    font-size: 36px;
+}
+
+.label > input {
+    font-size: 36px;
+    height: 50px;
+
+}
+.housenumber{
+    width: 50px;
+}
+
+.bottom-label{
+    margin-bottom: 50px;
+}
