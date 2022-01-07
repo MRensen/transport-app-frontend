@@ -1,25 +1,25 @@
 import {HeaderAcceptDecline} from "../../../components/Header/Header";
 import {useHistory} from "react-router-dom";
-import styles from "./StopRit.module.css";
+import styles from "./StopRoute.module.css";
 import {useContext} from "react";
-import {RitContext} from "../../../components/Context/RitContextProvider";
+import {RouteContext} from "../../../components/Context/RouteContextProvider";
 
-export default function StopRit() {
+export default function StopRoute() {
     const history = useHistory();
-    const {unregisterRit} = useContext(RitContext);
+    const {unregisterroute} = useContext(RouteContext);
     return (
         <>
             <HeaderAcceptDecline
-                titleName="stop rit"
+                titleName="stop route"
                 declineFunction={() => {
                     history.push("/driver/home")
                 }}
                 acceptFunction={() => {
-                    unregisterRit();
+                    unregisterroute();
                     history.push("/driver/home")
                 }}
             />
-            <p className={styles.text}>Wilt u de rit beeindigen?</p>
+            <p className={styles.text}>Wilt u de route beeindigen?</p>
         </>
     )
 }

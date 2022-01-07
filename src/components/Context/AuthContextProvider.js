@@ -13,7 +13,6 @@ export default function AuthContextProvider({children}){
         toggleIsAuth(false);
     }
     const value = {
-        id : '2001',
         loggedIn: isAuth,
         login,
         logout,

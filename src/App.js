@@ -6,10 +6,10 @@ import DriverHome from "./pages/DriverPages/DriverHome/DriverHome";
 import {useContext} from "react";
 import {AuthContext} from "./components/Context/AuthContextProvider";
 import PrivateRoute from "./components/PrivateRoute";
-import StartRit from "./pages/DriverPages/StartRit/StartRit";
-import StopRit from "./pages/DriverPages/StopRit/StopRit";
 import DriverAccount from "./pages/DriverPages/DriverAccount/DriverAccount";
 import DriverPlanning from "./pages/DriverPages/DriverPlanning/DriverPlanning";
+import StopRoute from "./pages/DriverPages/StopRoute/StopRoute";
+import StartRoute from "./pages/DriverPages/StartRoute/StartRoute";
 
 
 function App() {
@@ -21,11 +21,11 @@ function App() {
             <PrivateRoute path="/driver/home" role="driver">
                 <DriverHome/>
             </PrivateRoute>
-            <PrivateRoute path="/driver/start rit" role="driver">
-                <StartRit/>
+            <PrivateRoute path="/driver/start route" role="driver">
+                <StartRoute/>
             </PrivateRoute>
-            <PrivateRoute path="/driver/stop rit" role="driver">
-                <StopRit/>
+            <PrivateRoute path="/driver/stop route" role="driver">
+                <StopRoute/>
             </PrivateRoute>
             <PrivateRoute path="/driver/account" role="driver">
                 <DriverAccount/>
