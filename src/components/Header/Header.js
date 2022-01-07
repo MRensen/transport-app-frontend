@@ -6,7 +6,7 @@ import declinePNG from "../../resources/cancelbutton.png";
 import homePNG from "../../resources/homebutton.png";
 import savePNG from "../../resources/savebutton.png";
 
-function Header({ ismenu, titleName, logo, left, leftFunction, right, rightFunction}) {
+function Header({ismenu, titleName, logo, left, leftFunction, right, rightFunction, disableSave}) {
     return (
         <>
             {!ismenu &&
@@ -18,15 +18,19 @@ function Header({ ismenu, titleName, logo, left, leftFunction, right, rightFunct
             <div className="header-double">
                 <img src={left} alt="button-header-left" onClick={leftFunction}/>
                 <h1 className="header-title"> {titleName} </h1>
-                <img src={right} alt="button-header-right" onClick={rightFunction}/>
+                {!disableSave ?
+                    <img src={right} alt="button-header-right" onClick={rightFunction}/>
+                    :
+                    <img src={right} className="header-image-disabled"/>
+                }
             </div>
             }
         </>
     );
 }
 
-export function HeaderAcceptDecline({titleName, acceptFunction, declineFunction}){
-    return(
+export function HeaderAcceptDecline({titleName, acceptFunction, declineFunction}) {
+    return (
         <Header
             titleName={titleName}
             left={acceptPNG}
@@ -38,8 +42,8 @@ export function HeaderAcceptDecline({titleName, acceptFunction, declineFunction}
     )
 }
 
- export default function HeaderPlain(){
-    return(
+export default function HeaderPlain() {
+    return (
         <Header
             logo={pngLogo}
             ismenu={false}
@@ -47,8 +51,8 @@ export function HeaderAcceptDecline({titleName, acceptFunction, declineFunction}
     )
 }
 
-export function HeaderHomeSave({leftFunction, rightFunction, titleName}){
-    return(
+export function HeaderHomeSave({leftFunction, rightFunction, titleName, disableSave = false}) {
+    return (
         <Header
             left={homePNG}
             right={savePNG}
@@ -56,6 +60,7 @@ export function HeaderHomeSave({leftFunction, rightFunction, titleName}){
             leftFunction={leftFunction}
             rightFunction={rightFunction}
             ismenu={true}
+            disableSave={disableSave}
         />
     )
 }

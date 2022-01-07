@@ -4,6 +4,7 @@ import {useContext} from "react";
 import {AuthContext} from "../../../components/Context/AuthContextProvider";
 import {useForm} from "react-hook-form";
 import {useHistory} from "react-router-dom";
+import LabeledInput from "../../../components/LabeledInput/LabeledInput";
 
 export default function DriverAccount() {
     const {data} = useContext(AuthContext);
@@ -35,29 +36,18 @@ export default function DriverAccount() {
                         </image>
                         <button type="button" className={styles['foto-wijzigen']} onClick={setImage}>foto wijzigen</button>
                     </div>
-                    <label className={styles.label} htmlFor="naam">
-                        naam: <input type="text" id="naam" value={data.firstName + " " + data.lastName}/>
-                    </label>
-                    <label className={styles.label} htmlFor="adres">
-                        adres: <input type="text" id="adres" value={data.street }/> <input type="text" className={styles.housenumber} id="housenumber" value={data.houseNumber}/>
-                    </label>
-                    <label className={styles.label} htmlFor="postcode">
-                        postcode: <input className={styles['bottom-label']} type="text" id="postcode" value={data.postcode}/>
-                    </label>
+                    <LabeledInput title="naam" value={data.firstName + " " + data.lastName}/>
+                    <LabeledInput title="adres" value={data.street}>
+                        <input type="text" className={styles.housenumber} id="housenumber" value={data.houseNumber}/>
+                    </LabeledInput>
+                    <LabeledInput title="postcode" value={data.postcode} className="bottom-label"/>
+
                 </aside>
                 <aside className={styles.aside}>
-                    <label className={styles.label} htmlFor="personeelsnummer">
-                        personeels nummer: <input type="text" id="personeelsnummer" value={data.employeeNumber}/>
-                    </label>
-                    <label className={styles.label} htmlFor="vastewagen">
-                        vaste wagen: <input type="text" id="vastewagen" value={data.regularTruck}/>
-                    </label>
-                    <label className={styles.label} htmlFor="rijbewijsnummer">
-                        rijbewijs nummer:  <input type="text" id="rijbewijsnummer" value={data.driverLicenseNumber}/>
-                    </label>
-                    <label className={styles.label} htmlFor="telefoonnummer">
-                        telefoon nummer:  <input type="text" id="telefoonnummer" value={data.phoneNumber}/>
-                    </label>
+                    <LabeledInput title="personeels nummer" value={data.employeeNumber}/>
+                    <LabeledInput title="vaste wagen" value={data.regularTruck}/>
+                    <LabeledInput title={"rijbewijs nummer"} value={data.driverLicenseNumber}/>
+                    <LabeledInput title="telefoon nummer" value={data.phoneNumber}/>
                 </aside>
             </form>
         </>

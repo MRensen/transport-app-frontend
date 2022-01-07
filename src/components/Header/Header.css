@@ -22,3 +22,7 @@
     color: #0075A2;
     background: #80CED7;
 }
+
+.header-image-disabled {
+    opacity: 0%;
+}

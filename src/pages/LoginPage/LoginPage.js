@@ -7,15 +7,19 @@ import {AuthContext} from "../../components/Context/AuthContextProvider";
 
 export default function LoginPage() {
 
-    const [passwordValue, setPasswordValue] = useState();
-    const [nameValue, setNameValue] = useState();
+    const [passwordValue, setPasswordValue] = useState("");
+    const [nameValue, setNameValue] = useState("");
     const history = useHistory();
     const {setData, data, login} = useContext(AuthContext);
 
     async function getData() {
-        const result = await axios.get(`http://localhost:8080/drivers/${nameValue}`);
-        setData(result.data);
-        console.log(result.data.username);
+        try {
+            const result = await axios.get(`http://localhost:8080/drivers/${nameValue}`);
+            setData(result.data);
+            console.log(result.data.username);
+        } catch (e){
+            console.log(e.error);
+        }
     }
 
     function applyLogin(){

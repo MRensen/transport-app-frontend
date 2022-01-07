@@ -49,6 +49,7 @@ body{
     width: 300px;
     font-family: "courier prime", monospace;
     font-size: 36px;
+    margin-left: 50px;
 }
 
 .label > input {

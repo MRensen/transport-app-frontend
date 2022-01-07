@@ -9,6 +9,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import StartRit from "./pages/DriverPages/StartRit/StartRit";
 import StopRit from "./pages/DriverPages/StopRit/StopRit";
 import DriverAccount from "./pages/DriverPages/DriverAccount/DriverAccount";
+import DriverPlanning from "./pages/DriverPages/DriverPlanning/DriverPlanning";
 
 
 function App() {
@@ -28,6 +29,9 @@ function App() {
             </PrivateRoute>
             <PrivateRoute path="/driver/account" role="driver">
                 <DriverAccount/>
+            </PrivateRoute>
+            <PrivateRoute path="/driver/planning" role="driver">
+                <DriverPlanning/>
             </PrivateRoute>
             {/*{(loggedIn && (name === "driver")) &&*/}
             {/*<Route path="/driver/home">*/}
