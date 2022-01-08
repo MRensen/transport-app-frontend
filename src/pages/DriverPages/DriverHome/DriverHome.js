@@ -15,9 +15,9 @@ export default function DriverHome(){
     <div className={styles.container}>
         <HeaderPlain/>
         <header className={styles.header}>
-            <h2>routenummer: </h2>
+            <h2 className={styles.h2}><p>routenummer: </p><p>{hasRoute && routeData.id}</p></h2>
             <h1 className={styles.h1}>{data.username}</h1>
-            <h2>vrachtwagen: </h2>
+            <h2 className={styles.h2}><p>vrachtwagen: </p><p>{hasRoute && routeData.truck}</p></h2>
         </header>
         <ul className={styles.ul}>
             <li className={styles.li}><DriverHomeButton text="start route"/> </li>

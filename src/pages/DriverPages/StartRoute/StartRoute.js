@@ -13,7 +13,7 @@ export default function StartRoute() {
 
     const {register, handleSubmit} = useForm()
     const [routes, setRoutes] = useState([]);
-    const { registerroute} = useContext(RouteContext);
+    const {routeData,  registerRoute} = useContext(RouteContext);
     const {data} = useContext(AuthContext);
     const history = useHistory();
     useEffect(() => {
@@ -36,8 +36,8 @@ export default function StartRoute() {
             console.log("nummer:" + data.routenummer)
             const result = await axios.get(`http://localhost:8080/routes/${data.routenummer}`)
             result.data.truck = data.vrachtwagen;
-            registerroute(result.data);
-            console.log(AuthContext.data)
+            registerRoute(result.data);
+            console.log(routeData)
         } catch (e){
             console.log(e.error);
         }
@@ -54,6 +54,7 @@ export default function StartRoute() {
                 acceptFunction={() => {
                     console.log("accept");
                     handleSubmit(acceptFunction)();
+                    console.log(data);
                     history.push("/driver/home")
                 }}
                 declineFunction={() => {

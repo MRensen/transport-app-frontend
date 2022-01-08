@@ -4,18 +4,18 @@ export const RouteContext = createContext({})
 export default function RouteContextProvider({children}){
     const [hasroute, toggleHasroute] = useState(false);
     const [routeData, setrouteData] = useState({});
-    function registerroute(data){
+    function registerRoute(data){
         toggleHasroute(true);
         setrouteData(data);
     }
-    function unregisterroute(){
+    function unregisterRoute(){
         toggleHasroute(false)
         setrouteData({});
     }
     const data = {
         hasroute,
-        unregisterroute,
-        registerroute,
+        unregisterRoute,
+        registerRoute,
         routeData
     }
     return(
