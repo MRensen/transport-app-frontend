@@ -1,0 +1,38 @@
+.article{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    max-width: 1330px;
+    height: 300px;
+    background-color: #C4C4C4;
+    margin-bottom: 30px;
+    margin-left: 50px;
+}
+
+.main{
+    width: 500px;
+    font-family: 'courier prime', monospace;
+    font-size: 36px;
+    display: flex;
+    flex-direction: column;
+}
+
+.main p{
+;
+}
+
+.article:first-child{
+    margin-top: 30px;
+}
+
+.button{
+    width: 150px;
+    height: 150px;
+    background-color: black;
+    color: #ffffff;
+    align-self: start;
+    margin-right: auto;
+    font-size: 36px;
+    font-family: 'courier prime', monospace;
+}
