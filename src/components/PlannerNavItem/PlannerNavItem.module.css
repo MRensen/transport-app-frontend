@@ -1,0 +1,17 @@
+
+.radio{
+    display: none;
+}
+
+.label{
+    height: 50px;
+    width: 300px;
+    border: black solid 2px;
+    font-size: 36px;
+    font-family: 'courier prime', monospace;
+    background-color: #CCDBDC;
+}
+
+.radio:checked + .label{
+    background-color: #B3CACB;
+}

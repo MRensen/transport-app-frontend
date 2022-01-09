@@ -44,10 +44,10 @@ function App() {
             <PrivateRoute path="/order/:id/laden" role="driver">
                 <Laden/>
             </PrivateRoute>
-            {(userData.role == "planner") &&
-               <HeaderPlain/>
-            }
-            <PrivateRoute path="/planner" role="planner">
+            {/*{(userData.role == "planner") &&*/}
+            {/*   <HeaderPlain/>*/}
+            {/*}*/}
+            <PrivateRoute path="/planner/home" role="planner">
                 <PlannerHome/>
             </PrivateRoute>
             {/*{(loggedIn && (name === "driver")) &&*/}

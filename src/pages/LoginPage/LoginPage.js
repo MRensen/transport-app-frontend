@@ -13,23 +13,30 @@ export default function LoginPage() {
     const history = useHistory();
     const {setData, data, login} = useContext(AuthContext);
 
-    async function getDriver() {
+    async function getUser(user) {
         try {
-            const result = await axios.get(`http://localhost:8080/drivers/${nameValue}`);
+            const result = await axios.get(`http://localhost:8080/${user}s/${nameValue}`);
             setData(result.data);
-            console.log(result.data.username);
+            console.log(result.data);
         } catch (e){
             console.log(e.error);
         }
     }
 
     function applyLogin(){
-        console.log("logging in")
-        if(nameValue === "driverusername" && passwordValue === "password"){
-            getDriver()
-            //setData(nameValue);
+        if(passwordValue === "" || role === "" || nameValue === ""){
+            console.log("you need to enter all values")
+            console.log(`role: ${role} | pass: ${passwordValue}| name: ${nameValue}`)
+            return
+        }
+        getUser(role)
+        if(nameValue === data.username && passwordValue === data.password){
             login();
-            history.push("/driver/home")
+            console.log("succes " + role)
+            console.log(`/${role}/home`)
+            history.push(`/${role}/home`)
+        } else {
+            console.log("not succes")
         }
     }
     return (
@@ -61,8 +68,13 @@ export default function LoginPage() {
                 </section>
                 <section>
                     <label htmlFor="roles" className={styles.label}>Role  </label>
-                    <select id="roles" className={styles.input}>
-                        <option selected value disabled> </option>
+                    <select id="roles"
+                            className={styles.input}
+                            value={role}
+                            onChange={(e)=>{
+                                setRole(e.target.value)}}
+                    >
+                        <option value="" disabled> </option>
                         <option value="driver">driver</option>
                         <option value="planner">planner</option>
                         <option value="customer">customer</option>
