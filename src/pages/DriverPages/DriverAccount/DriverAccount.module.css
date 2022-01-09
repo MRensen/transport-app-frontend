@@ -52,6 +52,9 @@ body{
     font-size: 36px;
     margin-left: 50px;
 }
+.button{
+    margin-left: 50px;
+}
 
 .label > input {
     font-size: 36px;

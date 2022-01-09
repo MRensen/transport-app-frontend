@@ -1,15 +1,18 @@
 import styles from "./DriverAccount.module.css";
 import {HeaderHomeSave} from "../../../components/Header/Header";
-import {useContext} from "react";
+import {useContext, useState} from "react";
 import {AuthContext} from "../../../components/Context/AuthContextProvider";
 import {useForm} from "react-hook-form";
 import {useHistory} from "react-router-dom";
 import LabeledInput from "../../../components/LabeledInput/LabeledInput";
+import ModalPassword from "../../../components/ModalPassword/ModalPassword";
 
 export default function DriverAccount() {
     const {data} = useContext(AuthContext);
     const {register, handleSubmit} = useForm();
+    const [password, setPassword] = useState(data.password);
     const history = useHistory();
+    const [show, setShow] = useState(false);
     const saveButton = () => {
         console.log("save");
     }
@@ -48,7 +51,16 @@ export default function DriverAccount() {
                     <LabeledInput title="vaste wagen" value={data.regularTruck}/>
                     <LabeledInput title={"rijbewijs nummer"} value={data.driverLicenseNumber}/>
                     <LabeledInput title="telefoon nummer" value={data.phoneNumber}/>
+                    <button type="button"
+                            className={styles.button}
+                            onClick={()=>{setShow(true)}}
+                    > Change Password</button>
                 </aside>
+                <ModalPassword show={show}
+                               setPassword={setPassword}
+                               onClose={()=>{setShow(false)}}
+                               currentPassword={password}
+                />
             </form>
         </>
     )

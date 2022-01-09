@@ -1,22 +1,36 @@
 import {HeaderAcceptDecline} from "../../../components/Header/Header";
 import styles from "./Laden.module.css";
 import {useForm} from "react-hook-form";
-import {useHistory} from "react-router-dom";
+import {useHistory, useParams} from "react-router-dom";
+import axios from "axios";
 export default function Laden(){
     const history = useHistory();
     const {register, handleSubmit, watch, getValues} = useForm();
     const watchGeladen = watch("geladen");
     const watchEmbalageGeladen = watch("embalage-geladen");
     const watchEmbalageGelost = watch("embalage-gelost");
+    const {id:orderId} = useParams();
 
-    function acceptFunction() {
+    function acceptFunction(formData) {
         console.log("needs to communicate to backend OrderStatus=LOADED(ofzoiets)");
-        history.push("/driver/home")
+        console.log(orderId)
+        async function patch() {
+            try {
+                const result = await axios({
+                    method: 'patch',
+                    url: `http://localhost:8080/orders/${orderId}`,
+                    data: { orderStatus: "delivered" }
+                    }
+                )
+            } catch(e){console.log(e.message())}
+        }
+        patch();
+        history.push("/driver/planning")
     }
 
     function declineFunction() {
         console.log("decline");
-        history.push("/driver/home")
+        history.push("/driver/planning")
     }
 
     return (

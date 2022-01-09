@@ -21,10 +21,10 @@ export default function DriverHome(){
         </header>
         <ul className={styles.ul}>
             <li className={styles.li}><DriverHomeButton text="start route"/> </li>
-            <li className={styles.li}><DriverHomeButton text="lossen" disabled={!hasRoute}/></li>
+            {/*<li className={styles.li}><DriverHomeButton text="lossen" disabled={!hasRoute}/></li>*/}
             <li className={styles.li}><DriverHomeButton text="planning" disabled={!hasRoute}/></li>
             <li className={styles.li}><DriverHomeButton text="stop route" disabled={!hasRoute}/></li>
-            <li className={styles.li}><DriverHomeButton text="laden" disabled={!hasRoute}/></li>
+            {/*<li className={styles.li}><DriverHomeButton text="laden" disabled={!hasRoute}/></li>*/}
             <li className={styles.li}><DriverHomeButton text="account"/></li>
         </ul>
     </div>

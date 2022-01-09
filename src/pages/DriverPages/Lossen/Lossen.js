@@ -3,10 +3,12 @@ import {HeaderAcceptDecline} from "../../../components/Header/Header";
 import LabeledInput from "../../../components/LabeledInput/LabeledInput";
 import {useForm} from "react-hook-form";
 import {useState} from "react";
-import {Redirect, useHistory} from "react-router-dom";
+import {Redirect, useHistory, useParams} from "react-router-dom";
+import axios from "axios";
 
 export default function Lossen() {
     const history = useHistory();
+    const {id:orderId} = useParams();
     const {register, handleSubmit, watch, getValues} = useForm();
     const watchGelost = watch("gelost");
     const watchEmbalageGeladen = watch("embalage-geladen");
@@ -14,12 +16,23 @@ export default function Lossen() {
 
     function acceptFunction() {
         console.log("needs to communicate to backend OrderStatus=DELIVERED");
-        history.push("/driver/home")
+        async function patch() {
+            try {
+                const result = await axios({
+                        method: 'patch',
+                        url: `http://localhost:8080/orders/${orderId}`,
+                        data: { orderStatus: "delivered" }
+                    }
+                )
+            } catch(e){console.log(e.message())}
+        }
+        patch();
+        history.push("/driver/planning")
     }
 
     function declineFunction() {
         console.log("decline");
-        history.push("/driver/home")
+        history.push("/driver/planning")
     }
 
     return (

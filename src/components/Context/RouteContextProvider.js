@@ -7,6 +7,7 @@ export default function RouteContextProvider({children}){
     function registerRoute(data){
         toggleHasroute(true);
         setrouteData(data);
+
     }
     function unregisterRoute(){
         toggleHasroute(false)

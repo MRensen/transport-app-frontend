@@ -22,9 +22,9 @@ export default function OrderContainer({endpoint}) {
 
     function redirectFunction(){
         if(orderData.isPickup){
-            history.push("/driver/laden");
+            history.push(`/order/${orderData.id}/laden`);
         } else {
-            history.push("/driver/lossen");
+            history.push(`/order/${orderData.id}/lossen`);
         }
     }
 
