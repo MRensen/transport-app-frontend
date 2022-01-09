@@ -6,7 +6,7 @@ import {RouteContext} from "../../../components/Context/RouteContextProvider";
 
 export default function StopRoute() {
     const history = useHistory();
-    const {unregisterroute} = useContext(RouteContext);
+    const {unregisterRoute} = useContext(RouteContext);
     return (
         <>
             <HeaderAcceptDecline
@@ -15,7 +15,7 @@ export default function StopRoute() {
                     history.push("/driver/home")
                 }}
                 acceptFunction={() => {
-                    unregisterroute();
+                    unregisterRoute();
                     history.push("/driver/home")
                 }}
             />

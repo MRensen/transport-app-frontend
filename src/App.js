@@ -10,6 +10,8 @@ import DriverAccount from "./pages/DriverPages/DriverAccount/DriverAccount";
 import DriverPlanning from "./pages/DriverPages/DriverPlanning/DriverPlanning";
 import StopRoute from "./pages/DriverPages/StopRoute/StopRoute";
 import StartRoute from "./pages/DriverPages/StartRoute/StartRoute";
+import Lossen from "./pages/DriverPages/Lossen/Lossen";
+import Laden from "./pages/DriverPages/Laden/Laden";
 
 
 function App() {
@@ -32,6 +34,12 @@ function App() {
             </PrivateRoute>
             <PrivateRoute path="/driver/planning" role="driver">
                 <DriverPlanning/>
+            </PrivateRoute>
+            <PrivateRoute path="/driver/lossen" role="driver">
+                <Lossen/>
+            </PrivateRoute>
+            <PrivateRoute path="/driver/laden" role="driver">
+                <Laden/>
             </PrivateRoute>
             {/*{(loggedIn && (name === "driver")) &&*/}
             {/*<Route path="/driver/home">*/}

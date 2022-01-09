@@ -1,8 +1,10 @@
 import styles from "./OrderContainer.module.css";
 import axios from "axios";
 import {useEffect, useState} from "react";
+import {useHistory} from "react-router-dom";
 
 export default function OrderContainer({endpoint}) {
+    const history = useHistory();
     const [orderData, setOrderData] = useState({"id":3001,"type":null,"orderStatus":null,"isPickup":null,"description":null,"creator":{"id":1001},"route":{"id":5001},"pallets":[{"height":100,"width":120,"length":80,"weight":0,"load":"things","type":"EURO"}],"loadingStreet":"edisonstraat","loadingHouseNumber":"39","loadingPostal":"7002xs","loadingName":"Brutra","loadingCity":"Doetinchem","loadingDate":null,"deliveryStreet":"zuivelweg","deliveryHouseNumber":"55","deliveryPostal":"8004dv","deliveryName":"jansen","deliveryCity":"almere","deliveryDate":null});
     useEffect(() => {
         async function getRouteData() {
@@ -18,9 +20,20 @@ export default function OrderContainer({endpoint}) {
         getRouteData();
     }, [])
 
+    function redirectFunction(){
+        if(orderData.isPickup){
+            history.push("/driver/laden");
+        } else {
+            history.push("/driver/lossen");
+        }
+    }
+
     return (
         <article className={styles.article}>
-            <button type="button" className={styles.button}>start</button>
+            <button type="button"
+                    className={styles.button}
+                    onClick={redirectFunction}
+            >start</button>
             <main className={styles.main}>
                 <p>lossen: {orderData.deliveryName} <br/>
                 {orderData.deliveryPostal + " " + orderData.deliveryCity}<br/>

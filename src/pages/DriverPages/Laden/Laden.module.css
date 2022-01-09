@@ -1,0 +1,11 @@
+.select{
+    max-width: 350px;
+}
+
+.form{
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
