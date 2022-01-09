@@ -4,7 +4,7 @@ export const AuthContext = createContext({})
 
 export default function AuthContextProvider({children}){
     const[isAuth, toggleIsAuth] = useState(true);
-    const[data, setData] = useState({"id":2002,"username":"driverusername","route":null,"firstName":"Mark","lastName":"Rensen","street":"Doesburgseweg","houseNumber":"26","city":"Wehl","employeeNumber":1000000,"driverLicenseNumber":"xxx111xxx","phoneNumber":"0612334566","regularTruck":"97bph8","password":"password","enabled":true});
+    const[data, setData] = useState({"id":4001,"role":"planner", "username":"plannerusername","firstName":"Mark","lastName":"Rensen","street":"Doesburgseweg","postalCode": "7031jc", "houseNumber":"26","city":"Wehl","employeeNumber":1000000,"phoneNumber":"0612334566","password":"password","enabled":true});
     function login(){
         toggleIsAuth(true);
     }

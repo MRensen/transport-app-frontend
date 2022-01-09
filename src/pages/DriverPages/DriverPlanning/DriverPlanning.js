@@ -28,7 +28,6 @@ export default function DriverPlanning(){
         history.push("/driver/home")
     };
     return(
-
         <>
             <HeaderHomeSave
                 titleName="planning"

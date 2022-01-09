@@ -9,10 +9,11 @@ export default function LoginPage() {
 
     const [passwordValue, setPasswordValue] = useState("");
     const [nameValue, setNameValue] = useState("");
+    const [role, setRole] = useState("")
     const history = useHistory();
     const {setData, data, login} = useContext(AuthContext);
 
-    async function getData() {
+    async function getDriver() {
         try {
             const result = await axios.get(`http://localhost:8080/drivers/${nameValue}`);
             setData(result.data);
@@ -25,7 +26,7 @@ export default function LoginPage() {
     function applyLogin(){
         console.log("logging in")
         if(nameValue === "driverusername" && passwordValue === "password"){
-            getData()
+            getDriver()
             //setData(nameValue);
             login();
             history.push("/driver/home")
@@ -57,6 +58,15 @@ export default function LoginPage() {
                                setPasswordValue(e.target.value)
                            }}
                     />
+                </section>
+                <section>
+                    <label htmlFor="roles" className={styles.label}>Role  </label>
+                    <select id="roles" className={styles.input}>
+                        <option selected value disabled> </option>
+                        <option value="driver">driver</option>
+                        <option value="planner">planner</option>
+                        <option value="customer">customer</option>
+                    </select>
                 </section>
             </main>
         </div>

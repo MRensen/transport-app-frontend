@@ -12,9 +12,12 @@ import StopRoute from "./pages/DriverPages/StopRoute/StopRoute";
 import StartRoute from "./pages/DriverPages/StartRoute/StartRoute";
 import Lossen from "./pages/DriverPages/Lossen/Lossen";
 import Laden from "./pages/DriverPages/Laden/Laden";
+import HeaderPlain from "./components/Header/Header";
+import PlannerHome from "./pages/PlannerPages/PlannerHome/PlannerHome";
 
 
 function App() {
+    const {data: userData} = useContext(AuthContext);
     return (
         <Switch>
             <Route path="/" exact>
@@ -40,6 +43,12 @@ function App() {
             </PrivateRoute>
             <PrivateRoute path="/order/:id/laden" role="driver">
                 <Laden/>
+            </PrivateRoute>
+            {(userData.role == "planner") &&
+               <HeaderPlain/>
+            }
+            <PrivateRoute path="/planner" role="planner">
+                <PlannerHome/>
             </PrivateRoute>
             {/*{(loggedIn && (name === "driver")) &&*/}
             {/*<Route path="/driver/home">*/}

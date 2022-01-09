@@ -27,6 +27,9 @@ export default function OrderContainer({endpoint}) {
             history.push(`/order/${orderData.id}/lossen`);
         }
     }
+    if(orderData.orderStatus === "delivered"){
+        return null;
+    }
 
     return (
         <article className={styles.article}>

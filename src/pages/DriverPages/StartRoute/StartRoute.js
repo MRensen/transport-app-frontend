@@ -37,7 +37,7 @@ export default function StartRoute() {
             const result = await axios.get(`http://localhost:8080/routes/${data.routenummer}`)
             result.data.truck = data.vrachtwagen;
             registerRoute(result.data);
-            console.log(routeData)
+            console.log(result.data)
         } catch (e){
             console.log(e.error);
         }
