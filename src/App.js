@@ -14,6 +14,10 @@ import Lossen from "./pages/DriverPages/Lossen/Lossen";
 import Laden from "./pages/DriverPages/Laden/Laden";
 import HeaderPlain from "./components/Header/Header";
 import PlannerHome from "./pages/PlannerPages/PlannerHome/PlannerHome";
+import CustomerHome from "./pages/CustomerPages/CustomerHome/CustomerHome";
+import CustomerAccount from "./pages/CustomerPages/CustomerAccount/CustomerAccount";
+import CustomerNewOrder from "./pages/CustomerPages/CustomerNewOrder/CustomerNewOrder";
+import CustomerOrders from "./pages/CustomerPages/CustomerOrders/CustomerOrders";
 
 
 function App() {
@@ -47,8 +51,20 @@ function App() {
             {/*{(userData.role == "planner") &&*/}
             {/*   <HeaderPlain/>*/}
             {/*}*/}
-            <PrivateRoute path="/planner/home" role="planner">
+            <PrivateRoute path="/planner" role="planner">
                 <PlannerHome/>
+            </PrivateRoute>
+            <PrivateRoute path="/customer/home" role="customer">
+                <CustomerHome/>
+            </PrivateRoute>
+            <PrivateRoute path="/customer/account" role="customer">
+                <CustomerAccount/>
+            </PrivateRoute>
+            <PrivateRoute path="/customer/new" role="customer">
+                <CustomerNewOrder/>
+            </PrivateRoute>
+            <PrivateRoute path="/customer/orders" role="customer">
+                <CustomerOrders/>
             </PrivateRoute>
             {/*{(loggedIn && (name === "driver")) &&*/}
             {/*<Route path="/driver/home">*/}

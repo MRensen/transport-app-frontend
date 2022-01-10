@@ -1,0 +1,10 @@
+.main{
+    display: flex;
+    justify-content: center;
+}
+.title{
+    font-family: 'courier prime', monospace;
+    font-size: 96px;
+    color: #0075A2;
+
+}
