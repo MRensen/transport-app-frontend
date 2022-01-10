@@ -57,8 +57,8 @@ export default function DriverAccount() {
             <form className={styles.form} name="account-form" onSubmit={handleSubmit(saveButton)}>
                 <aside className={styles.aside}>
                     <div className={styles['image-container']}>
-                        <image className={styles.image}>
-                        </image>
+                        <div className={styles.image}>
+                        </div>
                         <button type="button" className={styles['foto-wijzigen']} onClick={setImage}>foto wijzigen</button>
                     </div>
                     <LabeledInput title="naam" value={data.firstName + " " + data.lastName} register={register}/>

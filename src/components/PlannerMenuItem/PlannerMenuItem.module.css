@@ -1,0 +1,22 @@
+
+.radio{
+}
+
+.label{
+    width: 300px;
+    border: black solid 2px;
+    font-size: 12px;
+    font-family: 'courier prime', monospace;
+    background-color: #CCDBDC;
+    max-width: 100%;
+}
+
+.radio:checked + .label{
+    background-color: #B3CACB;
+}
+
+.container{
+    display: flex;
+    flex-direction: row;
+}
+

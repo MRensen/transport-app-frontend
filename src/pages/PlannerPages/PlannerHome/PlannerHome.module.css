@@ -3,13 +3,33 @@
     flex-direction: row;
     height: 80vh;
     background-color: white;
+    border: black solid 1px;
+}
+.options{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: #CCDBDC;
+    border: black solid 1px;
+}
+.options button{
+    flex: 1 1 0;
+    border: black   solid 1px;
+    height: 50px;
+    background-color: #CCDBDC;
 }
 
-.nav{
+.navigate{
     display: flex;
     flex-direction: column;
     height: 80vh;
     border: black solid 1px;
+}
+.image{
+    height: 250px;
+    width: 340px;
+    background-color: #C4C4C4;
+    margin: 30px;
 }
 
 .header{
@@ -18,3 +38,22 @@
     font-size: 14px;
     border: black dashed 1px;
 }
+.menu{
+    width:20vw;
+    border: black solid 1px;
+}
+
+.housenumber{
+    width: 50px;
+}
+
+.content{
+    height: calc(80vh - 25px - 50px);
+    overflow: scroll;
+    display: flex;
+    flex-direction: column;
+}
+.content-container{
+    width: 60vw;
+ }
+
