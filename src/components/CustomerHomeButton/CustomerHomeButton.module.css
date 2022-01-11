@@ -1,0 +1,9 @@
+
+
+.button{
+    font-family: 'courier prime', monospace;
+    font-size: 36px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
