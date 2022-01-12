@@ -1,0 +1,51 @@
+.main{
+    height: 80vh;
+}
+
+
+.aside{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 50px;
+    width: 50vw;
+    height: 80vh;
+}
+
+.right-main{
+    width: 50vw;
+    height: 80vh;
+}
+.form {
+    display: flex;
+    flex-direction: row;
+    overflow: scroll;
+}
+
+.image{
+    height: 50vh;
+    width: 30vw;
+    background-color: #C4C4C4;
+    margin: 30px;
+}
+
+.image-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.foto-wijzigen{
+    font-size: 36px;
+    width: 280px;
+    height: 115px;
+}
+
+
+.button{
+    margin-left: 50px;
+    width : 280px;
+    height: 115px;
+    font-size: 36px;
+}
