@@ -16,7 +16,7 @@ import {AuthContext} from "../../../components/Context/AuthContextProvider";
 export default function PlannerHome() {
     const {username} = useContext(AuthContext)
     const {register, handleSubmit} = useForm();
-    const [checked, setChecked] = useState("chauffeurs")
+    const [checked, setChecked] = useState("")
     const [checkedMenu, setCheckedMenu] = useState({})
     const [drivers, setDrivers] = useState([]);
     const [orders, setOrders] = useState([]);
@@ -109,18 +109,18 @@ export default function PlannerHome() {
                 <main className={styles['content-container']}>
                     <header className={styles.header}> Details</header>
                     <Switch>
-                        <Route path={`/planner/home/chauffeurs`}>
+                        <Route path={`/planner/chauffeurs`}>
                             <DriverDetails //driverData={driverData}
                                 checkedMenu={checkedMenu}
                             />
                         </Route>
-                        <Route path={`/planner/home/orders`}>
+                        <Route path={`/planner/orders`}>
                             <OrderDetails checkedMenu={checkedMenu}/>
                         </Route>
-                        <Route path={`/planner/home/routes`}>
+                        <Route path={`/planner/routes`}>
                             <RouteDetails checkedMenu={checkedMenu}/>
                         </Route>
-                        <Route path={`/planner/home/instellingen`}>
+                        <Route path={`/planner/instellingen`}>
                             <InstellingenDetails checkedMenu={checkedMenu}/>
                         </Route>
 
@@ -143,25 +143,29 @@ export default function PlannerHome() {
                 </main>
                 <nav className={styles.menu}>
                     <header className={styles.header}>Menu</header>
-                    {drivers && checked === "chauffeurs" &&
-                    drivers.map((driver) => {
-                        return <PlannerMenuItem naam={driver.firstName + " " + driver.lastName}
-                                                personeelsnummer={driver.employeeNumber}
-                                                username={driver.username}
-                                                key={driver.username}
-                                                checked={checkedMenu}
-                                                setChecked={setCheckedMenu}/>
-                    })
-                    }
-                    {checked === "orders" &&
-                    <OrderDetails checkedMenu={checkedMenu}/>
-                    }
-                    {checked === "routes" &&
-                    <RouteDetails checkedMenu={checkedMenu}/>
-                    }
-                    {checked === "instellingen" &&
-                    <InstellingenDetails checkedMenu={checkedMenu}/>
-                    }
+                    <Switch>
+                        <Route path={`/planner/chauffeurs`}>
+                            {drivers &&
+                            drivers.map((driver) => {
+                                return <PlannerMenuItem naam={driver.firstName + " " + driver.lastName}
+                                                        personeelsnummer={driver.employeeNumber}
+                                                        username={driver.username}
+                                                        key={driver.username}
+                                                        checked={checkedMenu}
+                                                        setChecked={setCheckedMenu}/>
+                            })}
+                        </Route>
+                        <Route path={`/planner/orders`}>
+                            <OrderDetails checkedMenu={checkedMenu}/>
+                        </Route>
+                        <Route path={`/planner/routes`}>
+                            <RouteDetails checkedMenu={checkedMenu}/>
+                        </Route>
+                        <Route path={`/planner/instellingen`}>
+                            <InstellingenDetails checkedMenu={checkedMenu}/>
+                        </Route>
+
+                    </Switch>
                 </nav>
             </div>
         </>

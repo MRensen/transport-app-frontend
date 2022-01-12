@@ -9,7 +9,7 @@ export default function PlannerNavItem({title, checked, setChecked}) {
             <input type="radio" className={styles.radio} name="navitem" id={title} checked={checked === title}
                    onChange={() => {
                        setChecked(title)
-                       history.push(`/planner/home/${title}`)
+                       history.push(`/planner/${title}`)
                    }}/>
             <label htmlFor={title} className={styles.label}> {title}</label>
         </>

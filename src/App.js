@@ -51,11 +51,11 @@ function App() {
             {/*{(userData.role == "planner") &&*/}
             {/*   <HeaderPlain/>*/}
             {/*/!*}*!/*/}
-            {/*<PrivateRoute path="/planner" role="planner">*/}
-            {/*    <PlannerHome/>*/}
-            {/*</PrivateRoute>*/}
-            <PrivateRoute path="/planner/home" role="planner">
+            <PrivateRoute path="/planner" role="planner">
                 <PlannerHome/>
+            </PrivateRoute>
+            <PrivateRoute path="/planner/home" role="planner">
+                <Redirect to="/planner"/>
             </PrivateRoute>
             <PrivateRoute path="/customer/home" role="customer">
                 <CustomerHome/>
