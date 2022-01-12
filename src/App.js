@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import {Route, Switch} from "react-router-dom";
+import {Redirect, Route, Switch} from "react-router-dom";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import DriverHome from "./pages/DriverPages/DriverHome/DriverHome";
 import {useContext} from "react";
@@ -50,8 +50,11 @@ function App() {
             </PrivateRoute>
             {/*{(userData.role == "planner") &&*/}
             {/*   <HeaderPlain/>*/}
-            {/*}*/}
-            <PrivateRoute path="/planner" role="planner">
+            {/*/!*}*!/*/}
+            {/*<PrivateRoute path="/planner" role="planner">*/}
+            {/*    <PlannerHome/>*/}
+            {/*</PrivateRoute>*/}
+            <PrivateRoute path="/planner/home" role="planner">
                 <PlannerHome/>
             </PrivateRoute>
             <PrivateRoute path="/customer/home" role="customer">

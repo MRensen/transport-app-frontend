@@ -109,18 +109,18 @@ export default function PlannerHome() {
                 <main className={styles['content-container']}>
                     <header className={styles.header}> Details</header>
                     <Switch>
-                        <Route path={`/planner/chauffeurs`}>
+                        <Route path={`/planner/home/chauffeurs`}>
                             <DriverDetails //driverData={driverData}
                                 checkedMenu={checkedMenu}
                             />
                         </Route>
-                        <Route path={`/planner/orders`}>
+                        <Route path={`/planner/home/orders`}>
                             <OrderDetails checkedMenu={checkedMenu}/>
                         </Route>
-                        <Route path={`/planner/routes`}>
+                        <Route path={`/planner/home/routes`}>
                             <RouteDetails checkedMenu={checkedMenu}/>
                         </Route>
-                        <Route path={`/planner/instellingen`}>
+                        <Route path={`/planner/home/instellingen`}>
                             <InstellingenDetails checkedMenu={checkedMenu}/>
                         </Route>
 

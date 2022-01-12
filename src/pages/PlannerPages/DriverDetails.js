@@ -6,7 +6,7 @@ import {useEffect, useState} from "react";
 
 export default function DriverDetails({ checkedMenu}) {
 
-    const [driverData, setDriverData] = useState();
+    const [driverData, setDriverData] = useState(null);
     const {register, handleSubmit} = useForm();
     useEffect(() => {
         async function getDriver() {
@@ -16,20 +16,26 @@ export default function DriverDetails({ checkedMenu}) {
                     url: `http://localhost:8080/drivers/${checkedMenu}`
                 })
                 setDriverData(result.data);
+                console.log("test1: ");
                 console.log(driverData);
             } catch (e) {
                 console.log(e.message)
             }
         }
+        function unmount(){
+            setDriverData(null);
+            checkedMenu = null;
+        }
 
         getDriver();
-    },[])
+    },[checkedMenu])
 
     function formSubmit(){
 
     }
 
     if (driverData) {
+        console.log("test2: ")
         console.log(driverData)
         return (
             <>
@@ -38,11 +44,13 @@ export default function DriverDetails({ checkedMenu}) {
                     <button type="button">save</button>
                     <button type="button">cancel</button>
                 </header>
-                <main key={driverData.username} className={styles.content}>
+                <main key={checkedMenu} className={styles.content}>
                     <img src="" className={styles.image}/>
                     <form onSubmit={handleSubmit(formSubmit)}>
                         <LabeledInput register={register} title="naam"
-                                      value={`${driverData.firstName}  ${driverData.lastName}`}/>
+                                      value={`${driverData.firstName}  ${driverData.lastName}`}
+                                      // onChange={(e) => setDriverData({firstName : e.target.value.split(" ")[0], lastName: e.target.value.split(" ")[0]})}
+                                        />
                         <LabeledInput register={register} title="adres" value={driverData.street}>
                             <input type="text" className={styles.housenumber} id="housenumber"
                                    value={driverData.houseNumber}
@@ -58,7 +66,7 @@ export default function DriverDetails({ checkedMenu}) {
                         <LabeledInput register={register} title="telefoon nummer" value={driverData.phoneNumber}
                                       className="bottom-label"/>
                         <LabeledInput register={register} title="enabled" checked={driverData.enabled}/>
-                        <button type="submit">submit</button>
+                        {/*<button type="submit">submit</button>*/}
                     </form>
                 </main>
             </>

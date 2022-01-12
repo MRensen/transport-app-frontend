@@ -6,6 +6,7 @@
     height: 20vh;
     min-height: 124px;
     background-color: #80CED7;
+    font-family: 'courier prime', monospace;
 }
 .header-double {
     display: flex;
@@ -16,6 +17,7 @@
     height: 20vh;
     min-height: 124px;
     background-color: #80CED7;
+    font-family: 'courier prime', monospace;
 }
 
 .header-title {
