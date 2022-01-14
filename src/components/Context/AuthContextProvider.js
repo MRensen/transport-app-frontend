@@ -12,14 +12,14 @@ export default function AuthContextProvider({children}){
     function logout(){
         toggleIsAuth(false);
     }
-    const username = data.username;
+    const id = data.id;
     const value = {
         loggedIn: isAuth,
         login,
         logout,
         data,
         setData,
-        username
+        id
     }
     return(
         <AuthContext.Provider

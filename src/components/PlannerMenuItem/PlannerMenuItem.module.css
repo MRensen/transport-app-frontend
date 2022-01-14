@@ -3,7 +3,7 @@
 }
 
 .label{
-    width: 300px;
+    width: 100%;
     border: black solid 2px;
     font-size: 12px;
     font-family: 'courier prime', monospace;
@@ -16,6 +16,7 @@
 }
 
 .container{
+    width: 300px;
     display: flex;
     flex-direction: row;
 }

@@ -20,6 +20,7 @@ export default function DriverDetails({ checkedMenu}) {
                 console.log(driverData);
             } catch (e) {
                 console.log(e.message)
+                return null;
             }
         }
         function unmount(){

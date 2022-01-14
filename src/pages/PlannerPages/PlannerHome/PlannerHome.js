@@ -9,19 +9,24 @@ import {useForm} from "react-hook-form";
 import DriverDetails from "../DriverDetails";
 import OrderDetails from "../OrderDetails";
 import RouteDetails from "../RouteDetails";
-import InstellingenDetails from "../InstellingenDetails";
-import {Route, Switch, useRouteMatch} from "react-router-dom";
+import AccountDetails from "../AccountDetails";
+import {Route, Switch, useHistory, useRouteMatch} from "react-router-dom";
 import {AuthContext} from "../../../components/Context/AuthContextProvider";
+import NewUser from "../NewUser";
 
 export default function PlannerHome() {
-    const {username} = useContext(AuthContext)
+    const {id} = useContext(AuthContext);
     const {register, handleSubmit} = useForm();
-    const [checked, setChecked] = useState("")
-    const [checkedMenu, setCheckedMenu] = useState({})
+    const history = useHistory();
+    const {path, url} = useRouteMatch();
+
+    const [checked, setChecked] = useState("");
+    const [checkedMenu, setCheckedMenu] = useState(null);
     const [drivers, setDrivers] = useState([]);
     const [orders, setOrders] = useState([]);
     const [routes, setRoutes] = useState([]);
     const [planner, setPlanner] = useState({});
+    const[menuDisplay, setMenuDisplay] = useState(true);
     useEffect(() => {
         async function getDrivers() {
             try {
@@ -78,7 +83,7 @@ export default function PlannerHome() {
             try {
                 const result = await axios({
                     method: 'get',
-                    url: `http://localhost:8080/planners/${username}`
+                    url: `http://localhost:8080/planners/${id}`
                 })
                 setPlanner(result.data);
                 console.log(result.data);
@@ -94,7 +99,6 @@ export default function PlannerHome() {
     function setImage() {
     };
 
-    const {path, url} = useRouteMatch()
     return (
         <>
             <HeaderPlain/>
@@ -104,7 +108,7 @@ export default function PlannerHome() {
                     <PlannerNavItem title="chauffeurs" checked={checked} setChecked={setChecked}/>
                     <PlannerNavItem title="orders" checked={checked} setChecked={setChecked}/>
                     <PlannerNavItem title="routes" checked={checked} setChecked={setChecked}/>
-                    <PlannerNavItem title="instellingen" checked={checked} setChecked={setChecked}/>
+                    <PlannerNavItem title="account" checked={checked} setChecked={setChecked}/>
                 </nav>
                 <main className={styles['content-container']}>
                     <header className={styles.header}> Details</header>
@@ -120,8 +124,11 @@ export default function PlannerHome() {
                         <Route path={`/planner/routes`}>
                             <RouteDetails checkedMenu={checkedMenu}/>
                         </Route>
-                        <Route path={`/planner/instellingen`}>
-                            <InstellingenDetails checkedMenu={checkedMenu}/>
+                        <Route path={`/planner/account`}>
+                            <AccountDetails setMenuDisplay={setMenuDisplay}/>
+                        </Route>
+                        <Route path="/planner/new">
+                            <NewUser checkedMenu={checkedMenu}/>
                         </Route>
 
                     </Switch>
@@ -138,32 +145,62 @@ export default function PlannerHome() {
                     {/*<RouteDetails checkedMenu={checkedMenu}/>*/}
                     {/*}*/}
                     {/*{checked === "instellingen" &&*/}
-                    {/*<InstellingenDetails checkedMenu={checkedMenu}/>*/}
+                    {/*<AccountDetails checkedMenu={checkedMenu}/>*/}
                     {/*}*/}
                 </main>
-                <nav className={styles.menu}>
+                <nav className={styles.menu} className={menuDisplay && styles['menu-visible']} >
                     <header className={styles.header}>Menu</header>
+                    <button className={styles.newItemButton} onClick={()=>{history.push("/planner/new")}}>
+                        nieuw
+                    </button>
+
                     <Switch>
-                        <Route path={`/planner/chauffeurs`}>
+                        <Route path="/planner/new">
+                            { checked != null &&
+                                <PlannerMenuItem firstline="chauffeurs"
+                                                 key="chauffeurs"
+                                                 checked={checkedMenu}
+                                                 setChecked={setCheckedMenu}/>
+                            }
+                        </Route>
+                        <Route path="/planner/chauffeurs">
                             {drivers &&
                             drivers.map((driver) => {
-                                return <PlannerMenuItem naam={driver.firstName + " " + driver.lastName}
-                                                        personeelsnummer={driver.employeeNumber}
-                                                        username={driver.username}
+                                return <PlannerMenuItem firstline={`naam: ${driver.firstName} ${driver.lastName}`}
+                                                        secondline= "personeelsnummer"
+                                                        thirdline={`${driver.employeeNumber}`}
+                                                        username={driver.id}
                                                         key={driver.username}
                                                         checked={checkedMenu}
                                                         setChecked={setCheckedMenu}/>
                             })}
                         </Route>
                         <Route path={`/planner/orders`}>
-                            <OrderDetails checkedMenu={checkedMenu}/>
+                            {orders &&
+                                orders.map((order) => {
+                                    return <PlannerMenuItem firstline={order.isPickup ? "laden" : "lossen"}
+                                                            secondline={order.city}
+                                                            thirdline={`${order.pallets.length} ${order.type} pallet${(order.pallets.length > 1) ? "s" : ""}`}
+                                                            username={order.id}
+                                                            key={order.username}
+                                                            checked={checkedMenu}
+                                                            setChecked={setCheckedMenu}/>
+                                })}
                         </Route>
                         <Route path={`/planner/routes`}>
-                            <RouteDetails checkedMenu={checkedMenu}/>
+                            {routes && routes.map((route)=>{
+                                return <PlannerMenuItem firstline={`id: ${route.id}`}
+                                                        secondline={`chauffeur: ${route.driver && route.driver.id}`}
+                                                        thirdline={`wagen: ${route.truck}`}
+                                                        username={route.id}
+                                                        key={route.id}
+                                                        checked={checkedMenu}
+                                                        setChecked={setCheckedMenu}/>
+                            })}
                         </Route>
-                        <Route path={`/planner/instellingen`}>
-                            <InstellingenDetails checkedMenu={checkedMenu}/>
-                        </Route>
+                        {/*<Route path={`/planner/account`}>*/}
+                        {/*    */}
+                        {/*</Route>*/}
 
                     </Switch>
                 </nav>

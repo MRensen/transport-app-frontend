@@ -37,6 +37,7 @@
     height: 25px;
     font-size: 14px;
     border: black dashed 1px;
+    width: 100%;
 }
 .menu{
     width:20vw;
@@ -47,6 +48,10 @@
     width: 50px;
 }
 
+.menu-visible{
+    display: none;
+}
+
 .content{
     height: calc(80vh - 25px - 50px);
     overflow: scroll;
@@ -54,6 +59,16 @@
     flex-direction: column;
 }
 .content-container{
-    width: 60vw;
+    width: 100%;
  }
+
+.newItemButton{
+    width: 300px;
+    height: 100px;
+    border: black solid 2px;
+    font-size: 12px;
+    font-family: 'courier prime', monospace;
+    background-color: #CCDBDC;
+    max-width: 100%;
+}
 
