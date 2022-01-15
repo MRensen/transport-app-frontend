@@ -27,6 +27,8 @@ export default function PlannerHome() {
     const [routes, setRoutes] = useState([]);
     const [planner, setPlanner] = useState({});
     const[menuDisplay, setMenuDisplay] = useState(true);
+    const[newDisplay, setNewDisplay] = useState(true);
+
     useEffect(() => {
         async function getDrivers() {
             try {
@@ -42,7 +44,7 @@ export default function PlannerHome() {
         }
 
         getDrivers();
-    }, [checked === "chauffeurs"])
+    }, [checked === "chauffeurs", checkedMenu])
 
     useEffect(() => {
         async function getOrders() {
@@ -116,6 +118,7 @@ export default function PlannerHome() {
                         <Route path={`/planner/chauffeurs`}>
                             <DriverDetails //driverData={driverData}
                                 checkedMenu={checkedMenu}
+                                setCheckedMenu={setCheckedMenu}
                             />
                         </Route>
                         <Route path={`/planner/orders`}>
@@ -128,7 +131,8 @@ export default function PlannerHome() {
                             <AccountDetails setMenuDisplay={setMenuDisplay}/>
                         </Route>
                         <Route path="/planner/new">
-                            <NewUser checkedMenu={checkedMenu}/>
+                            <NewUser setNewDisplay={setNewDisplay}
+                                    checkedMenu={setCheckedMenu}/>
                         </Route>
 
                     </Switch>
@@ -148,19 +152,33 @@ export default function PlannerHome() {
                     {/*<AccountDetails checkedMenu={checkedMenu}/>*/}
                     {/*}*/}
                 </main>
-                <nav className={styles.menu} className={menuDisplay && styles['menu-visible']} >
+                {console.log(`menudisplay: ${menuDisplay}`)}
+                <nav className={menuDisplay ? styles.menu : styles.invisible} >
                     <header className={styles.header}>Menu</header>
-                    <button className={styles.newItemButton} onClick={()=>{history.push("/planner/new")}}>
+                    <button className={newDisplay ? styles.newItemButton : styles.invisible} onClick={()=>{history.push("/planner/new")}}>
                         nieuw
                     </button>
 
                     <Switch>
                         <Route path="/planner/new">
                             { checked != null &&
-                                <PlannerMenuItem firstline="chauffeurs"
-                                                 key="chauffeurs"
+                                <>
+                                <PlannerMenuItem firstline="chauffeur"
+                                                 key="chauffeur"
+                                                 id="chauffeur"
                                                  checked={checkedMenu}
                                                  setChecked={setCheckedMenu}/>
+                                <PlannerMenuItem firstline="order"
+                                key="order"
+                                id="order"
+                                checked={checkedMenu}
+                                setChecked={setCheckedMenu}/>
+                                <PlannerMenuItem firstline="route"
+                                key="route"
+                                id="route"
+                                checked={checkedMenu}
+                                setChecked={setCheckedMenu}/>
+                                </>
                             }
                         </Route>
                         <Route path="/planner/chauffeurs">
@@ -169,7 +187,7 @@ export default function PlannerHome() {
                                 return <PlannerMenuItem firstline={`naam: ${driver.firstName} ${driver.lastName}`}
                                                         secondline= "personeelsnummer"
                                                         thirdline={`${driver.employeeNumber}`}
-                                                        username={driver.id}
+                                                        id={driver.id}
                                                         key={driver.username}
                                                         checked={checkedMenu}
                                                         setChecked={setCheckedMenu}/>
@@ -181,8 +199,8 @@ export default function PlannerHome() {
                                     return <PlannerMenuItem firstline={order.isPickup ? "laden" : "lossen"}
                                                             secondline={order.city}
                                                             thirdline={`${order.pallets.length} ${order.type} pallet${(order.pallets.length > 1) ? "s" : ""}`}
-                                                            username={order.id}
-                                                            key={order.username}
+                                                            id={order.id}
+                                                            key={order.id}
                                                             checked={checkedMenu}
                                                             setChecked={setCheckedMenu}/>
                                 })}
@@ -192,7 +210,7 @@ export default function PlannerHome() {
                                 return <PlannerMenuItem firstline={`id: ${route.id}`}
                                                         secondline={`chauffeur: ${route.driver && route.driver.id}`}
                                                         thirdline={`wagen: ${route.truck}`}
-                                                        username={route.id}
+                                                        id={route.id}
                                                         key={route.id}
                                                         checked={checkedMenu}
                                                         setChecked={setCheckedMenu}/>

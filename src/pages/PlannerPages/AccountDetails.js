@@ -4,12 +4,14 @@ export default function AccountDetails({setMenuDisplay}){
     useEffect(()=>{
         function onMount() {
             {
-                setMenuDisplay(false)
+                setMenuDisplay(false);
+                console.log("mounting")
             }
         }
         onMount();
-        function onDismount(){
-            setMenuDisplay(false)
+        return function onDismount(){
+            setMenuDisplay(true);
+            console.log("unmounting");
         }
     },[])
 

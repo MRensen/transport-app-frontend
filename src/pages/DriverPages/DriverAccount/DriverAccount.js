@@ -21,7 +21,7 @@ export default function DriverAccount() {
             firstName,
             lastName,
             street : data.adres,
-            houseNumber: data.housenumber,
+            houseNumber: data.huisnummer,
             postcode : data.postcode,
             employeeNumber : data['personeels nummer'],
             regularTruck : data['vaste wagen'],
@@ -63,7 +63,7 @@ export default function DriverAccount() {
                     </div>
                     <LabeledInput title="naam" value={data.firstName + " " + data.lastName} register={register}/>
                     <LabeledInput register={register} title="adres" value={data.street}>
-                        <input {...register("housenumber")} type="text" className={styles.housenumber} id="housenumber" value={data.houseNumber}/>
+                        <input {...register("huisnummer")} type="text" className={styles.housenumber} id="huisnummer" value={data.houseNumber}/>
                     </LabeledInput>
                     <LabeledInput register={register} title="postcode" value={data.postcode} className="bottom-label"/>
 
