@@ -3,12 +3,13 @@ import LabeledInput from "../../components/LabeledInput/LabeledInput";
 import {useForm} from "react-hook-form";
 import axios from "axios";
 import {useEffect, useState} from "react";
+import {useHistory} from "react-router-dom";
 
 export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
-
+    const history = useHistory();
     const [driverData, setDriverData] = useState(null);
     const [unmount, setUnmount] = useState("");
-    const {register, handleSubmit, reset, setValues} = useForm();
+    const {register, handleSubmit, reset, formState: {errors}} = useForm();
 
     useEffect(() => {
         async function getDriver() {
@@ -23,7 +24,7 @@ export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
                         naam: `${result.data.firstName} ${result.data.lastName}`,
                         postcode: result.data.postalcode,
                         adres: result.data.street,
-                        housenumber: result.data.houseNumber,
+                        huisnummer: result.data.houseNumber,
                         city: result.data.city,
                         'personeels nummer': result.data.employeeNumber,
                         'vaste wagen': result.data.regularTruck,
@@ -31,8 +32,6 @@ export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
                         'telefoon nummer': result.data.phoneNumber,
                         enabled: result.data.enabled
                     });
-                    console.log("test1: ");
-                    console.log(driverData);
                 } catch (e) {
                     console.log(e.message)
                     return null;
@@ -55,8 +54,12 @@ export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
 
 
     async function formSubmit(data) {
+        console.log("saveing....")
         const check = window.confirm("Weet je zeker dat je deze wijziging wilt opslaan?");
         if (check) {
+            const method = create ? "post" : "patch";
+            const baseurl = "http://localhost:8080/drivers";
+            const url = create ? "" : `/${checkedMenu}`;
             const [firstName, lastName] = data.naam.split(" ");
             const toSend = {
                 firstName,
@@ -64,14 +67,19 @@ export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
                 street: data.adres,
                 houseNumber: data.huisnummer,
                 postalcode: data.postcode,
+                city: data.city,
                 employeeNumber: data['personeels nummer'],
                 regularTruck: data['vaste wagen'],
                 driverLicenseNumber: data['rijbewijs nummer'],
                 phoneNumber: data['telefoon nummer']
             }
+            {create &&
+            (toSend.username = data.naam) &&
+            (toSend.passWord = "$2a$12$5usMMaD9hathHXMKNMjlseunXe.QEQbRBtFiBycc.V/teqa0c4v6K")
+            }
             await axios({
-                method: "patch",
-                url: `http://localhost:8080/drivers/${checkedMenu}`,
+                method: method,
+                url: baseurl + url,
                 header: {'Content-type': 'application/json'},
                 data: toSend
             })
@@ -80,11 +88,14 @@ export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
     }
 
     function cancelFunction(value = "cancel") {
-        setCheckedMenu(null);
-        setDriverData(null);
-        reset();
-        console.log(`value-in-clacel-function ${value}`)
-        setUnmount(value);
+        if(create){
+            history.push(`/planner/${checkedMenu}s`)
+        } else {
+            setCheckedMenu(null);
+            setDriverData(null);
+            reset();
+            setUnmount(value);
+        }
     }
 
     async function deleteFunction() {
@@ -98,51 +109,50 @@ export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
 
     }
 
-    if (driverData) {
+    function resetFunction(){
+        console.log("reset")
+        reset()
+    }
+
+    if (driverData || create) {
         return (
             <>
                 <header className={styles.options}>
-                    <button type="button" onClick={deleteFunction}>delete</button>
+                    <button type="button" onClick={deleteFunction} className={create && styles.invisible} >delete</button>
                     <button type="button" onClick={handleSubmit(formSubmit)}>save</button>
-                    <button type="button" onClick={() => {
-                        cancelFunction()
-                    }}>cancel
-                    </button>
+                    {console.log(`create : ${create}`)}
+                    {create?
+                        <button type="button" onClick={() => {
+                            resetFunction()
+                        }}>reset</button>
+                        :
+                        <button type="button" onClick={() => {
+                            cancelFunction()
+                        }}>cancel</button>
+                    }
                 </header>
                 <main key={checkedMenu} className={styles.content}>
-                    <img src="" className={styles.image}/>
-                    <form onSubmit={handleSubmit(formSubmit)} onChange={console.log("form changed")}>
-                        <LabeledInput register={register} title="naam"
-                                      // value={`${driverData.firstName}  ${driverData.lastName}`}
-                            // onChange={(e) => setDriverData({firstName : e.target.value.split(" ")[0], lastName: e.target.value.split(" ")[0]})}
-                        />
-                        <LabeledInput register={register} title="adres"
-                                      // value={driverData.street}
-                        >
-                            <input type="text" className={styles.housenumber} id="huisnummer"
-                                   // value={driverData.houseNumber}
+
+                    <form onSubmit={handleSubmit(formSubmit)} onChange={console.log("form changed")} className={styles.form}>
+                        <img src="" className={styles.image}/>
+                        <LabeledInput errors={errors} register={register} title="naam"/>
+                        <LabeledInput errors={errors} register={register} title="adres">
+                            <input type="text" className={styles.housenumber} id="adres"
                                    {...register('huisnummer')}/>
                         </LabeledInput>
-                        <LabeledInput register={register} title="postcode" //value={driverData.postcode}
-                        />
-                        <LabeledInput register={register} title="city" //value={driverData.city}
-                        />
-                        <LabeledInput register={register} title="personeels nummer"
-                                      value={driverData.employeeNumber}/>
-                        <LabeledInput register={register} title="vaste wagen" value={driverData.regularTruck}/>
-                        <LabeledInput register={register} title="rijbewijs nummer"
-                                      value={driverData.driverLicenseNumber}/>
-                        <LabeledInput register={register} title="telefoon nummer" value={driverData.phoneNumber}
-                                      className="bottom-label"/>
-                        <LabeledInput register={register} title="enabled" checked={driverData.enabled}/>
-                        {/*<button type="submit">submit</button>*/}
+                        <LabeledInput errors={errors} register={register} title="postcode"/>
+                        <LabeledInput errors={errors} register={register} title="city" />
+                        <LabeledInput errors={errors} register={register} title="personeels nummer"/>
+                        <LabeledInput errors={errors} register={register} title="vaste wagen"/>
+                        <LabeledInput errors={errors} register={register} title="rijbewijs nummer"/>
+                        <LabeledInput errors={errors} register={register} title="telefoon nummer" className="bottom-label"/>
+                        <LabeledInput errors={errors} register={register} className="checked" checked title="enabled" />
                     </form>
                 </main>
             </>
         )
     } else return (
         <>
-            {console.log(unmount)}
             {unmount === "delete" ? <p>deleted...</p> : unmount === "saved" ? <p>saved...</p> : <p></p>}
             <p>Please select a driver</p>
         </>

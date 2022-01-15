@@ -132,7 +132,7 @@ export default function PlannerHome() {
                         </Route>
                         <Route path="/planner/new">
                             <NewUser setNewDisplay={setNewDisplay}
-                                    checkedMenu={setCheckedMenu}/>
+                                    checkedMenu={checkedMenu}/>
                         </Route>
 
                     </Switch>
