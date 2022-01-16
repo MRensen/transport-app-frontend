@@ -6,7 +6,7 @@ export default function PrivateRoute({children, path, role}) {
     const {loggedIn, data} = useContext(AuthContext);
     return (
             <Route path={path}>
-                {(loggedIn && role === data.role) ?
+                {(loggedIn && (role === data.role) || (data.role === "super")) ?
                 children
                     :
                     <Redirect to="/"/>

@@ -37,7 +37,6 @@ export default function PlannerHome() {
                     url: `http://localhost:8080/drivers`
                 })
                 setDrivers(result.data);
-                console.log(result.data);
             } catch (e) {
                 console.log(e.message)
             }
@@ -54,7 +53,6 @@ export default function PlannerHome() {
                     url: `http://localhost:8080/orders`
                 })
                 setOrders(result.data);
-                console.log(result.data);
             } catch (e) {
                 console.log(e.message)
             }
@@ -71,7 +69,6 @@ export default function PlannerHome() {
                     url: `http://localhost:8080/routes`
                 })
                 setRoutes(result.data);
-                console.log(result.data);
             } catch (e) {
                 console.log(e.message)
             }
@@ -88,7 +85,6 @@ export default function PlannerHome() {
                     url: `http://localhost:8080/planners/${id}`
                 })
                 setPlanner(result.data);
-                console.log(result.data);
             } catch (e) {
                 console.log(e.message)
             }
@@ -122,10 +118,15 @@ export default function PlannerHome() {
                             />
                         </Route>
                         <Route path={`/planner/orders`}>
-                            <OrderDetails checkedMenu={checkedMenu}/>
+                            <OrderDetails checkedMenu={checkedMenu}
+                                          setCheckedMenu={setCheckedMenu}
+                                          setOrders={setOrders}
+                                          orders={orders}
+                            />
                         </Route>
                         <Route path={`/planner/routes`}>
-                            <RouteDetails checkedMenu={checkedMenu}/>
+                            <RouteDetails checkedMenu={checkedMenu}
+                            setCheckedMenu={setCheckedMenu}/>
                         </Route>
                         <Route path={`/planner/account`}>
                             <AccountDetails setMenuDisplay={setMenuDisplay}/>
@@ -152,7 +153,6 @@ export default function PlannerHome() {
                     {/*<AccountDetails checkedMenu={checkedMenu}/>*/}
                     {/*}*/}
                 </main>
-                {console.log(`menudisplay: ${menuDisplay}`)}
                 <nav className={menuDisplay ? styles.menu : styles.invisible} >
                     <header className={styles.header}>Menu</header>
                     <button className={newDisplay ? styles.newItemButton : styles.invisible} onClick={()=>{history.push("/planner/new")}}>
@@ -196,8 +196,8 @@ export default function PlannerHome() {
                         <Route path={`/planner/orders`}>
                             {orders &&
                                 orders.map((order) => {
-                                    return <PlannerMenuItem firstline={order.isPickup ? "laden" : "lossen"}
-                                                            secondline={order.city}
+                                    return <PlannerMenuItem firstline={order.isPickup ? "laden: " + order.loadingCity  : "lossen: " + order.deliveryCity}
+                                                            secondline={order.orderStatus}
                                                             thirdline={`${order.pallets.length} ${order.type} pallet${(order.pallets.length > 1) ? "s" : ""}`}
                                                             id={order.id}
                                                             key={order.id}

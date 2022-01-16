@@ -19,7 +19,7 @@ export default function StartRoute() {
     useEffect(() => {
         async function getRoutes(){
             try{
-                const result = await axios.get(`http://localhost:8080/drivers/${data.username}/route`)
+                const result = await axios.get(`http://localhost:8080/drivers/${data.id}/route`)
                 setRoutes(result.data);
                 console.log(result)
             } catch(e){

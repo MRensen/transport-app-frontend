@@ -1,6 +1,6 @@
 import styles from "./DriverAccount.module.css";
 import {HeaderHomeSave} from "../../../components/Header/Header";
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {AuthContext} from "../../../components/Context/AuthContextProvider";
 import {useForm} from "react-hook-form";
 import {useHistory} from "react-router-dom";
@@ -10,7 +10,7 @@ import axios from "axios";
 
 export default function DriverAccount() {
     const {data} = useContext(AuthContext);
-    const username = data.username;
+    const id = data.id;
     const {register, handleSubmit} = useForm();
     const [password, setPassword] = useState(data.password);
     const history = useHistory();
@@ -32,11 +32,15 @@ export default function DriverAccount() {
             const result = await axios({
                 method : "patch",
                 data: toSend,
-                url: `http://localhost:8080/drivers/${username}`
+                url: `http://localhost:8080/drivers/${id}`
             })
         }catch(e){console.log(e.error)}
 
     }
+
+    useEffect(()=>{
+
+    },[password])
 
     const homeButton = () => {
         console.log("home");
@@ -65,7 +69,7 @@ export default function DriverAccount() {
                     <LabeledInput register={register} title="adres" value={data.street}>
                         <input {...register("huisnummer")} type="text" className={styles.housenumber} id="huisnummer" value={data.houseNumber}/>
                     </LabeledInput>
-                    <LabeledInput register={register} title="postcode" value={data.postcode} className="bottom-label"/>
+                    <LabeledInput register={register} title="postcode" value={data.postalcode} className="bottom-label"/>
 
                 </aside>
                 <aside className={styles.aside}>
@@ -79,9 +83,8 @@ export default function DriverAccount() {
                     > Change Password</button>
                 </aside>
                 <ModalPassword show={show}
-                               setPassword={setPassword}
                                onClose={()=>{setShow(false)}}
-                               currentPassword={password}
+                               id={id}
                 />
             </form>
         </>

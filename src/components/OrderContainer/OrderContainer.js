@@ -38,7 +38,7 @@ export default function OrderContainer({endpoint, noButton}) {
                     onClick={redirectFunction}
             >start</button>
             <main className={`${styles.main} ${noButton && styles['main-main']}`}>
-                <p>lossen: {orderData.deliveryName} <br/>
+                <p><strong>lossen:</strong>  {orderData.deliveryName} <br/> <br/>
                 {orderData.deliveryPostal + " " + orderData.deliveryCity}<br/>
                 {orderData.deliveryStreet + " " + orderData.deliveryHouseNumber}<br/>
                 type: {orderData.type}<br/>
@@ -64,7 +64,7 @@ export default function OrderContainer({endpoint, noButton}) {
                 {/*route: {id: 5001}*/}
             </main>
             <main className={styles.main}>
-                <p>{orderData.isPickup ? "laden: " : "afzender: "}{orderData.loadingName}<br/>
+                <p><strong>{orderData.isPickup ? "laden: " : "afzender: "}</strong>{orderData.loadingName}<br/>
                     {orderData.loadingPostal + " " + orderData.loadingCity}<br/>
                     {orderData.loadingStreet + " " + orderData.loadingHouseNumber}<br/>
                     opmerkingen: {orderData.description}

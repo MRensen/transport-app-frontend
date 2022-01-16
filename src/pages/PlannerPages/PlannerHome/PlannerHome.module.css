@@ -80,3 +80,11 @@
     align-items: center;
 }
 
+.order-main{
+    width: auto;
+    font-family: 'courier prime', monospace;
+    font-size: 36px;
+    display: flex;
+    flex-direction: column;
+}
+

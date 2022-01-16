@@ -4,7 +4,6 @@ import {useEffect, useState} from "react";
 
 export default function PlannerMenuItem({newItem, firstline, secondline, thirdline, key, checked, setChecked, id}) {
     const history = useHistory();
-    console.log("printing planner item")
     const[update, setUpdate] = useState(true);
     useEffect(()=>{
         setUpdate(!update);

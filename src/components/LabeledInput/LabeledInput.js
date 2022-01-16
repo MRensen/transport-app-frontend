@@ -14,25 +14,28 @@ export default function LabeledInput({children, type = "text", title, value, cla
             </label>
         )
     }
-    if(register) {
+    if(errors) {
         const options = {required: true};
         if(title === "personeels nummer"){options.pattern = /^[0-9]*$/}
         return (
             <label key={title} className={styles.label} htmlFor={`${title}: ${value}`}>
                 {title}: <input className={styles[className]} type={type} id={`${title}: ${value}`}
-                                // defaultValue={value}
                                 key={title}
                                 {...register(title, options)}
             /> {children}
-                <p style={{color:'#FF0000'}}>{errors[title]?.type === "required" && "required"}</p>
-                <p style={{color:'#FF0000'}}>{errors[title]?.type === "pattern" && "only digits"}</p>
+                <p style={{color: '#FF0000'}}>
+                    {errors[title]?.type === "required" && "required"} <br/>
+                    {errors[title]?.type === "pattern" && "only digits"}
+                </p>
             </label>
         )
     } else {
         return (
-            <label className={styles.label} htmlFor={`${title}`}>
-                {title}: <input className={styles[className]} type={type} id={`${title}`}
+            <label key={title} className={styles.label} htmlFor={`${title}: ${value}`}>
+                {title}: <input className={styles[className]} type={type} id={`${title}: ${value}`}
+                                key={title}
                                 value={value}
+                                {...register(title)}
             /> {children}
             </label>
         )
