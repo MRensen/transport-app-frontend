@@ -1,15 +1,14 @@
 import styles from "./PlannerHome/PlannerHome.module.css";
 import {useEffect} from "react";
 import DriverDetails from "./DriverDetails";
+import AccountDetails from "./AccountDetails";
 
 export default function NewUser({setNewDisplay, checkedMenu}) {
 
     useEffect(() => {
         function onMount() {
-            {
-                setNewDisplay(false);
-                console.log("mounting")
-            }
+            setNewDisplay(false);
+            console.log("mounting")
         }
 
         onMount();
@@ -34,6 +33,11 @@ export default function NewUser({setNewDisplay, checkedMenu}) {
     if (checkedMenu === "route") {
         return (
             <p>nieuwe route</p>
+        )
+    }
+    if(checkedMenu === "plannner") {
+        return (
+            <AccountDetails create={true} checkedMenu={checkedMenu}/>
         )
     }
     return <p> Welk nieuw item wil je maken? ----></p>

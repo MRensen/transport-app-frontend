@@ -28,11 +28,7 @@ export default function OrderDetails({checkedMenu, setOrders, orders, setChecked
             }
         }
 
-        function unmount() {
-            setOrderData(null);
-            checkedMenu = null;
-            reset();
-        }
+
 
         getOrder();
     }, [checkedMenu])
@@ -59,12 +55,6 @@ export default function OrderDetails({checkedMenu, setOrders, orders, setChecked
         }
     }
 
-    async function getRoute(){
-        await axios({
-            method: "get",
-            url: `http://localhost:8080/routes/${selectedRoute}`,
-        })
-    }
 
     async function addRouteFunction() {
         setSelectRoute(false);
@@ -74,7 +64,8 @@ export default function OrderDetails({checkedMenu, setOrders, orders, setChecked
             await axios({
                 method: "patch",
                 url: `http://localhost:8080/orders/${orderData.id}`,
-                data: {route: {id: selectedRoute}}
+                data: {route: {id: selectedRoute},
+                        orderStatus: "in transport"}
             })
         } catch (e) {
             console.error(e.message)
@@ -161,6 +152,7 @@ export default function OrderDetails({checkedMenu, setOrders, orders, setChecked
     if (!selectRoute) {
         return (
             <>
+                {/*{console.log(orderData.route)}*/}
                 <header className={styles.options}>
                     <button type="button"
                             disabled={!orderData || (orderData.orderStatus !== "processing") || orderData.route}
@@ -180,7 +172,8 @@ export default function OrderDetails({checkedMenu, setOrders, orders, setChecked
                     {orderData ?
                         <>
                             <main className={styles['order-main']}>
-                                <p><strong>lossen:</strong> {orderData.deliveryName} <br/> <br/>
+                                <p> {"id: " + orderData.id}<br/>
+                                    <strong>lossen:</strong> {orderData.deliveryName} <br/> <br/>
                                     {orderData.deliveryPostal + " " + orderData.deliveryCity}<br/>
                                     {orderData.deliveryStreet + " " + orderData.deliveryHouseNumber}<br/><br/>
                                     <strong>{orderData.isPickup ? "laden: " : "afzender: "}</strong>{orderData.loadingName}<br/>

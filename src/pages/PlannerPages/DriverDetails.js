@@ -39,11 +39,7 @@ export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
             }
         }
 
-        function unmount() {
-            setDriverData(null);
-            checkedMenu = null;
-            reset();
-        }
+
 
         getDriver();
     }, [checkedMenu])
@@ -83,8 +79,9 @@ export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
                 header: {'Content-type': 'application/json'},
                 data: toSend
             })
+            cancelFunction("saved")
         }
-        cancelFunction("saved")
+
     }
 
     function cancelFunction(value = "cancel") {
@@ -131,9 +128,8 @@ export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
                         }}>cancel</button>
                     }
                 </header>
-                <main key={checkedMenu} className={styles.content}>
 
-                    <form onSubmit={handleSubmit(formSubmit)} onChange={console.log("form changed")} className={styles.form}>
+                    <form className={styles.content} onSubmit={handleSubmit(formSubmit)} onChange={console.log("form changed")} >
                         <img src="" className={styles.image}/>
                         <LabeledInput errors={errors} register={register} title="naam"/>
                         <LabeledInput errors={errors} register={register} title="adres">
@@ -148,12 +144,18 @@ export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
                         <LabeledInput errors={errors} register={register} title="telefoon nummer" className="bottom-label"/>
                         <LabeledInput errors={errors} register={register} className="checked" checked title="enabled" />
                     </form>
-                </main>
             </>
         )
     } else return (
         <>
-            {unmount === "delete" ? <p>deleted...</p> : unmount === "saved" ? <p>saved...</p> : <p></p>}
+            {unmount === "delete" ?
+                <p>deleted...</p>
+                :
+                unmount === "saved" ?
+                    <p>saved...</p>
+                    :
+                    <p></p>
+            }
             <p>Please select a driver</p>
         </>
     );

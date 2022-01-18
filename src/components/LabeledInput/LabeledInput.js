@@ -23,10 +23,12 @@ export default function LabeledInput({children, type = "text", title, value, cla
                                 key={title}
                                 {...register(title, options)}
             /> {children}
+                {(Object.keys(errors).length !== 0) &&
                 <p style={{color: '#FF0000'}}>
                     {errors[title]?.type === "required" && "required"} <br/>
                     {errors[title]?.type === "pattern" && "only digits"}
                 </p>
+                }
             </label>
         )
     } else {
