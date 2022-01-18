@@ -9,7 +9,7 @@ export default function AuthContextProvider({children}){
         customer: {"id":1001,"username":"customerusername","role":"customer","myOrders":[{"id":3001},{"id":3003},{"id":3002}],"name":"jansen","street":"kalverstraat","houseNumber":"22","postalCode":"1001ab","city":"Amsterdam","phoneNumber":"010-894839","password":"$2a$12$5usMMaD9hathHXMKNMjlseunXe.QEQbRBtFiBycc.V/teqa0c4v6K","enabled":true}
     }
     const[isAuth, toggleIsAuth] = useState(true);
-    const[data, setData] = useState(accounts.planner);
+    const[data, setData] = useState(accounts.customer);
     function login(){
         toggleIsAuth(true);
     }

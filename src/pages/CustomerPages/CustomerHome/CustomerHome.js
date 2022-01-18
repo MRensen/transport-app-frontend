@@ -18,7 +18,7 @@ export default function CustomerHome() {
                 <div className={styles['button-container']}>
                     <CustomerHomeButton path="/customer/account" name="mijn account" logo={accountLogo}/>
                     <CustomerHomeButton path="/customer/new" name="nieuwe order" logo={nieuwOrderLogo}/>
-                    <CustomerHomeButton path="customer/orders" name="mijn orders" logo={ordersLogo}/>
+                    <CustomerHomeButton path="/customer/orders" name="mijn orders" logo={ordersLogo}/>
                 </div>
             </main>
         </>

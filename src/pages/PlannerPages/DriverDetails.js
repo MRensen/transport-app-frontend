@@ -4,11 +4,13 @@ import {useForm} from "react-hook-form";
 import axios from "axios";
 import {useEffect, useState} from "react";
 import {useHistory} from "react-router-dom";
+import ModalPassword from "../../components/ModalPassword/ModalPassword";
 
 export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
     const history = useHistory();
     const [driverData, setDriverData] = useState(null);
     const [unmount, setUnmount] = useState("");
+    const [show, setShow] = useState(false);
     const {register, handleSubmit, reset, formState: {errors}} = useForm();
 
     useEffect(() => {
@@ -40,7 +42,6 @@ export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
         }
 
 
-
         getDriver();
     }, [checkedMenu])
 
@@ -62,17 +63,17 @@ export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
                 lastName,
                 street: data.adres,
                 houseNumber: data.huisnummer,
-                postalcode: data.postcode,
+                postalCode: data.postcode,
                 city: data.city,
                 employeeNumber: data['personeels nummer'],
                 regularTruck: data['vaste wagen'],
                 driverLicenseNumber: data['rijbewijs nummer'],
                 phoneNumber: data['telefoon nummer']
             }
-            {create &&
-            (toSend.username = data.naam) &&
-            (toSend.passWord = "$2a$12$5usMMaD9hathHXMKNMjlseunXe.QEQbRBtFiBycc.V/teqa0c4v6K")
-            }
+            create &&
+                (toSend.username = data.naam) &&
+                (toSend.password = "$2a$12$5usMMaD9hathHXMKNMjlseunXe.QEQbRBtFiBycc.V/teqa0c4v6K")
+
             await axios({
                 method: method,
                 url: baseurl + url,
@@ -85,7 +86,7 @@ export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
     }
 
     function cancelFunction(value = "cancel") {
-        if(create){
+        if (create) {
             history.push(`/planner/${checkedMenu}s`)
         } else {
             setCheckedMenu(null);
@@ -106,7 +107,7 @@ export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
 
     }
 
-    function resetFunction(){
+    function resetFunction() {
         console.log("reset")
         reset()
     }
@@ -115,35 +116,36 @@ export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
         return (
             <>
                 <header className={styles.options}>
-                    <button type="button" onClick={deleteFunction} className={create && styles.invisible} >delete</button>
-                    <button type="button" onClick={handleSubmit(formSubmit)}>save</button>
-                    {console.log(`create : ${create}`)}
-                    {create?
+                    <button type="button" onClick={deleteFunction} className={create && styles.invisible}>Delete
+                    </button>
+                    <button type="button" onClick={handleSubmit(formSubmit)}>Save</button>
+                    {create ?
                         <button type="button" onClick={() => {
                             resetFunction()
-                        }}>reset</button>
+                        }}>Reset</button>
                         :
                         <button type="button" onClick={() => {
                             cancelFunction()
-                        }}>cancel</button>
+                        }}>Cancel</button>
                     }
                 </header>
 
-                    <form className={styles.content} onSubmit={handleSubmit(formSubmit)} onChange={console.log("form changed")} >
-                        <img src="" className={styles.image}/>
-                        <LabeledInput errors={errors} register={register} title="naam"/>
-                        <LabeledInput errors={errors} register={register} title="adres">
-                            <input type="text" className={styles.housenumber} id="adres"
-                                   {...register('huisnummer')}/>
-                        </LabeledInput>
-                        <LabeledInput errors={errors} register={register} title="postcode"/>
-                        <LabeledInput errors={errors} register={register} title="city" />
-                        <LabeledInput errors={errors} register={register} title="personeels nummer"/>
-                        <LabeledInput errors={errors} register={register} title="vaste wagen"/>
-                        <LabeledInput errors={errors} register={register} title="rijbewijs nummer"/>
-                        <LabeledInput errors={errors} register={register} title="telefoon nummer" className="bottom-label"/>
-                        <LabeledInput errors={errors} register={register} className="checked" checked title="enabled" />
-                    </form>
+                <form className={styles.content} onSubmit={handleSubmit(formSubmit)}
+                      onChange={console.log("form changed")}>
+                    <img src="" className={styles.image}/>
+                    <LabeledInput errors={errors} register={register} title="naam"/>
+                    <LabeledInput errors={errors} register={register} title="adres">
+                        <input type="text" className={styles.housenumber} id="adres"
+                               {...register('huisnummer')}/>
+                    </LabeledInput>
+                    <LabeledInput errors={errors} register={register} title="postcode"/>
+                    <LabeledInput errors={errors} register={register} title="city"/>
+                    <LabeledInput errors={errors} register={register} title="personeels nummer"/>
+                    <LabeledInput errors={errors} register={register} title="vaste wagen"/>
+                    <LabeledInput errors={errors} register={register} title="rijbewijs nummer"/>
+                    <LabeledInput errors={errors} register={register} title="telefoon nummer" className="bottom-label"/>
+                    <LabeledInput errors={errors} register={register} className="checked" checked title="enabled"/>
+                </form>
             </>
         )
     } else return (

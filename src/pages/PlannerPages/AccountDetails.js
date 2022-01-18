@@ -47,10 +47,11 @@ export default function AccountDetails({setMenuDisplay, create, checkedMenu}) {
         }
     }, [])
 
-    async function submitForm() {
+    async function submitForm(data) {
         const check = window.confirm("Weet je zeker dat je deze wijziging wilt opslaan?");
         if (check) {
             const method = create ? "post" : "patch";
+            console.log(method)
             const baseurl = "http://localhost:8080/planners";
             const url = create ? "" : `/${plannerId}`;
             const [firstName, lastName] = data.naam.split(" ");
@@ -59,21 +60,18 @@ export default function AccountDetails({setMenuDisplay, create, checkedMenu}) {
                 lastName,
                 street: data.adres,
                 houseNumber: data.huisnummer,
-                postalcode: data.postcode,
-                city: data.city,
-                employeeNumber: data['personeels nummer'],
-                regularTruck: data['vaste wagen'],
-                driverLicenseNumber: data['rijbewijs nummer'],
+                postalCode: data.postcode,
+                city: data.woonplaats,
                 phoneNumber: data['telefoon nummer']
             }
-            {create &&
+            create &&
             (toSend.username = data.naam) &&
-            (toSend.passWord = "$2a$12$5usMMaD9hathHXMKNMjlseunXe.QEQbRBtFiBycc.V/teqa0c4v6K")
-            }
+            (toSend.password = "$2a$12$5usMMaD9hathHXMKNMjlseunXe.QEQbRBtFiBycc.V/teqa0c4v6K")
+
             await axios({
                 method: method,
                 url: baseurl + url,
-                header: {'Content-type': 'application/json'},
+                headers: {'Content-Type': 'application/json'},
                 data: toSend
             })
             if(create){
@@ -89,17 +87,21 @@ export default function AccountDetails({setMenuDisplay, create, checkedMenu}) {
     return (
         <>
             <header className={styles.options}>
-                <button type="button"
-                        className={styles.button}
-                        onClick={() => {
-                            setShow(true)
-                        }}
-                > Change Password
-                </button>
                 <button type="submit"
-                       className={styles.button}
                         onClick={handleSubmit(submitForm)}
                 >Save</button>
+                {create ?
+                    <button type="button"
+                            onClick={reset} //TODO
+                    >Reset</button>
+                    :
+                    <button type="button"
+                            onClick={() => {
+                                setShow(true)
+                            }}
+                    > Change Password
+                    </button>
+                }
             </header>
             <form className={styles.content} name="account-form" onSubmit={handleSubmit(submitForm)}>
                 <div className={styles['image-container']}>
@@ -107,17 +109,21 @@ export default function AccountDetails({setMenuDisplay, create, checkedMenu}) {
                     </div>
                     <button type="button" className={styles['foto-wijzigen']} onClick={setImage}>foto wijzigen</button>
                 </div>
-                <LabeledInput errors={errors} title="naam" register={register}/>
+                <LabeledInput errors={errors} register={register} title="naam"/>
                 <LabeledInput errors={errors} register={register} title="adres">
                     <input {...register("huisnummer")} type="text" className={styles.housenumber} id="huisnummer"/>
                 </LabeledInput>
+                <LabeledInput errors={errors} register={register} title="woonplaats"/>
                 <LabeledInput errors={errors} register={register} title="postcode"/>
                 <LabeledInput errors={errors} register={register} title="telefoon nummer"/>
+                <LabeledInput errors={errors} register={register} className="checked" checked title="enabled"/>
+
 
                 <ModalPassword show={show}
                                onClose={() => {
                                    setShow(false)
                                }}
+                               create={create}
                                id={plannerId}
                 />
             </form>

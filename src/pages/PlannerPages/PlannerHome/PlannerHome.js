@@ -56,7 +56,6 @@ export default function PlannerHome() {
                         url: `http://localhost:8080/orders`
                     })
                     setOrders(result.data);
-                    console.log(result.data)
                 } catch (e) {
                     console.log(e.message)
                 }

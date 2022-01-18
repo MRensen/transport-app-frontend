@@ -4,25 +4,79 @@ import {useHistory} from "react-router-dom";
 import LabeledInput from "../../../components/LabeledInput/LabeledInput";
 import ModalPassword from "../../../components/ModalPassword/ModalPassword";
 import {useForm} from "react-hook-form";
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {AuthContext} from "../../../components/Context/AuthContextProvider";
+import axios from "axios";
 
 export default function CustomerAccount() {
     const {data} = useContext(AuthContext);
-    const [password, setPassword] = useState(data.password);
+    const [userData, setuserData] = useState({})
+    const [password, setPassword] = useState(userData.password);
     const history = useHistory();
     const [show, setShow] = useState(false);
-    const {handleSubmit, register} = useForm();
+    const {handleSubmit, register, formState: {error}, reset} = useForm();
 
-    function saveFunction() {
-        console.log("save");
+    useEffect(() => {
+        async function getUser() {
+            try {
+                const result = await axios({
+                    method: "get",
+                    url: `http://localhost:8080/customers/${data.id}`
+                })
+                console.log(result.data)
+                setuserData(result.data)
+                reset({
+                    klantnummer: result.data.id,
+                    naam: result.data.name,
+                    adres: result.data.street,
+                    housenumber: result.data.houseNumber,
+                    postcode: result.data.postalCode,
+                    plaats: result.data.city,
+                    gebruikersnaam: result.data.username,
+                    "telefoon nummer": result.data.phoneNumber,
+                    enabled: result.data.enabled
+
+                })
+            } catch (e) {
+                console.error(e.message)
+            }
+        }
+
+        getUser()
+
+    }, [])
+
+    async function saveFunction(data) {
+        const confirm = window.confirm("weet je zeker dat je deze wijzigingen wilt opslaan?")
+        const toSend = {
+            id: data.klantnummer,
+            name: data.naam,
+            street: data.adres,
+            houseNumber: data.housenumber,
+            postalCode: data.postcode,
+            city: data.plaats,
+            username: data.gebruikersnaam,
+            phoneNumber: data["telefoon nummer"],
+            enabled: data.enabled
+        }
+        if (confirm) {
+            try {
+                const result = await axios({
+                    method: "patch",
+                    url: `http://localhost:8080/customers/${parseInt(userData.id)}`,
+                    // headers: {'Content-Type': 'application/json'},
+                    data: toSend
+                })
+                console.log(data);
+            } catch(e){console.error(e.message)}
+        }
     }
 
     function homeFunction() {
         history.push("/customer/home")
     }
 
-    function setImage(){
+    function setImage() {
 
     }
 
@@ -30,7 +84,7 @@ export default function CustomerAccount() {
         <>
             <HeaderHomeSave
                 titleName="mijn account"
-                rightFunction={saveFunction}
+                rightFunction={handleSubmit(saveFunction)}
                 leftFunction={homeFunction}
             />
             <form className={styles.form} name="account-form" onSubmit={handleSubmit(saveFunction)}>
@@ -38,28 +92,35 @@ export default function CustomerAccount() {
                     <div className={styles['image-container']}>
                         <div className={styles.image}>
                         </div>
-                        <button type="button" className={styles['foto-wijzigen']} onClick={setImage}>foto wijzigen</button>
+                        <button type="button" className={styles['foto-wijzigen']} onClick={setImage}>foto wijzigen
+                        </button>
                     </div>
                 </aside>
                 <aside className={styles.aside}>
-                    <LabeledInput register={register} title="klantnummer" value={data.id}/>
-                    <LabeledInput title="naam" value={data.firstName + " " + data.lastName} register={register}/>
-                    <LabeledInput register={register} title="adres" value={data.street}>
-                        <input {...register("housenumber")} type="text" className={styles.housenumber} id="housenumber" value={data.houseNumber}/>
+                    <LabeledInput register={register} title="klantnummer"/>
+                    <LabeledInput register={register} title="gebruikersnaam"/>
+                    <LabeledInput title="naam" register={register}/>
+                    <LabeledInput register={register} title="adres">
+                        <input {...register("housenumber")} type="text" className={styles.housenumber}
+                               id="housenumber"/>
                     </LabeledInput>
-                    <LabeledInput register={register} title="postcode" value={data.postcode}/>
-                    <LabeledInput register={register} title="plaats" value={data.city}/>
-                    <LabeledInput register={register} title="land" value={data.country}/>
-                    <LabeledInput register={register} title="telefoon nummer" value={data.phoneNumber} />
+                    <LabeledInput register={register} title="postcode"/>
+                    <LabeledInput register={register} title="plaats"/>
+                    <LabeledInput register={register} title="telefoon nummer"/>
+                    <LabeledInput register={register} title="enabled" checked className="checked"/>
                     <button type="button"
                             className={styles.button}
-                            onClick={()=>{setShow(true)}}
-                    > Change Password</button>
+                            onClick={() => {
+                                setShow(true)
+                            }}
+                    > Change Password
+                    </button>
                 </aside>
                 <ModalPassword show={show}
-                               setPassword={setPassword}
-                               onClose={()=>{setShow(false)}}
-                               currentPassword={password}
+                               onClose={() => {
+                                   setShow(false)
+                               }}
+                               id={userData.id}
                 />
             </form>
         </>

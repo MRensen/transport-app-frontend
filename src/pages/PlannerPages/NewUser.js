@@ -35,8 +35,9 @@ export default function NewUser({setNewDisplay, checkedMenu}) {
             <p>nieuwe route</p>
         )
     }
-    if(checkedMenu === "plannner") {
+    if (checkedMenu === "planner") {
         return (
+            // <p>nieuwe planner</p>
             <AccountDetails create={true} checkedMenu={checkedMenu}/>
         )
     }
