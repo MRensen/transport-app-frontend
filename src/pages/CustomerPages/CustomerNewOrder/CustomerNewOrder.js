@@ -5,10 +5,12 @@ import LabeledInput from "../../../components/LabeledInput/LabeledInput";
 import {useContext} from "react";
 import {AuthContext} from "../../../components/Context/AuthContextProvider";
 import axios from "axios";
+import {useHistory} from "react-router-dom";
 
 export default function CustomerNewOrder() {
     const {handleSubmit, register, reset} = useForm()
     const {data} = useContext(AuthContext);
+    const history = useHistory();
     const customerId = data.id;
     const customerData = data;
 
@@ -51,7 +53,7 @@ export default function CustomerNewOrder() {
     }
 
     function homeFunction() {
-
+        history.push("/customer/home")
     }
 
     return (
