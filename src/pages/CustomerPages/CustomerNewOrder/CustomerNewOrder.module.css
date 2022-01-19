@@ -69,3 +69,7 @@
     display: flex;
     gap: 20px;
 }
+.laden-lossen{
+    display: flex;
+    flex-direction: row;
+       }

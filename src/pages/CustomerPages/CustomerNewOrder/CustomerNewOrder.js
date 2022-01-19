@@ -32,9 +32,10 @@ export default function CustomerNewOrder() {
             creator: {id: customerId},
             orderStatus: "processing",
             type: data.type,
+            isPickup: data["laden/lossen"] === "laden",
             pallets:[]
         }
-        for(let i = parseInt(data.aantal); i >= 0; i--){
+        for(let i = parseInt(data.aantal); i > 0; i--){
             toSend.pallets.push({
                 height: data.hoogte,
                 width: data.breedte,
@@ -114,6 +115,10 @@ export default function CustomerNewOrder() {
                                 <input type="text" placeholder="cm" maxLength="3" className={styles.small} {...register("breedte")}/>
                                 <input type="text" placeholder="cm" maxLength="3" className={styles.small} {...register("hoogte")}/>
                             </label>
+                        </div>
+                        <div className={styles["laden-lossen"]}>
+                            <label className={styles.label} htmlFor="laden">laden<input type="radio" id="laden" value="laden" {...register("laden/lossen")}/></label>
+                            <label className={styles.label} htmlFor="lossen">lossen<input type="radio" id="lossen" value="lossen" {...register("laden/lossen")}/></label>
                         </div>
                     </aside>
                 </footer>
