@@ -20,6 +20,14 @@
     font-family: 'courier prime', monospace;
 }
 
+.header-center{
+    display: flex;
+    flex-direction: column;
+}
+.header-center button{
+    background-color: #CCDBDC;
+}
+
 .header-title {
     color: #0075A2;
     background: #80CED7;
