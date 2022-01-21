@@ -195,7 +195,7 @@ export default function RouteDetails({checkedMenu, setCheckedMenu}) {
                                 {/*        console.log(order)*/}
                                 <tbody>
                                 {orderData && orderData.map((order) => {
-                                    return <tr>
+                                    return <tr key={order.id}>
                                         <td><input type="checkbox" id={order.id} onChange={checkboxChangeHandler}/></td>
                                         <td>{order.id}</td>
                                         <td><p>{order.deliveryPostal + " " + order.deliveryCity}<br/>

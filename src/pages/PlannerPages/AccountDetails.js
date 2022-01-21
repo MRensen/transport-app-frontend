@@ -12,7 +12,7 @@ export default function AccountDetails({setMenuDisplay, create, checkedMenu}) {
     const {register, handleSubmit, reset, formState:{errors}} = useForm();
     const history = useHistory();
     const {data} = useContext(AuthContext);
-    const plannerId = data.id;
+    const plannerId = data.planner.id;
     useEffect(() => {
         async function onMount() {
             if(!create) {
@@ -66,7 +66,7 @@ export default function AccountDetails({setMenuDisplay, create, checkedMenu}) {
             }
             create &&
             (toSend.username = data.naam) &&
-            (toSend.password = "$2a$12$5usMMaD9hathHXMKNMjlseunXe.QEQbRBtFiBycc.V/teqa0c4v6K")
+            (toSend.password = "password")
 
             await axios({
                 method: method,
@@ -119,14 +119,14 @@ export default function AccountDetails({setMenuDisplay, create, checkedMenu}) {
                 <LabeledInput errors={errors} register={register} className="checked" checked title="enabled"/>
 
 
-                <ModalPassword show={show}
-                               onClose={() => {
-                                   setShow(false)
-                               }}
-                               create={create}
-                               id={plannerId}
-                />
+
             </form>
+            <ModalPassword show={show}
+                           onClose={() => {
+                               setShow(false)
+                           }}
+                           id={data.username}
+            />
         </>
     )
 }

@@ -11,7 +11,7 @@ export default function CustomerNewOrder() {
     const {handleSubmit, register, reset} = useForm()
     const {data} = useContext(AuthContext);
     const history = useHistory();
-    const customerId = data.id;
+    const customerId = data.customer.id;
     const customerData = data;
 
     async function saveFunction(data) {

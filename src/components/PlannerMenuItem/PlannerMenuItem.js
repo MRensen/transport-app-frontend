@@ -2,7 +2,7 @@ import styles from "./PlannerMenuItem.module.css"
 import {useHistory} from "react-router-dom";
 import {useEffect, useState} from "react";
 
-export default function PlannerMenuItem({newItem, firstline, secondline, thirdline, key, checked, setChecked, id}) {
+export default function PlannerMenuItem({newItem, firstline, secondline, thirdline, checked, setChecked, id}) {
     const history = useHistory();
     const[update, setUpdate] = useState(true);
     useEffect(()=>{
@@ -10,7 +10,7 @@ export default function PlannerMenuItem({newItem, firstline, secondline, thirdli
         },[checked])
         return (
 
-            <div className={styles.container} key={key}>
+            <div className={styles.container} key={firstline}>
                 <input type="radio" className={styles.radio} name="menuitem" id={id}
                        checked={checked === id}
                        onChange={() => {

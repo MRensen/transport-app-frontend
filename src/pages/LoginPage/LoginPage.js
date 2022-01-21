@@ -11,12 +11,12 @@ export default function LoginPage() {
     const [nameValue, setNameValue] = useState("");
     const [role, setRole] = useState("")
     const history = useHistory();
-    const {setData, data, login} = useContext(AuthContext);
+    const {isAuth, login} = useContext(AuthContext);
 
     async function getUser(user) {
         try {
             const result = await axios.get(`http://localhost:8080/${user}s/${nameValue}`);
-            setData(result.data);
+            // setData(result.data);
             console.log(result.data);
         } catch (e){
             console.log(e.error);
@@ -24,20 +24,14 @@ export default function LoginPage() {
     }
 
     function applyLogin(){
-        if(passwordValue === "" || role === "" || nameValue === ""){
+        if(passwordValue === "" || nameValue === ""){
             console.log("you need to enter all values")
-            console.log(`role: ${role} | pass: ${passwordValue}| name: ${nameValue}`)
+            console.log(`pass: ${passwordValue}| name: ${nameValue}`)
             return
         }
-        getUser(role)
-        if(nameValue === data.username && passwordValue === data.password){
-            login();
-            console.log("succes " + role)
-            console.log(`/${role}/home`)
-            history.push(`/${role}/home`)
-        } else {
-            console.log("not succes")
-        }
+        login({username: nameValue, password: passwordValue});
+        console.log(isAuth)
+
     }
     return (
         <div>

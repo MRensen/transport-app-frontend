@@ -21,7 +21,7 @@ export default function CustomerAccount() {
             try {
                 const result = await axios({
                     method: "get",
-                    url: `http://localhost:8080/customers/${data.id}`
+                    url: `http://localhost:8080/customers/${data.customer.id}`
                 })
                 console.log(result.data)
                 setuserData(result.data)
@@ -120,7 +120,7 @@ export default function CustomerAccount() {
                                onClose={() => {
                                    setShow(false)
                                }}
-                               id={userData.id}
+                               id={userData.username}
                 />
             </form>
         </>

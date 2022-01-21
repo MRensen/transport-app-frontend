@@ -8,14 +8,16 @@ import savePNG from "../../resources/savebutton.png";
 import {AuthContext} from "../Context/AuthContextProvider";
 
 function Header({ismenu, titleName, logo, left, leftFunction, right, rightFunction, disableSave}) {
-    const {logout} = useContext(AuthContext);
+    const {logout, loggedIn} = useContext(AuthContext);
     return (
         <>
             {!ismenu &&
             <div className="header-single">
                 <div className="header-center">
                     <img src={logo} alt="logistiekApp"/>
+                    {loggedIn &&
                     <button onClick={logout}>logout</button>
+                    }
                 </div>
             </div>
             }
@@ -24,7 +26,9 @@ function Header({ismenu, titleName, logo, left, leftFunction, right, rightFuncti
                 <img src={left} alt="button-header-left" onClick={leftFunction}/>
                 <div className="header-center">
                     <h1 className="header-title"> {titleName} </h1>
-                    <button onClick={logout}>logout</button>
+                    {loggedIn &&
+                        <button onClick={logout}>logout</button>
+                    }
                 </div>
                 {!disableSave ?
                     <img src={right} alt="button-header-right" onClick={rightFunction}/>

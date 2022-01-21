@@ -27,6 +27,7 @@ function App() {
             <Route path="/" exact>
                 <LoginPage/>
             </Route>
+            {console.log(userData.role)}
             <PrivateRoute path="/driver/home" role="driver">
                 <DriverHome/>
             </PrivateRoute>
