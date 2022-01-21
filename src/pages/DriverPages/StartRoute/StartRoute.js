@@ -19,7 +19,7 @@ export default function StartRoute() {
     useEffect(() => {
         async function getRoutes(){
             try{
-                const result = await axios.get(`http://localhost:8080/drivers/${data.id}/route`)
+                const result = await axios.get(`http://localhost:8080/drivers/${data.driver.id}/route`)
                 setRoutes(result.data);
                 console.log(result)
             } catch(e){
@@ -30,20 +30,20 @@ export default function StartRoute() {
     },[])
 
 
-    async function acceptFunction(data) {
-        console.log(data)
+    async function acceptFunction(input) {
+        console.log(input)
         try{
-            console.log("nummer:" + data.routenummer)
-            const result = await axios.get(`http://localhost:8080/routes/${data.routenummer}`)
-            result.data.truck = data.vrachtwagen;
+            console.log("nummer:" + input.routenummer)
+            const result = await axios.get(`http://localhost:8080/routes/${input.routenummer}`)
+            // result.data.truck = data.vrachtwagen;
             registerRoute(result.data);
-            console.log(result.data)
+            console.log(result)
         } catch (e){
             console.log(e.error);
         }
     }
 
-    function declineFunction(data) {
+    function declineFunction() {
         console.log("route not registered")
     }
 
@@ -68,9 +68,10 @@ export default function StartRoute() {
                 <label htmlFor="routenummer" className="startstop-label">routenummer
                     <select id="routenummer"
                             className={styles["startstop-select"]}
+                            defaultValue=""
                             {...register("routenummer")}
                     >
-                        <option disabled selected value> ----</option>
+                        <option disabled value=""> ----</option>
                         {routes && routes.map((route)=>{
                             return <option key={route.id} value={route.id}>{route.id}</option>
                         })}

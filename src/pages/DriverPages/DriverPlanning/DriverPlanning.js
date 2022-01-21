@@ -35,10 +35,13 @@ export default function DriverPlanning(){
                 disableSave = {true}
                 />
             <main className={styles.name}>
-                    {routeData && routeData.orders.map((order)=>{
+                {console.log(routeData)}
+                <ul>
+                    {routeData.orders && routeData.orders.map((order)=>{
                         return <OrderContainer key={order.id} endpoint={order.id} />
 
                     })}
+                </ul>
             </main>
         </>
     )

@@ -1,0 +1,38 @@
+
+.main{
+    display: flex;
+    flex-direction: row;
+}
+.left{
+    height: 80vh;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+
+}
+.right td{
+    background-color: white;
+}
+.right{
+    margin-left: 20px;
+    display: flex;
+    flex-basis: 0;
+    width: available;
+    max-width: 100%;
+}
+
+.button{
+    margin: 10px;
+    background-color: #CCDBDC;
+    box-shadow: 10px 5px 5px #888888;
+    width: 300px;
+    height: 120px;
+    color: #000000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'courier prime', monospace;
+    font-size: 36px;
+}

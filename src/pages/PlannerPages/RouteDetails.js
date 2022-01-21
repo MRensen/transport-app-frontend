@@ -177,6 +177,7 @@ export default function RouteDetails({checkedMenu, setCheckedMenu}) {
                     {(routeData && checkedMenu) ?
                         <>
                             <table>
+                                <thead>
                                 <tr>
                                     <th> select</th>
                                     <th> id</th>
@@ -187,12 +188,14 @@ export default function RouteDetails({checkedMenu, setCheckedMenu}) {
                                     <th> los datum</th>
                                     <th>laad datum</th>
                                 </tr>
+                                </thead>
                                 {/*{routeData.orders && routeData.orders.forEach((orderId)=>{console.log(orderId);getOrder(orderId.id)})}*/}
                                 {/*    .map((order)=>{*/}
                                 {/*    if(order){*/}
                                 {/*        console.log(order)*/}
+                                <tbody>
                                 {orderData && orderData.map((order) => {
-                                    return <tr>
+                                    return <tr key={order.id}>
                                         <td><input type="checkbox" id={order.id} onChange={checkboxChangeHandler}/></td>
                                         <td>{order.id}</td>
                                         <td><p>{order.deliveryPostal + " " + order.deliveryCity}<br/>
@@ -205,6 +208,7 @@ export default function RouteDetails({checkedMenu, setCheckedMenu}) {
                                         <td>{order.loadingDate}</td>
                                     </tr>
                                 })}
+                                </tbody>
                                 {/*    } else {console.log(orderData)}*/}
                                 {/*})}*/}
                             </table>

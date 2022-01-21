@@ -32,7 +32,8 @@ export default function OrderContainer({endpoint, noButton}) {
     }
 
     return (
-        <article className={`${noButton ? styles['alt-article'] : styles.article}`}>
+        <li key={orderData.id}>
+        <article key={orderData.id} className={`${noButton ? styles['alt-article'] : styles.article}`}>
             <button type="button"
                     className={noButton ? styles.invisible : styles.button}
                     onClick={redirectFunction}
@@ -71,5 +72,6 @@ export default function OrderContainer({endpoint, noButton}) {
                 </p>
             </main>
         </article>
+        </li>
     )
 }

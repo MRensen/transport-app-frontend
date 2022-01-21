@@ -1,4 +1,4 @@
-import HeaderPlain from "../../../components/Header/HeaderPlain";
+import HeaderPlain from "../../../components/Header/Header";
 import {useContext} from "react";
 import {AuthContext} from "../../../components/Context/AuthContextProvider";
 import styles from "./DriverHome.module.css";
@@ -11,6 +11,9 @@ export default function DriverHome(){
     const {hasroute: hasRoute, routeData} = useContext(RouteContext);
     //const hasroute = true;
     console.log(routeData)
+
+
+
     return (
     <div className={styles.container}>
         <HeaderPlain/>
