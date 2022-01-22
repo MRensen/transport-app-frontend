@@ -19,6 +19,7 @@ export default function CustomerOrders() {
                 const result = await axios({
                     method: "get",
                     url: `http://localhost:8080/customers/${customerId}/orders`
+                    //TODO axios headers
                 })
                 console.log(result.data)
                 setCustomerOrders(result.data);
@@ -40,6 +41,7 @@ export default function CustomerOrders() {
             const result = await axios({
                 method: "delete",
                 url: `http://localhost:8080/orders/${order.id}`
+                //TODO axios headers
             })
         } catch (e) {
             console.error(e.message)

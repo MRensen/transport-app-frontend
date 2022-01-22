@@ -11,10 +11,9 @@ import axios from "axios";
 export default function CustomerAccount() {
     const {data} = useContext(AuthContext);
     const [userData, setuserData] = useState({})
-    const [password, setPassword] = useState(userData.password);
     const history = useHistory();
     const [show, setShow] = useState(false);
-    const {handleSubmit, register, formState: {error}, reset} = useForm();
+    const {handleSubmit, register, formState: {errors}, reset} = useForm();
 
     useEffect(() => {
         async function getUser() {
@@ -22,11 +21,11 @@ export default function CustomerAccount() {
                 const result = await axios({
                     method: "get",
                     url: `http://localhost:8080/customers/${data.customer.id}`
+                    //TODO axios headers
                 })
                 console.log(result.data)
                 setuserData(result.data)
                 reset({
-                    klantnummer: result.data.id,
                     naam: result.data.name,
                     adres: result.data.street,
                     housenumber: result.data.houseNumber,
@@ -66,6 +65,7 @@ export default function CustomerAccount() {
                     url: `http://localhost:8080/customers/${parseInt(userData.id)}`,
                     // headers: {'Content-Type': 'application/json'},
                     data: toSend
+                    //TODO axios headers
                 })
                 console.log(data);
             } catch(e){console.error(e.message)}
@@ -77,7 +77,7 @@ export default function CustomerAccount() {
     }
 
     function setImage() {
-
+        //TODO set image
     }
 
     return (
@@ -97,9 +97,9 @@ export default function CustomerAccount() {
                     </div>
                 </aside>
                 <aside className={styles.aside}>
-                    <LabeledInput register={register} title="klantnummer"/>
-                    <LabeledInput register={register} title="gebruikersnaam"/>
-                    <LabeledInput title="naam" register={register}/>
+                    <LabeledInput register={register} title="klantnummer" value = {userData.id}/>
+                    <LabeledInput errors={errors} register={register} title="gebruikersnaam"/>
+                    <LabeledInput errors={errors} title="naam" register={register}/>
                     <LabeledInput register={register} title="adres">
                         <input {...register("housenumber")} type="text" className={styles.housenumber}
                                id="housenumber"/>

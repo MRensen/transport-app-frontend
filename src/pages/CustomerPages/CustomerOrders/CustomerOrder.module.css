@@ -12,6 +12,10 @@
     align-items: center;
 
 }
+
+.left button:hover{
+    background-color: hsl(184, 19%, 73%);
+}
 .right td{
     background-color: white;
 }

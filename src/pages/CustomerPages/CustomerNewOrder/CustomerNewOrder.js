@@ -8,11 +8,10 @@ import axios from "axios";
 import {useHistory} from "react-router-dom";
 
 export default function CustomerNewOrder() {
-    const {handleSubmit, register, reset} = useForm()
+    const {handleSubmit, register} = useForm()
     const {data} = useContext(AuthContext);
     const history = useHistory();
     const customerId = data.customer.id;
-    const customerData = data;
 
     async function saveFunction(data) {
         const toSend = {
@@ -50,7 +49,9 @@ export default function CustomerNewOrder() {
             method: "post",
             url: `http://localhost:8080/orders`,
             data: toSend
+            // TODO axios headers
         })
+        homeFunction();
     }
 
     function homeFunction() {
