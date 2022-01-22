@@ -47,7 +47,7 @@ export default function CustomerAccount() {
     }, [])
 
     async function saveFunction(data) {
-        const confirm = window.confirm("weet je zeker dat je deze wijzigingen wilt opslaan?")
+        const confirm = window.confirm("Weet je zeker dat je deze wijzigingen wilt opslaan?")
         const toSend = {
             id: data.klantnummer,
             name: data.naam,
