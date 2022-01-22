@@ -20,6 +20,7 @@ export default function AccountDetails({setMenuDisplay, create, checkedMenu}) {
                     const result = await axios({
                         method: "get",
                         url: `http://localhost:8080/planners/${plannerId}`
+                        //TODO axios headers
                     })
                     console.log(result.data)
 
@@ -51,7 +52,6 @@ export default function AccountDetails({setMenuDisplay, create, checkedMenu}) {
         const check = window.confirm("Weet je zeker dat je deze wijziging wilt opslaan?");
         if (check) {
             const method = create ? "post" : "patch";
-            console.log(method)
             const baseurl = "http://localhost:8080/planners";
             const url = create ? "" : `/${plannerId}`;
             const [firstName, lastName] = data.naam.split(" ");
@@ -73,6 +73,7 @@ export default function AccountDetails({setMenuDisplay, create, checkedMenu}) {
                 url: baseurl + url,
                 headers: {'Content-Type': 'application/json'},
                 data: toSend
+                //TODO axios headers
             })
             if(create){
                 history.push(`/planner/account`)
@@ -92,7 +93,7 @@ export default function AccountDetails({setMenuDisplay, create, checkedMenu}) {
                 >Save</button>
                 {create ?
                     <button type="button"
-                            onClick={reset} //TODO
+                            onClick={()=>{reset()}} //TODO
                     >Reset</button>
                     :
                     <button type="button"
