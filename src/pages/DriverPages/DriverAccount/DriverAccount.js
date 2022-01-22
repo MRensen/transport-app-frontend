@@ -10,11 +10,25 @@ import axios from "axios";
 
 export default function DriverAccount() {
     const {data} = useContext(AuthContext);
-    const id = data.id;
-    const {register, handleSubmit} = useForm();
-    const [password, setPassword] = useState(data.password);
+    const id = data.driver.id;
+    const {register, handleSubmit, reset} = useForm();
     const history = useHistory();
+    const [driverData, setDriverdata] = useState({});
     const [show, setShow] = useState(false);
+
+    useEffect(()=>{
+        reset({
+            naam: data.driver.firstName + " " + data.driver.lastName,
+            adres : data.driver.street,
+            huisnummer: data.driver.houseNumber,
+            postcode : data.driver.postalcode,
+            'personeels nummer': data.driver.employeeNumber,
+            'vaste wagen': data.driver.regularTruck,
+            'rijbewijs nummer': data.driver.driverLicenseNumber,
+            'telefoon nummer': data.driver.phoneNumber,
+        })
+    },[])
+
     async function saveButton(data){
         const [firstName, lastName] = data.naam.split(" ");
         const toSend = {
@@ -33,14 +47,11 @@ export default function DriverAccount() {
                 method : "patch",
                 data: toSend,
                 url: `http://localhost:8080/drivers/${id}`
+                //TODO axios headers
             })
         }catch(e){console.log(e.error)}
 
     }
-
-    useEffect(()=>{
-
-    },[password])
 
     const homeButton = () => {
         console.log("home");
@@ -65,18 +76,18 @@ export default function DriverAccount() {
                         </div>
                         <button type="button" className={styles['foto-wijzigen']} onClick={setImage}>foto wijzigen</button>
                     </div>
-                    <LabeledInput title="naam" value={data.firstName + " " + data.lastName} register={register}/>
-                    <LabeledInput register={register} title="adres" value={data.street}>
-                        <input {...register("huisnummer")} type="text" className={styles.housenumber} id="huisnummer" value={data.houseNumber}/>
+                    <LabeledInput title="naam" register={register}/>
+                    <LabeledInput register={register} title="adres">
+                        <input {...register("huisnummer")} type="text" className={styles.housenumber} id="huisnummer"/>
                     </LabeledInput>
-                    <LabeledInput register={register} title="postcode" value={data.postalcode} className="bottom-label"/>
+                    <LabeledInput register={register} title="postcode" className="bottom-label"/>
 
                 </aside>
                 <aside className={styles.aside}>
-                    <LabeledInput register={register} title="personeels nummer" value={data.employeeNumber}/>
-                    <LabeledInput register={register} title="vaste wagen" value={data.regularTruck}/>
-                    <LabeledInput register={register} title="rijbewijs nummer" value={data.driverLicenseNumber}/>
-                    <LabeledInput register={register} title="telefoon nummer" value={data.phoneNumber}/>
+                    <LabeledInput register={register} title="personeels nummer"/>
+                    <LabeledInput register={register} title="vaste wagen"/>
+                    <LabeledInput register={register} title="rijbewijs nummer"/>
+                    <LabeledInput register={register} title="telefoon nummer" />
                     <button type="button"
                             className={styles.button}
                             onClick={()=>{setShow(true)}}
@@ -84,7 +95,7 @@ export default function DriverAccount() {
                 </aside>
                 <ModalPassword show={show}
                                onClose={()=>{setShow(false)}}
-                               id={id}
+                               id={data.username}
                 />
             </form>
         </>

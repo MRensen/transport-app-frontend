@@ -5,23 +5,10 @@ import {useForm} from "react-hook-form";
 import axios from "axios";
 
 export default function ModalPassword({ show, onClose, id: username}) {
-    const {data, loggedIn} = useContext(AuthContext);
-    const {register, handleSubmit, getValues} = useForm()
+    const { loggedIn} = useContext(AuthContext);
+    const {register, handleSubmit} = useForm()
     const [password, setPassword] = useState("")
 
-    // useEffect(()=>{
-    //     if(show) {
-    //         async function getPassword() {
-    //             const result = await axios({
-    //                 method: "get",
-    //                 url: `http://localhost:8080/drivers/${id}/password`
-    //             })
-    //             setPassword(result.data)
-    //             console.log(`just set password: ${result.data}`)
-    //         }
-    //         getPassword()
-    //     }
-    // },[show])
 
      useEffect(()=>{
         async function changePassword(){
@@ -31,6 +18,7 @@ export default function ModalPassword({ show, onClose, id: username}) {
                     method: "patch",
                     url: `http://localhost:8080/user/${username}/password`,
                     data: {password: password}
+                    //TODO axios headers
                 })
             }catch (e){
                 console.log(e.message)}
@@ -41,7 +29,6 @@ export default function ModalPassword({ show, onClose, id: username}) {
 
 
     async function handlePassword(form){
-        console.log(`modal password new: ${form.new}`)
         if(loggedIn){
             if(form.new === form.again){
                 setPassword(form.new);
@@ -63,12 +50,6 @@ export default function ModalPassword({ show, onClose, id: username}) {
                 </header>
                 <article className={styles.article}>
                     <form onSubmit={handleSubmit(handlePassword)}>
-                        {/*<label htmlFor="old" className={styles.label}> enter current password:*/}
-                        {/*    <input type="password"*/}
-                        {/*            id="old"*/}
-                        {/*        {...register("old")}*/}
-                        {/*    />*/}
-                        {/*</label>*/}
                         <label htmlFor="new" className={styles.label}> enter new password:
                             <input
                                 type="password"

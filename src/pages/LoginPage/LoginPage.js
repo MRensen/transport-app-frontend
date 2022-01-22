@@ -1,78 +1,63 @@
 import styles from "./LoginPage.module.css";
-import {useContext, useEffect, useState} from "react";
-import axios from "axios";
+import {useContext, useState} from "react";
 import HeaderPlain from "../../components/Header/Header";
-import {useHistory} from "react-router-dom";
 import {AuthContext} from "../../components/Context/AuthContextProvider";
 
 export default function LoginPage() {
 
     const [passwordValue, setPasswordValue] = useState("");
     const [nameValue, setNameValue] = useState("");
-    const [role, setRole] = useState("")
-    const history = useHistory();
-    const {isAuth, login} = useContext(AuthContext);
+    const [error, setError] = useState("");
+    const {login} = useContext(AuthContext);
 
-    async function getUser(user) {
-        try {
-            const result = await axios.get(`http://localhost:8080/${user}s/${nameValue}`);
-            // setData(result.data);
-            console.log(result.data);
-        } catch (e){
-            console.log(e.error);
-        }
-    }
 
-    function applyLogin(){
-        if(passwordValue === "" || nameValue === ""){
+    async function applyLogin() {
+        setError("")
+        if (passwordValue === "" || nameValue === "") {
+            setError("Niet alle velden zijn ingevuld");
             console.log("you need to enter all values")
             console.log(`pass: ${passwordValue}| name: ${nameValue}`)
             return
         }
-        login({username: nameValue, password: passwordValue});
-        console.log(isAuth)
+        setError("");
+        try {
+            await login({username: nameValue, password: passwordValue});
+            setError("Deze inlog gegevens zijn niet bekend");
+        } catch(e){console.error(e.message)}
 
     }
+
     return (
         <div>
             <HeaderPlain/>
             <main className={styles.main}>
                 <button type="button" className={styles.title} onClick={applyLogin}>inloggen</button>
+                { error &&
+                    <p className={styles.error}>{`${error}`} <br/> {`wachtwoord: ${passwordValue}| naam: ${nameValue}`}</p>
+                }
                 <section>
-                    <label htmlFor="name" className={styles.label}>Naam  </label>
+                    <label htmlFor="name" className={styles.label}>Naam </label>
                     <input id="name"
                            type="text"
                            value={nameValue}
                            className={styles.input}
                            onChange={(e) => {
-                               setNameValue(e.target.value)
+                               setNameValue(e.target.value);
+                               setError("");
                            }}
                     />
                 </section>
                 <section>
-                    <label htmlFor="password" className={styles.label}>Wachtwoord  </label>
+                    <label htmlFor="password" className={styles.label}>Wachtwoord </label>
                     <input id="password"
                            type="password"
                            value={passwordValue}
                            className={styles.input}
                            onChange={(e) => {
-                               setPasswordValue(e.target.value)
+                               setPasswordValue(e.target.value);
+                               setError("");
                            }}
                     />
-                </section>
-                <section>
-                    <label htmlFor="roles" className={styles.label}>Role  </label>
-                    <select id="roles"
-                            className={styles.input}
-                            value={role}
-                            onChange={(e)=>{
-                                setRole(e.target.value)}}
-                    >
-                        <option value="" disabled> </option>
-                        <option value="driver">driver</option>
-                        <option value="planner">planner</option>
-                        <option value="customer">customer</option>
-                    </select>
                 </section>
             </main>
         </div>

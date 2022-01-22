@@ -1,33 +1,33 @@
 import styles from "./Lossen.module.css";
 import {HeaderAcceptDecline} from "../../../components/Header/Header";
-import LabeledInput from "../../../components/LabeledInput/LabeledInput";
 import {useForm} from "react-hook-form";
-import {useState} from "react";
-import {Redirect, useHistory, useParams} from "react-router-dom";
+import {useHistory, useParams} from "react-router-dom";
 import axios from "axios";
 
 export default function Lossen() {
     const history = useHistory();
-    const {id:orderId} = useParams();
-    const {register, handleSubmit, watch, getValues} = useForm();
+    const {id: orderId} = useParams();
+    const {register, handleSubmit, watch} = useForm();
     const watchGelost = watch("gelost");
     const watchEmbalageGeladen = watch("embalage-geladen");
     const watchEmbalageGelost = watch("embalage-gelost");
 
     function acceptFunction() {
-        console.log("needs to communicate to backend OrderStatus=DELIVERED");
         async function patch() {
             try {
                 const result = await axios({
-                        method: 'patch',
-                        url: `http://localhost:8080/orders/${orderId}`,
-                        data: { orderStatus: "delivered" }
-                    }
-                )
-            } catch(e){console.log(e.message())}
+                    method: 'patch',
+                    url: `http://localhost:8080/orders/${orderId}`,
+                    data: {orderStatus: "delivered"}
+                    //TODO axios headers
+                })
+                history.push("/driver/planning")
+            } catch (e) {
+                console.log(e.message())
+            }
         }
+
         patch();
-        history.push("/driver/planning")
     }
 
     function declineFunction() {

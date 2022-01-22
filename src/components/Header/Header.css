@@ -8,6 +8,7 @@
     background-color: #80CED7;
     font-family: 'courier prime', monospace;
 }
+
 .header-double {
     display: flex;
     flex-direction: row;
@@ -20,13 +21,23 @@
     font-family: 'courier prime', monospace;
 }
 
-.header-center{
+.header-double img:hover {
+    opacity: 50%;
+}
+
+.header-center {
     display: flex;
     flex-direction: column;
 }
-.header-center button{
+
+.header-center button {
     background-color: #CCDBDC;
 }
+
+.header-center button:hover {
+    background-color: hsl(184, 19%, 73%);
+}
+
 
 .header-title {
     color: #0075A2;
