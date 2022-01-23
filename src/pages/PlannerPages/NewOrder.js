@@ -58,7 +58,7 @@ export default function NewOrder({checkedMenu}) {
 
             </header>
 
-            <form className={styles.content} name="account-form" onSubmit={handleSubmit(formSubmit)}>
+            <form className={styles.content} name="order-form" onSubmit={handleSubmit(formSubmit)}>
 
                 <h1>Laden</h1>
                 <LabeledInput register={register} title="laad-naam"/>

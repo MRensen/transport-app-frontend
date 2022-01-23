@@ -13,6 +13,7 @@ export default function CustomerAccount() {
     const [userData, setuserData] = useState({})
     const history = useHistory();
     const [show, setShow] = useState(false);
+    const [photo, setPhoto] = useState("");
     const {handleSubmit, register, formState: {errors}, reset} = useForm();
 
     useEffect(() => {
@@ -36,6 +37,15 @@ export default function CustomerAccount() {
                     enabled: result.data.enabled
 
                 })
+            //     const fileReader = new FileReader();
+            //
+            //     fileReader.onload = (fileLoadedEvent) => {
+            //         const base64Data = fileLoadedEvent.target.result;
+            //         setPhoto(base64Data)
+            //         console.log(base64Data)
+            //
+            //     }
+            //     fileReader.readAsDataURL(result.data.image);
             } catch (e) {
                 console.error(e.message)
             }
@@ -68,7 +78,9 @@ export default function CustomerAccount() {
                     //TODO axios headers
                 })
                 console.log(data);
-            } catch(e){console.error(e.message)}
+            } catch (e) {
+                console.error(e.message)
+            }
         }
     }
 
@@ -76,9 +88,43 @@ export default function CustomerAccount() {
         history.push("/customer/home")
     }
 
-    function setImage() {
-        //TODO set image
+    function setImage(e) {
+        // console.log(e.target.files[0])
+        let fileReader = new FileReader();
+
+        fileReader.onload = (fileLoadedEvent) => {
+            let base64Data = fileLoadedEvent.target.result;
+            setPhoto(base64Data)
+            console.log(base64Data)
+            async function updateDB() {
+                try {
+                    await axios({
+                        method: "patch",
+                        url: `http://localhost:8080/user/${data.username}/photo`,
+                        data: base64Data,
+                    })
+                } catch (e) {
+                    console.error(e.message)
+                }
+            }
+
+            updateDB()
+        }
+        fileReader.readAsDataURL(e.target.files[0]);
+
+
+        // async function updateDB(){
+        //     try{
+        //         await axios({
+        //             method: "patch",
+        //             url: `http://localhost:8080/user/${data.username}/photo`,
+        //             data: photo,
+        //         })
+        //     } catch (e) {console.error(e.message)}
+        // }
+        // updateDB()
     }
+
 
     return (
         <>
@@ -90,14 +136,15 @@ export default function CustomerAccount() {
             <form className={styles.form} name="account-form" onSubmit={handleSubmit(saveFunction)}>
                 <aside className={styles.aside}>
                     <div className={styles['image-container']}>
-                        <div className={styles.image}>
-                        </div>
-                        <button type="button" className={styles['foto-wijzigen']} onClick={setImage}>foto wijzigen
-                        </button>
+                        <img src={photo} className={styles.image}>
+                        </img>
+                        <input type="file" className={styles['foto-wijzigen']} onChange={(e) => {
+                            setImage(e)
+                        }}/>
                     </div>
                 </aside>
                 <aside className={styles.aside}>
-                    <LabeledInput register={register} title="klantnummer" value = {userData.id}/>
+                    <LabeledInput register={register} title="klantnummer" value={userData.id}/>
                     <LabeledInput errors={errors} register={register} title="gebruikersnaam"/>
                     <LabeledInput errors={errors} title="naam" register={register}/>
                     <LabeledInput register={register} title="adres">

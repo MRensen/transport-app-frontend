@@ -17,7 +17,7 @@ export default function AuthContextProvider({children}){
     const[status, setStatus] = useState("pending");
 
     useEffect(()=>{
-        const token = localStorage.getItem("jwt");
+        const token = localStorage.getItem("logitoken");
         if(token){
             const decoded = jwtDecode(token);
             getUser(decoded.sub);
@@ -33,11 +33,10 @@ export default function AuthContextProvider({children}){
             const result = await axios({
                 method : "get",
                 url : `http://localhost:8080/user/${sub}`,
-                // headers: {
-                //     "Content-Type": "application/json",
-                //     Authorization: `Bearer ${token}`,
-                // }
-                //TODO: axios headers
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                }
             })
             setData(result.data);
             setStatus("done");
@@ -71,7 +70,7 @@ export default function AuthContextProvider({children}){
                     password: loginDetails.password}
                 })
                 const token = result.data.jwt;
-                localStorage.setItem("jwt", token)
+                localStorage.setItem("logitoken", token)
                 console.log(result.data.jwt)
                 const decodedJWT = jwtDecode(token);
                 console.log(decodedJWT)
@@ -95,7 +94,7 @@ export default function AuthContextProvider({children}){
         toggleIsAuth(false);
         setData({});
         setStatus("done");
-        localStorage.removeItem("jwt");
+        localStorage.removeItem("logitoken");
         history.push("/")
     }
     const id = data.id;

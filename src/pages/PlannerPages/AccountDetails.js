@@ -82,7 +82,7 @@ export default function AccountDetails({setMenuDisplay, create, checkedMenu}) {
     }
 
     function setImage() {
-        //TODO
+        //TODO add image
     }
 
     return (
@@ -106,8 +106,8 @@ export default function AccountDetails({setMenuDisplay, create, checkedMenu}) {
             </header>
             <form className={styles.content} name="account-form" onSubmit={handleSubmit(submitForm)}>
                 <div className={styles['image-container']}>
-                    <div className={styles.image}>
-                    </div>
+                    <img src="" className={styles.image}>
+                    </img>
                     <button type="button" className={styles['foto-wijzigen']} onClick={setImage}>foto wijzigen</button>
                 </div>
                 <LabeledInput errors={errors} register={register} title="naam"/>

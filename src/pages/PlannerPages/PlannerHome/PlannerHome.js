@@ -30,7 +30,11 @@ export default function PlannerHome() {
                 try {
                     const result = await axios({
                         method: 'get',
-                        url: `http://localhost:8080/drivers`
+                        url: `http://localhost:8080/drivers`,
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                        }
                     })
                     setDrivers(result.data);
                 } catch (e) {
@@ -153,6 +157,11 @@ export default function PlannerHome() {
                                 <PlannerMenuItem firstline="planner"
                                                  key="planner"
                                                  id="planner"
+                                                 checked={checkedMenu}
+                                                 setChecked={setCheckedMenu}/>
+                                <PlannerMenuItem firstline="klant"
+                                                 key="klant"
+                                                 id="klant"
                                                  checked={checkedMenu}
                                                  setChecked={setCheckedMenu}/>
                             </>

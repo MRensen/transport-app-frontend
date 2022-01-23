@@ -71,8 +71,8 @@ export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
                 phoneNumber: data['telefoon nummer']
             }
             create &&
-                (toSend.username = data.naam) &&
-                (toSend.password = "$2a$12$5usMMaD9hathHXMKNMjlseunXe.QEQbRBtFiBycc.V/teqa0c4v6K")
+            (toSend.username = data.naam) &&
+            (toSend.password = "$2a$12$5usMMaD9hathHXMKNMjlseunXe.QEQbRBtFiBycc.V/teqa0c4v6K")
 
             await axios({
                 method: method,
@@ -112,6 +112,10 @@ export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
         reset()
     }
 
+    function fotoWijzigen() {
+        //TODO add image
+    }
+
     if (driverData || create) {
         return (
             <>
@@ -132,7 +136,13 @@ export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
 
                 <form className={styles.content} onSubmit={handleSubmit(formSubmit)}
                       onChange={console.log("form changed")}>
-                    <img src="" className={styles.image}/>
+                    <div className={styles['image-container']}>
+                        <img src="" className={styles.image}/>
+                        {create &&
+                        <button type="button" className={styles['foto-wijzigen']} onClick={fotoWijzigen}>foto toevoegen
+                        </button>
+                        }
+                    </div>
                     <LabeledInput errors={errors} register={register} title="naam"/>
                     <LabeledInput errors={errors} register={register} title="adres">
                         <input type="text" className={styles.housenumber} id="adres"
