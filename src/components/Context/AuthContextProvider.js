@@ -37,6 +37,7 @@ export default function AuthContextProvider({children}){
                 //     "Content-Type": "application/json",
                 //     Authorization: `Bearer ${token}`,
                 // }
+                //TODO: axios headers
             })
             setData(result.data);
             setStatus("done");

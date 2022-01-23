@@ -2,7 +2,6 @@ import styles from "./PlannerHome.module.css";
 import HeaderPlain from "../../../components/Header/Header";
 import {useContext, useEffect, useState} from "react";
 import PlannerNavItem from "../../../components/PlannerNavItem/PlannerNavItem";
-import LabeledInput from "../../../components/LabeledInput/LabeledInput";
 import axios from "axios";
 import PlannerMenuItem from "../../../components/PlannerMenuItem/PlannerMenuItem";
 import {useForm} from "react-hook-form";
@@ -16,16 +15,12 @@ import NewUser from "../NewUser";
 
 export default function PlannerHome() {
     const {id} = useContext(AuthContext);
-    const {register, handleSubmit} = useForm();
-    const history = useHistory();
-    const {path, url} = useRouteMatch();
-
     const [checked, setChecked] = useState("");
     const [checkedMenu, setCheckedMenu] = useState(null);
     const [drivers, setDrivers] = useState([]);
     const [orders, setOrders] = useState([]);
     const [routes, setRoutes] = useState([]);
-    const [planner, setPlanner] = useState({});
+    // const [planner, setPlanner] = useState({});
     const [menuDisplay, setMenuDisplay] = useState(true);
     const [newDisplay, setNewDisplay] = useState(true);
 
@@ -83,26 +78,9 @@ export default function PlannerHome() {
         getRoutes();
     }, [checked, checkedMenu])
 
-    useEffect(() => {
-        async function getPlanner() {
-            if (checked === "instellingen") {
-                try {
-                    const result = await axios({
-                        method: 'get',
-                        url: `http://localhost:8080/planners/${id}`
-                    })
-                    setPlanner(result.data);
-                } catch (e) {
-                    console.log(e.message)
-                }
-            }
-        }
-
-        getPlanner();
-    }, [checked])
-
 
     function setImage() {
+        //TODO set image
     };
 
     return (
@@ -116,17 +94,13 @@ export default function PlannerHome() {
                     <PlannerNavItem title="routes" checked={checked} setChecked={setChecked}/>
                     <PlannerNavItem title="account" checked={checked} setChecked={setChecked}/>
                     <PlannerNavItem title="create" checked={checked} setChecked={setChecked}/>
-                    {/*<button className={newDisplay ? styles.newItemButton : styles.invisible} onClick={() => {*/}
-                    {/*    history.push("/planner/new")*/}
-                    {/*}}>*/}
-                    {/*    nieuw*/}
-                    {/*</button>*/}
                 </nav>
+
                 <main className={styles['content-container']}>
                     <header className={styles.header}> Details</header>
                     <Switch>
                         <Route path={`/planner/chauffeurs`}>
-                            <DriverDetails //driverData={driverData}
+                            <DriverDetails
                                 checkedMenu={checkedMenu}
                                 setCheckedMenu={setCheckedMenu}
                             />
@@ -151,22 +125,8 @@ export default function PlannerHome() {
                         </Route>
 
                     </Switch>
-                    {/*{checked === "chauffeurs" &&*/}
-                    {/*<DriverDetails //driverData={driverData}*/}
-                    {/*    checkedMenu={checkedMenu}*/}
-                    {/*    formSubmit={formSubmit}*/}
-                    {/*/>*/}
-                    {/*}*/}
-                    {/*{checked === "orders" &&*/}
-                    {/*<OrderDetails checkedMenu={checkedMenu}/>*/}
-                    {/*}*/}
-                    {/*{checked === "routes" &&*/}
-                    {/*<RouteDetails checkedMenu={checkedMenu}/>*/}
-                    {/*}*/}
-                    {/*{checked === "instellingen" &&*/}
-                    {/*<AccountDetails checkedMenu={checkedMenu}/>*/}
-                    {/*}*/}
                 </main>
+
                 <nav className={menuDisplay ? styles.menu : styles.invisible}>
                     <header className={styles.header}>Menu</header>
 
@@ -234,9 +194,6 @@ export default function PlannerHome() {
                                                         setChecked={setCheckedMenu}/>
                             })}
                         </Route>
-                        {/*<Route path={`/planner/account`}>*/}
-                        {/*    */}
-                        {/*</Route>*/}
 
                     </Switch>
                 </nav>

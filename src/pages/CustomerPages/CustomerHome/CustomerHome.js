@@ -9,7 +9,6 @@ import CustomerHomeButton from "../../../components/CustomerHomeButton/CustomerH
 
 export default function CustomerHome() {
     const {data} = useContext(AuthContext);
-    console.log(data)
     return (
         <>
             <HeaderPlain/>

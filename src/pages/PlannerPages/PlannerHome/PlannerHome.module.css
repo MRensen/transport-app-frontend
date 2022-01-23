@@ -50,9 +50,37 @@
     width: 50px;
 }
 
+
+.afmetingen input{
+    font-family: 'courier prime', monospace;
+    font-size: 36px;
+}
+
+.new-label{
+    font-size: 36px;
+    flex-direction: column;
+}
+
+.afmetingen label{
+    display: flex;
+    gap: 20px;
+}
+.laden-lossen{
+    display: flex;
+    flex-direction: row;
+}
+
 .invisible{
     display: none;
 }
+
+
+.opmerkingen{
+    font-size: 36px;
+    font-family: 'courier prime', monospace;
+    width: 400px;
+}
+
 
 .content{
     height: calc(80vh - 25px - 50px);
@@ -62,6 +90,7 @@
 }
 .content-container{
     width: 100%;
+    max-width: 60vw;
  }
 
 .newItemButton{

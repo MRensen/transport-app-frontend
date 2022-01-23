@@ -2,8 +2,12 @@ import styles from "./PlannerHome/PlannerHome.module.css";
 import {useEffect} from "react";
 import DriverDetails from "./DriverDetails";
 import AccountDetails from "./AccountDetails";
+import LabeledInput from "../../components/LabeledInput/LabeledInput";
+import {useForm} from "react-hook-form";
+import NewOrder from "./NewOrder";
 
 export default function NewUser({setNewDisplay, checkedMenu}) {
+    const{register} = useForm()
 
     useEffect(() => {
         function onMount() {
@@ -27,7 +31,8 @@ export default function NewUser({setNewDisplay, checkedMenu}) {
     }
     if (checkedMenu === "order") {
         return (
-            <p>nieuwe order</p>
+            <NewOrder checkedMenu={checkedMenu}/>
+
         )
     }
     if (checkedMenu === "route") {

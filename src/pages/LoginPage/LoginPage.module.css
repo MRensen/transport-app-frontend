@@ -8,6 +8,11 @@
     gap: 30px;
     height: 80vh;
 }
+
+.error{
+    color : red;
+}
+
 .title{
     font-family: 'courier prime', monospace;
     font-size: 96px;
