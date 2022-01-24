@@ -40,8 +40,11 @@ export default function NewOrder({checkedMenu}) {
         await axios({
             method: "post",
             url: `http://localhost:8080/orders`,
-            data: toSend
-            // TODO axios headers
+            data: toSend,
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+            }
         })
     }
 

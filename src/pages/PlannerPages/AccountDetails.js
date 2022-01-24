@@ -19,8 +19,11 @@ export default function AccountDetails({setMenuDisplay, create, checkedMenu}) {
                     setMenuDisplay(false);
                     const result = await axios({
                         method: "get",
-                        url: `http://localhost:8080/planners/${plannerId}`
-                        //TODO axios headers
+                        url: `http://localhost:8080/planners/${plannerId}`,
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                        }
                     })
                     console.log(result.data)
 
@@ -71,9 +74,11 @@ export default function AccountDetails({setMenuDisplay, create, checkedMenu}) {
             await axios({
                 method: method,
                 url: baseurl + url,
-                headers: {'Content-Type': 'application/json'},
-                data: toSend
-                //TODO axios headers
+                data: toSend,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                }
             })
             if(create){
                 history.push(`/planner/account`)
@@ -93,7 +98,7 @@ export default function AccountDetails({setMenuDisplay, create, checkedMenu}) {
                 >Save</button>
                 {create ?
                     <button type="button"
-                            onClick={()=>{reset()}} //TODO
+                            onClick={()=>{reset()}}
                     >Reset</button>
                     :
                     <button type="button"

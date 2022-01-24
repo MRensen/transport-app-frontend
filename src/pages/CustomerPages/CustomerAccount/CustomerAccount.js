@@ -21,8 +21,11 @@ export default function CustomerAccount() {
             try {
                 const result = await axios({
                     method: "get",
-                    url: `http://localhost:8080/customers/${data.customer.id}`
-                    //TODO axios headers
+                    url: `http://localhost:8080/customers/${data.customer.id}`,
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                    }
                 })
                 console.log(result.data)
                 setuserData(result.data)
@@ -74,8 +77,11 @@ export default function CustomerAccount() {
                     method: "patch",
                     url: `http://localhost:8080/customers/${parseInt(userData.id)}`,
                     // headers: {'Content-Type': 'application/json'},
-                    data: toSend
-                    //TODO axios headers
+                    data: toSend,
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                    }
                 })
                 console.log(data);
             } catch (e) {

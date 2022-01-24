@@ -18,8 +18,11 @@ export default function Laden() {
                 const result = await axios({
                     method: 'patch',
                     url: `http://localhost:8080/orders/${orderId}`,
-                    data: {orderStatus: "delivered"}
-                    //TODO axios headers
+                    data: {orderStatus: "delivered"},
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                    }
                 })
                 history.push("/driver/planning")
             } catch (e) {

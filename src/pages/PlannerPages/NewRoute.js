@@ -16,8 +16,11 @@ export default function NewRoute() {
             try {
                 const result = await axios({
                     method: "get",
-                    url: `http://localhost:8080/orders`
-                    //TODO axios headers
+                    url: `http://localhost:8080/orders`,
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                    }
                 })
                 console.log(result.data)
                 setOrders(result.data)
@@ -30,8 +33,11 @@ export default function NewRoute() {
             try {
                 const result = await axios({
                     method: "get",
-                    url: `http://localhost:8080/drivers`
-                    //TODO axios headers
+                    url: `http://localhost:8080/drivers`,
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                    }
                 })
                 console.log(result.data)
                 setDrivers(result.data)
@@ -65,7 +71,10 @@ export default function NewRoute() {
                 method: "post",
                 url: `http://localhost:8080/routes`,
                 data: toSend,
-                //TODO axios headers
+                headers: {
+                "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+            }
             })
             reset();
         } catch (e) {

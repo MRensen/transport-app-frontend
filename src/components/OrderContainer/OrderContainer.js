@@ -9,7 +9,11 @@ export default function OrderContainer({endpoint, noButton}) {
     useEffect(() => {
         async function getOrderData() {
             try {
-                const result = await axios.get(`http://localhost:8080/orders/${endpoint}`)
+                const result = await axios.get(`http://localhost:8080/orders/${endpoint}`, {
+                    headers: {
+                    "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                }})
                 setOrderData(result.data);
                 console.log(result.data)
             } catch (e) {

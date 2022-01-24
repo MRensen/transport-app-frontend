@@ -30,6 +30,7 @@ export default function AuthContextProvider({children}){
 
     async function getUser(sub){
         try{
+            console.log(localStorage.getItem("logitoken"))
             const result = await axios({
                 method : "get",
                 url : `http://localhost:8080/user/${sub}`,

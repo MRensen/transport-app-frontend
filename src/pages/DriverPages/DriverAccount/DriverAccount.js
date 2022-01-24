@@ -46,8 +46,11 @@ export default function DriverAccount() {
             const result = await axios({
                 method : "patch",
                 data: toSend,
-                url: `http://localhost:8080/drivers/${id}`
-                //TODO axios headers
+                url: `http://localhost:8080/drivers/${id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                }
             })
         }catch(e){console.log(e.error)}
 

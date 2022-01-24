@@ -19,7 +19,11 @@ export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
                 try {
                     const result = await axios({
                         method: 'get',
-                        url: `http://localhost:8080/drivers/${checkedMenu}`
+                        url: `http://localhost:8080/drivers/${checkedMenu}`,
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                        }
                     })
                     setDriverData(result.data);
                     reset({
@@ -77,7 +81,10 @@ export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
             await axios({
                 method: method,
                 url: baseurl + url,
-                header: {'Content-type': 'application/json'},
+                headers: {
+                "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+            },
                 data: toSend
             })
             cancelFunction("saved")
@@ -100,7 +107,11 @@ export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
         if (window.confirm("Weet je zeker dat je deze gebruiker wilt verwijderen?")) {
             await axios({
                 method: "delete",
-                url: `http://localhost:8080/drivers/${checkedMenu}`
+                url: `http://localhost:8080/drivers/${checkedMenu}`,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                }
             })
             cancelFunction("delete")
         }

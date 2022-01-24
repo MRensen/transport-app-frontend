@@ -52,7 +52,11 @@ export default function PlannerHome() {
                 try {
                     const result = await axios({
                         method: 'get',
-                        url: `http://localhost:8080/orders`
+                        url: `http://localhost:8080/orders`,
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                        }
                     })
                     setOrders(result.data);
                 } catch (e) {
@@ -70,7 +74,11 @@ export default function PlannerHome() {
                 try {
                     const result = await axios({
                         method: 'get',
-                        url: `http://localhost:8080/routes`
+                        url: `http://localhost:8080/routes`,
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                        }
                     })
                     setRoutes(result.data);
                 } catch (e) {

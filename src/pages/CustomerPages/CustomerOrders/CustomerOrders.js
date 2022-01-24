@@ -18,8 +18,11 @@ export default function CustomerOrders() {
             try {
                 const result = await axios({
                     method: "get",
-                    url: `http://localhost:8080/customers/${customerId}/orders`
-                    //TODO axios headers
+                    url: `http://localhost:8080/customers/${customerId}/orders`,
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                    }
                 })
                 console.log(result.data)
                 setCustomerOrders(result.data);
@@ -40,8 +43,11 @@ export default function CustomerOrders() {
         try {
             const result = await axios({
                 method: "delete",
-                url: `http://localhost:8080/orders/${order.id}`
-                //TODO axios headers
+                url: `http://localhost:8080/orders/${order.id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                }
             })
         } catch (e) {
             console.error(e.message)

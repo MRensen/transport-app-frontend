@@ -18,8 +18,11 @@ export default function StartRoute() {
     useEffect(() => {
         async function getRoutes(){
             try{
-                const result = await axios.get(`http://localhost:8080/drivers/${data.driver.id}/route`)
-                //TODO axios headers
+                const result = await axios.get(`http://localhost:8080/drivers/${data.driver.id}/route`,{
+                    headers: {
+                    "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                }})
                 setRoutes(result.data);
             } catch(e){
                 console.log(e.error)
@@ -31,8 +34,11 @@ export default function StartRoute() {
 
     async function acceptFunction(input) {
         try{
-            const result = await axios.get(`http://localhost:8080/routes/${input.routenummer}`)
-            //TODO axios headers
+            const result = await axios.get(`http://localhost:8080/routes/${input.routenummer}`,{
+                headers: {
+                "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+            }})
             registerRoute(result.data);
         } catch (e){
             console.log(e.error);
