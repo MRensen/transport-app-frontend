@@ -1,13 +1,18 @@
 import styles from "./PlannerHome/PlannerHome.module.css"
 import {useForm} from "react-hook-form";
 import LabeledInput from "../../components/LabeledInput/LabeledInput";
-import {useState} from "react";
+import {useContext, useState} from "react";
+import axios from "axios";
+import {useHistory} from "react-router-dom";
+import {AuthContext} from "../../components/Context/AuthContextProvider";
 
 export default function NewCustomer() {
     const {handleSubmit, register, reset, formState: {errors}} = useForm();
     const [photo, setPhoto] = useState("");
+    const history = useHistory();
+    const {refresh} = useContext(AuthContext);
 
-    function formSubmit(input) {
+    async function formSubmit(input) {
         const [firstName, lastName] = input.naam.split(" ");
         const toSend = {
             firstName,
@@ -18,12 +23,28 @@ export default function NewCustomer() {
             city: input.woonplaats,
             phoneNumber: input['telefoon nummer'],
             username: input.naam,
-            password: "password"
+            password: "$2a$12$5usMMaD9hathHXMKNMjlseunXe.QEQbRBtFiBycc.V/teqa0c4v6K",
+            enabled: true
+        }
+        try {
+            await axios({
+                method: "post",
+                url: `http://localhost:8080/customers`,
+                data: toSend,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                }
+            })
+            refresh();
+            history.push(`/planner/home`)
+        } catch (e) {
+            console.error(e.message)
         }
     }
 
     function resetFunction() {
-
+        reset();
     }
 
 

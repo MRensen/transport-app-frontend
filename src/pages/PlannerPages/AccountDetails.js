@@ -9,42 +9,42 @@ import {useHistory} from "react-router-dom";
 
 export default function AccountDetails({setMenuDisplay, create, checkedMenu}) {
     const [show, setShow] = useState(false);
-    const {register, handleSubmit, reset, formState:{errors}} = useForm();
+    const {register, handleSubmit, reset, formState: {errors}} = useForm();
     const history = useHistory();
-    const {data} = useContext(AuthContext);
+    const {data, refresh} = useContext(AuthContext);
     const plannerId = data.planner.id;
     useEffect(() => {
         async function onMount() {
-            if(!create) {
-                    setMenuDisplay(false);
-                    const result = await axios({
-                        method: "get",
-                        url: `http://localhost:8080/planners/${plannerId}`,
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
-                        }
-                    })
-                    console.log(result.data)
+            if (!create) {
+                setMenuDisplay(false);
+                const result = await axios({
+                    method: "get",
+                    url: `http://localhost:8080/planners/${plannerId}`,
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                    }
+                })
+                console.log(result.data)
 
-                    reset({
-                        naam: `${result.data.firstName} ${result.data.lastName}`,
-                        postcode: result.data.postalCode,
-                        adres: result.data.street,
-                        huisnummer: result.data.houseNumber,
-                        city: result.data.city,
-                        // 'personeels nummer': result.data.employeeNumber,
-                        // 'vaste wagen': result.data.regularTruck,
-                        // 'rijbewijs nummer': result.data.driverLicenseNumber,
-                        'telefoon nummer': result.data.phoneNumber,
-                        enabled: result.data.enabled
-                    });
+                reset({
+                    naam: `${result.data.firstName} ${result.data.lastName}`,
+                    postcode: result.data.postalCode,
+                    adres: result.data.street,
+                    huisnummer: result.data.houseNumber,
+                    city: result.data.city,
+                    // 'personeels nummer': result.data.employeeNumber,
+                    // 'vaste wagen': result.data.regularTruck,
+                    // 'rijbewijs nummer': result.data.driverLicenseNumber,
+                    'telefoon nummer': result.data.phoneNumber,
+                    enabled: result.data.enabled
+                });
             }
         }
 
         onMount();
         return function onDismount() {
-            if(!create) {
+            if (!create) {
                 setMenuDisplay(true);
                 console.log("unmounting");
             }
@@ -68,20 +68,25 @@ export default function AccountDetails({setMenuDisplay, create, checkedMenu}) {
                 phoneNumber: data['telefoon nummer']
             }
             create &&
+            (toSend.enabled = true) &&
             (toSend.username = data.naam) &&
-            (toSend.password = "password")
-
-            await axios({
-                method: method,
-                url: baseurl + url,
-                data: toSend,
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+            (toSend.password = "$2a$12$5usMMaD9hathHXMKNMjlseunXe.QEQbRBtFiBycc.V/teqa0c4v6K")
+            try {
+                await axios({
+                    method: method,
+                    url: baseurl + url,
+                    data: toSend,
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                    }
+                })
+                refresh();
+                if (create) {
+                    history.push(`/planner/account`)
                 }
-            })
-            if(create){
-                history.push(`/planner/account`)
+            } catch (e) {
+                console.error(e.message)
             }
         }
     }
@@ -95,10 +100,13 @@ export default function AccountDetails({setMenuDisplay, create, checkedMenu}) {
             <header className={styles.options}>
                 <button type="submit"
                         onClick={handleSubmit(submitForm)}
-                >Save</button>
+                >Save
+                </button>
                 {create ?
                     <button type="button"
-                            onClick={()=>{reset()}}
+                            onClick={() => {
+                                reset()
+                            }}
                     >Reset</button>
                     :
                     <button type="button"
@@ -123,7 +131,6 @@ export default function AccountDetails({setMenuDisplay, create, checkedMenu}) {
                 <LabeledInput errors={errors} register={register} title="postcode"/>
                 <LabeledInput errors={errors} register={register} title="telefoon nummer"/>
                 <LabeledInput errors={errors} register={register} className="checked" checked title="enabled"/>
-
 
 
             </form>

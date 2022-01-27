@@ -2,15 +2,15 @@ import styles from "./PlannerHome/PlannerHome.module.css"
 import LabeledInput from "../../components/LabeledInput/LabeledInput";
 import {useForm} from "react-hook-form";
 import axios from "axios";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {useHistory} from "react-router-dom";
-import ModalPassword from "../../components/ModalPassword/ModalPassword";
+import {AuthContext} from "../../components/Context/AuthContextProvider";
 
 export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
+    const {refresh} = useContext(AuthContext);
     const history = useHistory();
     const [driverData, setDriverData] = useState(null);
     const [unmount, setUnmount] = useState("");
-    const [show, setShow] = useState(false);
     const {register, handleSubmit, reset, formState: {errors}} = useForm();
 
     useEffect(() => {
@@ -72,22 +72,26 @@ export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
                 employeeNumber: data['personeels nummer'],
                 regularTruck: data['vaste wagen'],
                 driverLicenseNumber: data['rijbewijs nummer'],
-                phoneNumber: data['telefoon nummer']
+                phoneNumber: data['telefoon nummer'],
             }
             create &&
-            (toSend.username = data.naam) &&
+            (toSend.enabled = true) &&
+            (toSend.username = data.naam.split(" ").join("")) &&
             (toSend.password = "$2a$12$5usMMaD9hathHXMKNMjlseunXe.QEQbRBtFiBycc.V/teqa0c4v6K")
 
-            await axios({
-                method: method,
-                url: baseurl + url,
-                headers: {
-                "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
-            },
-                data: toSend
-            })
-            cancelFunction("saved")
+            try {
+                await axios({
+                    method: method,
+                    url: baseurl + url,
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                    },
+                    data: toSend
+                })
+                refresh()
+                cancelFunction("saved")
+            } catch(e){console.error(e.message)}
         }
 
     }
