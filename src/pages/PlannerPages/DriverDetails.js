@@ -10,6 +10,7 @@ export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
     const {refresh} = useContext(AuthContext);
     const history = useHistory();
     const [driverData, setDriverData] = useState(null);
+    const [photo, setPhoto] = useState("");
     const [unmount, setUnmount] = useState("");
     const {register, handleSubmit, reset, formState: {errors}} = useForm();
 
@@ -47,6 +48,8 @@ export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
 
 
         getDriver();
+        setImageDataInUseEffect();
+
     }, [checkedMenu])
 
     useEffect(() => {
@@ -127,9 +130,57 @@ export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
         reset()
     }
 
-    function fotoWijzigen() {
-        //TODO add image
+    async function sendImage(toSend) {
+        try {
+            await axios({
+                method: "patch",
+                url: `http://localhost:8080/user/${data.username}/photo`,
+                data: toSend,
+                params: toSend,
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                }
+            })
+        } catch (e) {
+            console.error(e.message)
+        }
     }
+
+    function setImage(e) {
+        // console.log(e.target.files[0])
+
+        const formData = new FormData();
+        formData.append("image", e.target.files[0])
+        console.log(formData)
+        sendImage(formData);
+
+        let fileReader = new FileReader();
+        fileReader.onload = (fileLoadedEvent) => {
+            let base64Data = fileLoadedEvent.target.result;
+            const [header, data] = base64Data.split(",")
+            setPhoto(data)
+            console.log(fileLoadedEvent)
+        }
+        fileReader.readAsDataURL(e.target.files[0]);
+
+
+    }
+
+    async function setImageDataInUseEffect(){
+        try {
+            const image = await axios({
+                method: "get",
+                url: `http://localhost:8080/user/${data.username}/photo`,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                }
+            })
+            setPhoto(image.data);
+        } catch(e) {console.error(e.message)}
+    }
+
 
     if (driverData || create) {
         return (
@@ -152,10 +203,15 @@ export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
                 <form className={styles.content} onSubmit={handleSubmit(formSubmit)}
                       onChange={console.log("form changed")}>
                     <div className={styles['image-container']}>
-                        <img src="" className={styles.image}/>
+                        {photo ?
+                            <img src={`data:image/jpeg;base64,${photo}`} className={styles.image}/>
+                            :
+                            <img src={photo} className={styles.image}/>
+                        }
                         {create &&
-                        <button type="button" className={styles['foto-wijzigen']} onClick={fotoWijzigen}>foto toevoegen
-                        </button>
+                        <input type="file" accept="image/*" className={styles['foto-wijzigen']} onChange={(e) => {
+                            setImage(e)
+                        }}/>
                         }
                     </div>
                     <LabeledInput errors={errors} register={register} title="naam"/>

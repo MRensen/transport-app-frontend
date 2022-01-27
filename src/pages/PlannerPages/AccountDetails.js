@@ -9,6 +9,7 @@ import {useHistory} from "react-router-dom";
 
 export default function AccountDetails({setMenuDisplay, create, checkedMenu}) {
     const [show, setShow] = useState(false);
+    const [photo, setPhoto] = useState("");
     const {register, handleSubmit, reset, formState: {errors}} = useForm();
     const history = useHistory();
     const {data, refresh} = useContext(AuthContext);
@@ -43,6 +44,7 @@ export default function AccountDetails({setMenuDisplay, create, checkedMenu}) {
         }
 
         onMount();
+        setImageDataInUseEffect();
         return function onDismount() {
             if (!create) {
                 setMenuDisplay(true);
@@ -91,9 +93,57 @@ export default function AccountDetails({setMenuDisplay, create, checkedMenu}) {
         }
     }
 
-    function setImage() {
-        //TODO add image
+    async function sendImage(toSend) {
+        try {
+            await axios({
+                method: "patch",
+                url: `http://localhost:8080/user/${data.username}/photo`,
+                data: toSend,
+                params: toSend,
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                }
+            })
+        } catch (e) {
+            console.error(e.message)
+        }
     }
+
+    function setImage(e) {
+        // console.log(e.target.files[0])
+
+        const formData = new FormData();
+        formData.append("image", e.target.files[0])
+        console.log(formData)
+        sendImage(formData);
+
+        let fileReader = new FileReader();
+        fileReader.onload = (fileLoadedEvent) => {
+            let base64Data = fileLoadedEvent.target.result;
+            const [header, data] = base64Data.split(",")
+            setPhoto(data)
+            console.log(fileLoadedEvent)
+        }
+        fileReader.readAsDataURL(e.target.files[0]);
+
+
+    }
+
+    async function setImageDataInUseEffect(){
+        try {
+            const image = await axios({
+                method: "get",
+                url: `http://localhost:8080/user/${data.username}/photo`,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                }
+            })
+            setPhoto(image.data);
+        } catch(e) {console.error(e.message)}
+    }
+
 
     return (
         <>
@@ -119,10 +169,14 @@ export default function AccountDetails({setMenuDisplay, create, checkedMenu}) {
             </header>
             <form className={styles.content} name="account-form" onSubmit={handleSubmit(submitForm)}>
                 <div className={styles['image-container']}>
-                    <img src="" className={styles.image}>
-                    </img>
-                    <button type="button" className={styles['foto-wijzigen']} onClick={setImage}>foto wijzigen</button>
-                </div>
+                    {photo ?
+                        <img src={`data:image/jpeg;base64,${photo}`} className={styles.image}/>
+                        :
+                        <img src={photo} className={styles.image}/>
+                    }
+                    <input type="file" accept="image/*" className={styles['foto-wijzigen']} onChange={(e) => {
+                        setImage(e)
+                    }}/>                </div>
                 <LabeledInput errors={errors} register={register} title="naam"/>
                 <LabeledInput errors={errors} register={register} title="adres">
                     <input {...register("huisnummer")} type="text" className={styles.housenumber} id="huisnummer"/>

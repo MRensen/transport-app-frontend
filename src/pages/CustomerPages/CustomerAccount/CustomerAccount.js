@@ -34,7 +34,6 @@ export default function CustomerAccount() {
                         Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
                     }
                 })
-               setImageDataInUseEffect();
                 // const inputFileReader = new FileReader();
                 // inputFileReader.onload= (event)=>{
                 //     const base64 = event.target.result
@@ -66,8 +65,9 @@ export default function CustomerAccount() {
                 console.error(e.message)
             }
         }
-
         getUser()
+        setImageDataInUseEffect();
+
 
     }, [])
 
@@ -155,7 +155,6 @@ export default function CustomerAccount() {
                     Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
                 }
             })
-            console.log(image);
             setPhoto(image.data);
         } catch(e) {console.error(e.message)}
     }

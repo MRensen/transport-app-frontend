@@ -16,6 +16,8 @@ export default function DriverAccount() {
     const history = useHistory();
     const [driverData, setDriverdata] = useState({});
     const [show, setShow] = useState(false);
+    const [photo, setPhoto] = useState("");
+
 
     useEffect(()=>{
         // async function getUser(){
@@ -30,6 +32,7 @@ export default function DriverAccount() {
             'rijbewijs nummer': data.driver.driverLicenseNumber,
             'telefoon nummer': data.driver.phoneNumber,
         })
+        setImageDataInUseEffect();
     },[])
 
     async function saveButton(data){
@@ -66,9 +69,57 @@ export default function DriverAccount() {
         history.push("/driver/home")
     }
 
-    const setImage = () => {
-        console.log("set image");
+    async function sendImage(toSend) {
+        try {
+            await axios({
+                method: "patch",
+                url: `http://localhost:8080/user/${data.username}/photo`,
+                data: toSend,
+                params: toSend,
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                }
+            })
+        } catch (e) {
+            console.error(e.message)
+        }
     }
+
+    function setImage(e) {
+        // console.log(e.target.files[0])
+
+        const formData = new FormData();
+        formData.append("image", e.target.files[0])
+        console.log(formData)
+        sendImage(formData);
+
+        let fileReader = new FileReader();
+        fileReader.onload = (fileLoadedEvent) => {
+            let base64Data = fileLoadedEvent.target.result;
+            const [header, data] = base64Data.split(",")
+            setPhoto(data)
+            console.log(fileLoadedEvent)
+        }
+        fileReader.readAsDataURL(e.target.files[0]);
+
+
+    }
+
+    async function setImageDataInUseEffect(){
+        try {
+            const image = await axios({
+                method: "get",
+                url: `http://localhost:8080/user/${data.username}/photo`,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                }
+            })
+            setPhoto(image.data);
+        } catch(e) {console.error(e.message)}
+    }
+
 
     return (
         <>
@@ -80,10 +131,14 @@ export default function DriverAccount() {
             <form className={styles.form} name="account-form" onSubmit={handleSubmit(saveButton)}>
                 <aside className={styles.aside}>
                     <div className={styles['image-container']}>
-                        <div className={styles.image}>
-                        </div>
-                        <button type="button" className={styles['foto-wijzigen']} onClick={setImage}>foto wijzigen</button>
-                    </div>
+                        {photo ?
+                            <img src={`data:image/jpeg;base64,${photo}`} className={styles.image}/>
+                            :
+                            <img src={photo} className={styles.image}/>
+                        }
+                        <input type="file" accept="image/*" className={styles['foto-wijzigen']} onChange={(e) => {
+                            setImage(e)
+                        }}/>                    </div>
                     <LabeledInput title="naam" register={register}/>
                     <LabeledInput register={register} title="adres">
                         <input {...register("huisnummer")} type="text" className={styles.housenumber} id="huisnummer"/>

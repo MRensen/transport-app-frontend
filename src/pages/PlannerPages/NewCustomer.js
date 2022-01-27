@@ -1,16 +1,16 @@
 import styles from "./PlannerHome/PlannerHome.module.css"
 import {useForm} from "react-hook-form";
 import LabeledInput from "../../components/LabeledInput/LabeledInput";
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import axios from "axios";
 import {useHistory} from "react-router-dom";
 import {AuthContext} from "../../components/Context/AuthContextProvider";
 
 export default function NewCustomer() {
     const {handleSubmit, register, reset, formState: {errors}} = useForm();
-    const [photo, setPhoto] = useState("");
     const history = useHistory();
     const {refresh} = useContext(AuthContext);
+
 
     async function formSubmit(input) {
         const [firstName, lastName] = input.naam.split(" ");
@@ -61,10 +61,14 @@ export default function NewCustomer() {
 
             <form className={styles.content} name="account-form" onSubmit={handleSubmit(formSubmit)}>
                 {/*<div className={styles['image-container']}>*/}
-                {/*    <img src={photo} className={styles.image}>*/}
-                {/*    </img>*/}
-                {/*    <input type="file" className={styles['foto-wijzigen']} onChange={(e) => {setImage(e)}}/>*/}
-                {/*</div>*/}
+                {/*    {photo ?*/}
+                {/*        <img src={`data:image/jpeg;base64,${photo}`} className={styles.image}/>*/}
+                {/*        :*/}
+                {/*        <img src={photo} className={styles.image}/>*/}
+                {/*    }*/}
+                {/*    <input type="file" accept="image/*" className={styles['foto-wijzigen']} onChange={(e) => {*/}
+                {/*        setImage(e)*/}
+                {/*    }}/>                </div>*/}
                 <LabeledInput errors={errors} register={register} title="naam"/>
                 <LabeledInput errors={errors} register={register} title="adres">
                     <input {...register("huisnummer")} type="text" className={styles.housenumber} id="huisnummer"/>
