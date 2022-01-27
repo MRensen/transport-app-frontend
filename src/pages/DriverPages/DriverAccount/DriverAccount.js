@@ -7,14 +7,13 @@ import {useHistory} from "react-router-dom";
 import LabeledInput from "../../../components/LabeledInput/LabeledInput";
 import ModalPassword from "../../../components/ModalPassword/ModalPassword";
 import axios from "axios";
+import {setImage, setImageDataInUseEffect} from "../../../components/Helpers/HelperFunctions";
 
 export default function DriverAccount() {
     const {refresh, data} = useContext(AuthContext);
     const id = data.driver.id;
-    const username = data.username;
     const {register, handleSubmit, reset} = useForm();
     const history = useHistory();
-    const [driverData, setDriverdata] = useState({});
     const [show, setShow] = useState(false);
     const [photo, setPhoto] = useState("");
 
@@ -32,7 +31,7 @@ export default function DriverAccount() {
             'rijbewijs nummer': data.driver.driverLicenseNumber,
             'telefoon nummer': data.driver.phoneNumber,
         })
-        setImageDataInUseEffect();
+        setImageDataInUseEffect(data.username, setPhoto);
     },[])
 
     async function saveButton(data){
@@ -69,56 +68,6 @@ export default function DriverAccount() {
         history.push("/driver/home")
     }
 
-    async function sendImage(toSend) {
-        try {
-            await axios({
-                method: "patch",
-                url: `http://localhost:8080/user/${data.username}/photo`,
-                data: toSend,
-                params: toSend,
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                    Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
-                }
-            })
-        } catch (e) {
-            console.error(e.message)
-        }
-    }
-
-    function setImage(e) {
-        // console.log(e.target.files[0])
-
-        const formData = new FormData();
-        formData.append("image", e.target.files[0])
-        console.log(formData)
-        sendImage(formData);
-
-        let fileReader = new FileReader();
-        fileReader.onload = (fileLoadedEvent) => {
-            let base64Data = fileLoadedEvent.target.result;
-            const [header, data] = base64Data.split(",")
-            setPhoto(data)
-            console.log(fileLoadedEvent)
-        }
-        fileReader.readAsDataURL(e.target.files[0]);
-
-
-    }
-
-    async function setImageDataInUseEffect(){
-        try {
-            const image = await axios({
-                method: "get",
-                url: `http://localhost:8080/user/${data.username}/photo`,
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
-                }
-            })
-            setPhoto(image.data);
-        } catch(e) {console.error(e.message)}
-    }
 
 
     return (
@@ -132,12 +81,12 @@ export default function DriverAccount() {
                 <aside className={styles.aside}>
                     <div className={styles['image-container']}>
                         {photo ?
-                            <img src={`data:image/jpeg;base64,${photo}`} className={styles.image}/>
+                            <img src={`data:image/jpeg;base64,${photo}`} className={styles.image} alt="profile image"/>
                             :
-                            <img src={photo} className={styles.image}/>
+                            <img src={photo} className={styles.image} alt="profile image"/>
                         }
                         <input type="file" accept="image/*" className={styles['foto-wijzigen']} onChange={(e) => {
-                            setImage(e)
+                            setImage(e, setPhoto, data.username)
                         }}/>                    </div>
                     <LabeledInput title="naam" register={register}/>
                     <LabeledInput register={register} title="adres">

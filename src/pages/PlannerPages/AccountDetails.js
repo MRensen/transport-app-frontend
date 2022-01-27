@@ -6,6 +6,7 @@ import axios from "axios";
 import {AuthContext} from "../../components/Context/AuthContextProvider";
 import {useForm} from "react-hook-form";
 import {useHistory} from "react-router-dom";
+import {setImage, setImageDataInUseEffect} from "../../components/Helpers/HelperFunctions";
 
 export default function AccountDetails({setMenuDisplay, create, checkedMenu}) {
     const [show, setShow] = useState(false);
@@ -44,7 +45,7 @@ export default function AccountDetails({setMenuDisplay, create, checkedMenu}) {
         }
 
         onMount();
-        setImageDataInUseEffect();
+        setImageDataInUseEffect(data.username, setPhoto);
         return function onDismount() {
             if (!create) {
                 setMenuDisplay(true);
@@ -93,56 +94,6 @@ export default function AccountDetails({setMenuDisplay, create, checkedMenu}) {
         }
     }
 
-    async function sendImage(toSend) {
-        try {
-            await axios({
-                method: "patch",
-                url: `http://localhost:8080/user/${data.username}/photo`,
-                data: toSend,
-                params: toSend,
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                    Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
-                }
-            })
-        } catch (e) {
-            console.error(e.message)
-        }
-    }
-
-    function setImage(e) {
-        // console.log(e.target.files[0])
-
-        const formData = new FormData();
-        formData.append("image", e.target.files[0])
-        console.log(formData)
-        sendImage(formData);
-
-        let fileReader = new FileReader();
-        fileReader.onload = (fileLoadedEvent) => {
-            let base64Data = fileLoadedEvent.target.result;
-            const [header, data] = base64Data.split(",")
-            setPhoto(data)
-            console.log(fileLoadedEvent)
-        }
-        fileReader.readAsDataURL(e.target.files[0]);
-
-
-    }
-
-    async function setImageDataInUseEffect(){
-        try {
-            const image = await axios({
-                method: "get",
-                url: `http://localhost:8080/user/${data.username}/photo`,
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
-                }
-            })
-            setPhoto(image.data);
-        } catch(e) {console.error(e.message)}
-    }
 
 
     return (
@@ -168,15 +119,18 @@ export default function AccountDetails({setMenuDisplay, create, checkedMenu}) {
                 }
             </header>
             <form className={styles.content} name="account-form" onSubmit={handleSubmit(submitForm)}>
+                {!create &&
                 <div className={styles['image-container']}>
                     {photo ?
-                        <img src={`data:image/jpeg;base64,${photo}`} className={styles.image}/>
+                        <img src={`data:image/jpeg;base64,${photo}`} className={styles.image} alt="profile image"/>
                         :
-                        <img src={photo} className={styles.image}/>
+                        <img src={photo} className={styles.image} alt="profile image"/>
                     }
                     <input type="file" accept="image/*" className={styles['foto-wijzigen']} onChange={(e) => {
-                        setImage(e)
-                    }}/>                </div>
+                        setImage(e, setPhoto, data.username)
+                    }}/>
+                </div>
+                }
                 <LabeledInput errors={errors} register={register} title="naam"/>
                 <LabeledInput errors={errors} register={register} title="adres">
                     <input {...register("huisnummer")} type="text" className={styles.housenumber} id="huisnummer"/>

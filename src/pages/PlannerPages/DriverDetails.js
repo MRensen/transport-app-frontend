@@ -5,6 +5,7 @@ import axios from "axios";
 import {useContext, useEffect, useState} from "react";
 import {useHistory} from "react-router-dom";
 import {AuthContext} from "../../components/Context/AuthContextProvider";
+import {getStandardProfilePic, setImageDataInUseEffect} from "../../components/Helpers/HelperFunctions";
 
 export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
     const {refresh} = useContext(AuthContext);
@@ -17,6 +18,7 @@ export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
     useEffect(() => {
         async function getDriver() {
             if (!create) {
+                setPhoto(null);
                 try {
                     const result = await axios({
                         method: 'get',
@@ -26,6 +28,7 @@ export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
                             Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
                         }
                     })
+                    console.log(result.data)
                     setDriverData(result.data);
                     reset({
                         naam: `${result.data.firstName} ${result.data.lastName}`,
@@ -39,6 +42,7 @@ export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
                         'telefoon nummer': result.data.phoneNumber,
                         enabled: result.data.enabled
                     });
+                    await setImageDataInUseEffect(result.data.username, setPhoto);
                 } catch (e) {
                     console.log(e.message)
                     return null;
@@ -48,7 +52,6 @@ export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
 
 
         getDriver();
-        setImageDataInUseEffect();
 
     }, [checkedMenu])
 
@@ -130,56 +133,7 @@ export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
         reset()
     }
 
-    async function sendImage(toSend) {
-        try {
-            await axios({
-                method: "patch",
-                url: `http://localhost:8080/user/${data.username}/photo`,
-                data: toSend,
-                params: toSend,
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                    Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
-                }
-            })
-        } catch (e) {
-            console.error(e.message)
-        }
-    }
 
-    function setImage(e) {
-        // console.log(e.target.files[0])
-
-        const formData = new FormData();
-        formData.append("image", e.target.files[0])
-        console.log(formData)
-        sendImage(formData);
-
-        let fileReader = new FileReader();
-        fileReader.onload = (fileLoadedEvent) => {
-            let base64Data = fileLoadedEvent.target.result;
-            const [header, data] = base64Data.split(",")
-            setPhoto(data)
-            console.log(fileLoadedEvent)
-        }
-        fileReader.readAsDataURL(e.target.files[0]);
-
-
-    }
-
-    async function setImageDataInUseEffect(){
-        try {
-            const image = await axios({
-                method: "get",
-                url: `http://localhost:8080/user/${data.username}/photo`,
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
-                }
-            })
-            setPhoto(image.data);
-        } catch(e) {console.error(e.message)}
-    }
 
 
     if (driverData || create) {
@@ -200,20 +154,19 @@ export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
                     }
                 </header>
 
-                <form className={styles.content} onSubmit={handleSubmit(formSubmit)}
-                      onChange={console.log("form changed")}>
+                <form className={styles.content} onSubmit={handleSubmit(formSubmit)}>
+                    {!create &&
                     <div className={styles['image-container']}>
                         {photo ?
                             <img src={`data:image/jpeg;base64,${photo}`} className={styles.image}/>
                             :
                             <img src={photo} className={styles.image}/>
                         }
-                        {create &&
-                        <input type="file" accept="image/*" className={styles['foto-wijzigen']} onChange={(e) => {
-                            setImage(e)
-                        }}/>
-                        }
+                        {/*<input type="file" accept="image/*" className={styles['foto-wijzigen']} onChange={(e) => {*/}
+                        {/*    setImage(e)*/}
+                        {/*}}/>*/}
                     </div>
+                    }
                     <LabeledInput errors={errors} register={register} title="naam"/>
                     <LabeledInput errors={errors} register={register} title="adres">
                         <input type="text" className={styles.housenumber} id="adres"
