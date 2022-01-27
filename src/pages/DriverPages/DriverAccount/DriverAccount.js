@@ -9,14 +9,17 @@ import ModalPassword from "../../../components/ModalPassword/ModalPassword";
 import axios from "axios";
 
 export default function DriverAccount() {
-    const {data} = useContext(AuthContext);
+    const {refresh, data} = useContext(AuthContext);
     const id = data.driver.id;
+    const username = data.username;
     const {register, handleSubmit, reset} = useForm();
     const history = useHistory();
     const [driverData, setDriverdata] = useState({});
     const [show, setShow] = useState(false);
 
     useEffect(()=>{
+        // async function getUser(){
+        console.log(data)
         reset({
             naam: data.driver.firstName + " " + data.driver.lastName,
             adres : data.driver.street,
@@ -52,6 +55,8 @@ export default function DriverAccount() {
                     Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
                 }
             })
+            refresh()
+            history.push("/driver/home")
         }catch(e){console.log(e.error)}
 
     }

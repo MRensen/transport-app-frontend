@@ -9,12 +9,19 @@ import {AuthContext} from "../../../components/Context/AuthContextProvider";
 import axios from "axios";
 
 export default function CustomerAccount() {
-    const {data} = useContext(AuthContext);
+    const {data, refresh} = useContext(AuthContext);
     const [userData, setuserData] = useState({})
     const history = useHistory();
     const [show, setShow] = useState(false);
     const [photo, setPhoto] = useState("");
-    const {handleSubmit, register, formState: {errors}, reset} = useForm();
+    const {handleSubmit, register, formState: {errors}, reset} = useForm({ naam: data.customer.name,
+        adres: data.customer.street,
+        housenumber: data.customer.houseNumber,
+        postcode: data.customer.postalCode,
+        plaats: data.customer.city,
+        gebruikersnaam: data.customer.username,
+        "telefoon nummer": data.customer.phoneNumber,
+        enabled: data.customer.enabled});
 
     useEffect(() => {
         async function getUser() {
@@ -27,7 +34,14 @@ export default function CustomerAccount() {
                         Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
                     }
                 })
-                console.log(result.data)
+               setImageDataInUseEffect();
+                // const inputFileReader = new FileReader();
+                // inputFileReader.onload= (event)=>{
+                //     const base64 = event.target.result
+                //     setPhoto(base64)
+                // }
+                // inputFileReader.readAsDataURL(image.data)
+                // setPhoto(image.data)
                 setuserData(result.data)
                 reset({
                     naam: result.data.name,
@@ -38,7 +52,6 @@ export default function CustomerAccount() {
                     gebruikersnaam: result.data.username,
                     "telefoon nummer": result.data.phoneNumber,
                     enabled: result.data.enabled
-
                 })
             //     const fileReader = new FileReader();
             //
@@ -76,14 +89,15 @@ export default function CustomerAccount() {
                 const result = await axios({
                     method: "patch",
                     url: `http://localhost:8080/customers/${parseInt(userData.id)}`,
-                    // headers: {'Content-Type': 'application/json'},
                     data: toSend,
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
                     }
                 })
+                refresh();
                 console.log(data);
+                refresh();
             } catch (e) {
                 console.error(e.message)
             }
@@ -94,42 +108,58 @@ export default function CustomerAccount() {
         history.push("/customer/home")
     }
 
+    async function sendImage(toSend) {
+        try {
+            await axios({
+                method: "patch",
+                url: `http://localhost:8080/user/${data.username}/photo`,
+                data: toSend,
+                params: toSend,
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                }
+            })
+        } catch (e) {
+            console.error(e.message)
+        }
+    }
+
     function setImage(e) {
         // console.log(e.target.files[0])
-        let fileReader = new FileReader();
 
+        const formData = new FormData();
+        formData.append("image", e.target.files[0])
+        console.log(formData)
+        sendImage(formData);
+
+        let fileReader = new FileReader();
         fileReader.onload = (fileLoadedEvent) => {
             let base64Data = fileLoadedEvent.target.result;
-            setPhoto(base64Data)
-            console.log(base64Data)
-            async function updateDB() {
-                try {
-                    await axios({
-                        method: "patch",
-                        url: `http://localhost:8080/user/${data.username}/photo`,
-                        data: base64Data,
-                    })
-                } catch (e) {
-                    console.error(e.message)
-                }
-            }
-
-            updateDB()
+            const [header, data] = base64Data.split(",")
+            setPhoto(data)
+            console.log(fileLoadedEvent)
         }
         fileReader.readAsDataURL(e.target.files[0]);
 
 
-        // async function updateDB(){
-        //     try{
-        //         await axios({
-        //             method: "patch",
-        //             url: `http://localhost:8080/user/${data.username}/photo`,
-        //             data: photo,
-        //         })
-        //     } catch (e) {console.error(e.message)}
-        // }
-        // updateDB()
     }
+
+    async function setImageDataInUseEffect(){
+        try {
+            const image = await axios({
+                method: "get",
+                url: `http://localhost:8080/user/${data.username}/photo`,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                }
+            })
+            console.log(image);
+            setPhoto(image.data);
+        } catch(e) {console.error(e.message)}
+    }
+
 
 
     return (
@@ -142,9 +172,12 @@ export default function CustomerAccount() {
             <form className={styles.form} name="account-form" onSubmit={handleSubmit(saveFunction)}>
                 <aside className={styles.aside}>
                     <div className={styles['image-container']}>
-                        <img src={photo} className={styles.image}>
-                        </img>
-                        <input type="file" className={styles['foto-wijzigen']} onChange={(e) => {
+                        {photo ?
+                            <img src={`data:image/jpeg;base64,${photo}`} className={styles.image}/>
+                            :
+                            <img src={photo} className={styles.image}/>
+                        }
+                        <input type="file" accept="image/*" className={styles['foto-wijzigen']} onChange={(e) => {
                             setImage(e)
                         }}/>
                     </div>
