@@ -2,25 +2,33 @@ import styles from "./PlannerHome/PlannerHome.module.css"
 import LabeledInput from "../../components/LabeledInput/LabeledInput";
 import {useForm} from "react-hook-form";
 import axios from "axios";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {useHistory} from "react-router-dom";
-import ModalPassword from "../../components/ModalPassword/ModalPassword";
+import {AuthContext} from "../../components/Context/AuthContextProvider";
+import {getStandardProfilePic, setImageDataInUseEffect} from "../../components/Helpers/HelperFunctions";
 
 export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
+    const {refresh} = useContext(AuthContext);
     const history = useHistory();
     const [driverData, setDriverData] = useState(null);
+    const [photo, setPhoto] = useState("");
     const [unmount, setUnmount] = useState("");
-    const [show, setShow] = useState(false);
     const {register, handleSubmit, reset, formState: {errors}} = useForm();
 
     useEffect(() => {
         async function getDriver() {
             if (!create) {
+                setPhoto(null);
                 try {
                     const result = await axios({
                         method: 'get',
-                        url: `http://localhost:8080/drivers/${checkedMenu}`
+                        url: `http://localhost:8080/drivers/${checkedMenu}`,
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                        }
                     })
+                    console.log(result.data)
                     setDriverData(result.data);
                     reset({
                         naam: `${result.data.firstName} ${result.data.lastName}`,
@@ -34,6 +42,7 @@ export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
                         'telefoon nummer': result.data.phoneNumber,
                         enabled: result.data.enabled
                     });
+                    await setImageDataInUseEffect(result.data.username, setPhoto);
                 } catch (e) {
                     console.log(e.message)
                     return null;
@@ -43,6 +52,7 @@ export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
 
 
         getDriver();
+
     }, [checkedMenu])
 
     useEffect(() => {
@@ -68,19 +78,26 @@ export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
                 employeeNumber: data['personeels nummer'],
                 regularTruck: data['vaste wagen'],
                 driverLicenseNumber: data['rijbewijs nummer'],
-                phoneNumber: data['telefoon nummer']
+                phoneNumber: data['telefoon nummer'],
             }
             create &&
-                (toSend.username = data.naam) &&
-                (toSend.password = "$2a$12$5usMMaD9hathHXMKNMjlseunXe.QEQbRBtFiBycc.V/teqa0c4v6K")
+            (toSend.enabled = true) &&
+            (toSend.username = data.naam.split(" ").join("")) &&
+            (toSend.password = "$2a$12$5usMMaD9hathHXMKNMjlseunXe.QEQbRBtFiBycc.V/teqa0c4v6K")
 
-            await axios({
-                method: method,
-                url: baseurl + url,
-                header: {'Content-type': 'application/json'},
-                data: toSend
-            })
-            cancelFunction("saved")
+            try {
+                await axios({
+                    method: method,
+                    url: baseurl + url,
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                    },
+                    data: toSend
+                })
+                refresh()
+                cancelFunction("saved")
+            } catch(e){console.error(e.message)}
         }
 
     }
@@ -100,7 +117,11 @@ export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
         if (window.confirm("Weet je zeker dat je deze gebruiker wilt verwijderen?")) {
             await axios({
                 method: "delete",
-                url: `http://localhost:8080/drivers/${checkedMenu}`
+                url: `http://localhost:8080/drivers/${checkedMenu}`,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                }
             })
             cancelFunction("delete")
         }
@@ -111,6 +132,9 @@ export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
         console.log("reset")
         reset()
     }
+
+
+
 
     if (driverData || create) {
         return (
@@ -130,9 +154,19 @@ export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
                     }
                 </header>
 
-                <form className={styles.content} onSubmit={handleSubmit(formSubmit)}
-                      onChange={console.log("form changed")}>
-                    <img src="" className={styles.image}/>
+                <form className={styles.content} onSubmit={handleSubmit(formSubmit)}>
+                    {!create &&
+                    <div className={styles['image-container']}>
+                        {photo ?
+                            <img src={`data:image/jpeg;base64,${photo}`} className={styles.image}/>
+                            :
+                            <img src={photo} className={styles.image}/>
+                        }
+                        {/*<input type="file" accept="image/*" className={styles['foto-wijzigen']} onChange={(e) => {*/}
+                        {/*    setImage(e)*/}
+                        {/*}}/>*/}
+                    </div>
+                    }
                     <LabeledInput errors={errors} register={register} title="naam"/>
                     <LabeledInput errors={errors} register={register} title="adres">
                         <input type="text" className={styles.housenumber} id="adres"

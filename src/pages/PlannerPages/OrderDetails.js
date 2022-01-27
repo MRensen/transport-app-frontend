@@ -17,7 +17,11 @@ export default function OrderDetails({checkedMenu, setOrders, orders, setChecked
                 try {
                     const result = await axios({
                         method: 'get',
-                        url: `http://localhost:8080/orders/${checkedMenu}`
+                        url: `http://localhost:8080/orders/${checkedMenu}`,
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                        }
                     })
                     setOrderData(result.data);
                     reset({});
@@ -39,7 +43,11 @@ export default function OrderDetails({checkedMenu, setOrders, orders, setChecked
                 try {
                     const result = await axios({
                         method: "get",
-                        url: "http://localhost:8080/routes"
+                        url: "http://localhost:8080/routes",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                        }
                     })
                     console.log(result.data)
                     setRoutes(result.data);
@@ -65,7 +73,11 @@ export default function OrderDetails({checkedMenu, setOrders, orders, setChecked
                 method: "patch",
                 url: `http://localhost:8080/orders/${orderData.id}`,
                 data: {route: {id: selectedRoute},
-                        orderStatus: "in transport"}
+                        orderStatus: "in transport"},
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                }
             })
         } catch (e) {
             console.error(e.message)
@@ -78,7 +90,11 @@ export default function OrderDetails({checkedMenu, setOrders, orders, setChecked
                 const result = await axios({
                     method: "patch",
                     url: `http://localhost:8080/orders/${orderData.id}`,
-                    data: {orderStatus: "declined"}
+                    data: {orderStatus: "declined"},
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                    }
                 })
             } catch (e) {
                 console.error(e.message)
@@ -97,7 +113,11 @@ export default function OrderDetails({checkedMenu, setOrders, orders, setChecked
             await axios({
                 method: "patch",
                 url: `http://localhost:8080/orders/${orderData.id}`,
-                data: {orderStatus: "processing"}
+                data: {orderStatus: "processing"},
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                }
             })
             setOrderData(null);
             setCheckedMenu(null);
@@ -112,6 +132,10 @@ export default function OrderDetails({checkedMenu, setOrders, orders, setChecked
             const result = await axios({
                 method: "get",
                 url: `http://localhost:8080/orders/status/delivered`,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                }
             })
             setOrders(result.data);
             setOrderData(null)
@@ -126,6 +150,10 @@ export default function OrderDetails({checkedMenu, setOrders, orders, setChecked
             const result = await axios({
                 method: "get",
                 url: `http://localhost:8080/orders/status/open`,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                }
             })
             setOrders(result.data);
             setOrderData(null)
@@ -140,6 +168,10 @@ export default function OrderDetails({checkedMenu, setOrders, orders, setChecked
             const result = await axios({
                 method: "get",
                 url: `http://localhost:8080/orders`,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                }
             })
             setOrders(result.data);
             setOrderData(null)

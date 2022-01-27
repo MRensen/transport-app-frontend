@@ -12,14 +12,18 @@ export default function Lossen() {
     const watchEmbalageGeladen = watch("embalage-geladen");
     const watchEmbalageGelost = watch("embalage-gelost");
 
-    function acceptFunction() {
+    function acceptFunction(input) {
         async function patch() {
+            const orderStatus = input.gelost? "delivered" : "not delivered";
             try {
                 const result = await axios({
                     method: 'patch',
                     url: `http://localhost:8080/orders/${orderId}`,
-                    data: {orderStatus: "delivered"}
-                    //TODO axios headers
+                    data: {orderStatus: orderStatus},
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                    }
                 })
                 history.push("/driver/planning")
             } catch (e) {

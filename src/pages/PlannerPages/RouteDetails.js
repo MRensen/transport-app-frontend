@@ -1,7 +1,6 @@
 import styles from "./PlannerHome/PlannerHome.module.css";
 import {useEffect, useState} from "react";
 import axios from "axios";
-import {wait} from "@testing-library/user-event/dist/utils";
 
 export default function RouteDetails({checkedMenu, setCheckedMenu}) {
     const [routeData, setRouteDate] = useState(null);
@@ -18,7 +17,11 @@ export default function RouteDetails({checkedMenu, setCheckedMenu}) {
             try {
                 const result = await axios({
                     method: "get",
-                    url: `http://localhost:8080/routes/${checkedMenu}`
+                    url: `http://localhost:8080/routes/${checkedMenu}`,
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                    }
                 })
                 console.log(routeData)
                 setRouteDate(result.data)
@@ -28,7 +31,11 @@ export default function RouteDetails({checkedMenu, setCheckedMenu}) {
             try {
                 const result = await axios({
                     method: "get",
-                    url: `http://localhost:8080/orders/route/${checkedMenu}`
+                    url: `http://localhost:8080/orders/route/${checkedMenu}`,
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                    }
                 })
                 console.log(orderData)
                 setOrderData(result.data)
@@ -53,7 +60,11 @@ export default function RouteDetails({checkedMenu, setCheckedMenu}) {
             try {
                 const result = await axios({
                     method: "get",
-                    url: `http://localhost:8080/drivers`
+                    url: `http://localhost:8080/drivers`,
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                    }
                 })
                 console.log(result.data);
                 setDrivers(result.data);
@@ -70,7 +81,11 @@ export default function RouteDetails({checkedMenu, setCheckedMenu}) {
         const result = await axios({
             method: "patch",
             url: `http://localhost:8080/routes/${checkedMenu}`,
-            data: {driver: {id: selectedDriver}}
+            data: {driver: {id: selectedDriver}},
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+            }
         })
         setCheckedMenu(null);
 
@@ -85,13 +100,20 @@ export default function RouteDetails({checkedMenu, setCheckedMenu}) {
             await axios({
                 method: "delete",
                 url: `http://localhost:8080/routes/${checkedMenu}/orders`,
-                data: data
+                data: data,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                }
             })
             async function setOrder(order) {
                 const result = await axios({
                     method: "patch",
                     url: `http://localhost:8080/orders/${order.id}`,
-                    header: {'Content-type': 'application/json'},
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                    },
                     data: {orderStatus: "processing"}
                 })
             }
@@ -106,7 +128,11 @@ export default function RouteDetails({checkedMenu, setCheckedMenu}) {
             try {
                 const result = await axios({
                     method: "get",
-                    url: `http://localhost:8080/orders`
+                    url: `http://localhost:8080/orders`,
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                    }
                 })
                 setOrders(result.data.filter((order) => {
                     return (order.route === null) &&(order.orderStatus !== "declined")
@@ -129,13 +155,19 @@ export default function RouteDetails({checkedMenu, setCheckedMenu}) {
             await axios({
                 method: "patch",
                 url: `http://localhost:8080/routes/${checkedMenu}`,
-                header: {'Content-type': 'application/json'},
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                },
                 data: data
             })
             await axios({
                 method: "patch",
                 url: `http://localhost:8080/orders/${parseInt(selectedOrder)}`,
-                header: {'Content-type': 'application/json'},
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                },
                 data: {orderStatus: "in transport"}
             })
         } catch(e){console.error(e.message)}

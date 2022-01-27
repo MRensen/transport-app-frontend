@@ -7,16 +7,20 @@ import {useHistory} from "react-router-dom";
 import LabeledInput from "../../../components/LabeledInput/LabeledInput";
 import ModalPassword from "../../../components/ModalPassword/ModalPassword";
 import axios from "axios";
+import {setImage, setImageDataInUseEffect} from "../../../components/Helpers/HelperFunctions";
 
 export default function DriverAccount() {
-    const {data} = useContext(AuthContext);
+    const {refresh, data} = useContext(AuthContext);
     const id = data.driver.id;
     const {register, handleSubmit, reset} = useForm();
     const history = useHistory();
-    const [driverData, setDriverdata] = useState({});
     const [show, setShow] = useState(false);
+    const [photo, setPhoto] = useState("");
+
 
     useEffect(()=>{
+        // async function getUser(){
+        console.log(data)
         reset({
             naam: data.driver.firstName + " " + data.driver.lastName,
             adres : data.driver.street,
@@ -27,6 +31,7 @@ export default function DriverAccount() {
             'rijbewijs nummer': data.driver.driverLicenseNumber,
             'telefoon nummer': data.driver.phoneNumber,
         })
+        setImageDataInUseEffect(data.username, setPhoto);
     },[])
 
     async function saveButton(data){
@@ -46,9 +51,14 @@ export default function DriverAccount() {
             const result = await axios({
                 method : "patch",
                 data: toSend,
-                url: `http://localhost:8080/drivers/${id}`
-                //TODO axios headers
+                url: `http://localhost:8080/drivers/${id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                }
             })
+            refresh()
+            history.push("/driver/home")
         }catch(e){console.log(e.error)}
 
     }
@@ -58,9 +68,7 @@ export default function DriverAccount() {
         history.push("/driver/home")
     }
 
-    const setImage = () => {
-        console.log("set image");
-    }
+
 
     return (
         <>
@@ -72,10 +80,14 @@ export default function DriverAccount() {
             <form className={styles.form} name="account-form" onSubmit={handleSubmit(saveButton)}>
                 <aside className={styles.aside}>
                     <div className={styles['image-container']}>
-                        <div className={styles.image}>
-                        </div>
-                        <button type="button" className={styles['foto-wijzigen']} onClick={setImage}>foto wijzigen</button>
-                    </div>
+                        {photo ?
+                            <img src={`data:image/jpeg;base64,${photo}`} className={styles.image} alt="profile image"/>
+                            :
+                            <img src={photo} className={styles.image} alt="profile image"/>
+                        }
+                        <input type="file" accept="image/*" className={styles['foto-wijzigen']} onChange={(e) => {
+                            setImage(e, setPhoto, data.username)
+                        }}/>                    </div>
                     <LabeledInput title="naam" register={register}/>
                     <LabeledInput register={register} title="adres">
                         <input {...register("huisnummer")} type="text" className={styles.housenumber} id="huisnummer"/>

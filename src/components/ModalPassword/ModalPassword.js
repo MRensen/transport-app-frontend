@@ -14,8 +14,11 @@ export default function ModalPassword({ show, onClose, id: username}) {
                 await axios({
                     method: "patch",
                     url: `http://localhost:8080/user/${username}/password`,
-                    data: {password: password}
-                    //TODO axios headers
+                    data: {password: password},
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                    }
                 })
                 console.log("password changed")
             }catch (e){

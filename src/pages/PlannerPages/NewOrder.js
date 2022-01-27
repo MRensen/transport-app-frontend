@@ -40,8 +40,11 @@ export default function NewOrder({checkedMenu}) {
         await axios({
             method: "post",
             url: `http://localhost:8080/orders`,
-            data: toSend
-            // TODO axios headers
+            data: toSend,
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+            }
         })
     }
 
@@ -58,7 +61,7 @@ export default function NewOrder({checkedMenu}) {
 
             </header>
 
-            <form className={styles.content} name="account-form" onSubmit={handleSubmit(formSubmit)}>
+            <form className={styles.content} name="order-form" onSubmit={handleSubmit(formSubmit)}>
 
                 <h1>Laden</h1>
                 <LabeledInput register={register} title="laad-naam"/>

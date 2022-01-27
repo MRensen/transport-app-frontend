@@ -7,23 +7,41 @@ import {useForm} from "react-hook-form";
 import {useContext, useEffect, useState} from "react";
 import {AuthContext} from "../../../components/Context/AuthContextProvider";
 import axios from "axios";
+import {setImage, setImageDataInUseEffect} from "../../../components/Helpers/HelperFunctions";
 
 export default function CustomerAccount() {
-    const {data} = useContext(AuthContext);
+    const {data, refresh} = useContext(AuthContext);
     const [userData, setuserData] = useState({})
     const history = useHistory();
     const [show, setShow] = useState(false);
-    const {handleSubmit, register, formState: {errors}, reset} = useForm();
+    const [photo, setPhoto] = useState("");
+    const {handleSubmit, register, formState: {errors}, reset} = useForm({ naam: data.customer.name,
+        adres: data.customer.street,
+        housenumber: data.customer.houseNumber,
+        postcode: data.customer.postalCode,
+        plaats: data.customer.city,
+        gebruikersnaam: data.customer.username,
+        "telefoon nummer": data.customer.phoneNumber,
+        enabled: data.customer.enabled});
 
     useEffect(() => {
         async function getUser() {
             try {
                 const result = await axios({
                     method: "get",
-                    url: `http://localhost:8080/customers/${data.customer.id}`
-                    //TODO axios headers
+                    url: `http://localhost:8080/customers/${data.customer.id}`,
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                    }
                 })
-                console.log(result.data)
+                // const inputFileReader = new FileReader();
+                // inputFileReader.onload= (event)=>{
+                //     const base64 = event.target.result
+                //     setPhoto(base64)
+                // }
+                // inputFileReader.readAsDataURL(image.data)
+                // setPhoto(image.data)
                 setuserData(result.data)
                 reset({
                     naam: result.data.name,
@@ -34,14 +52,23 @@ export default function CustomerAccount() {
                     gebruikersnaam: result.data.username,
                     "telefoon nummer": result.data.phoneNumber,
                     enabled: result.data.enabled
-
                 })
+            //     const fileReader = new FileReader();
+            //
+            //     fileReader.onload = (fileLoadedEvent) => {
+            //         const base64Data = fileLoadedEvent.target.result;
+            //         setPhoto(base64Data)
+            //         console.log(base64Data)
+            //
+            //     }
+            //     fileReader.readAsDataURL(result.data.image);
             } catch (e) {
                 console.error(e.message)
             }
         }
-
         getUser()
+        setImageDataInUseEffect(data.username, setPhoto);
+
 
     }, [])
 
@@ -63,12 +90,18 @@ export default function CustomerAccount() {
                 const result = await axios({
                     method: "patch",
                     url: `http://localhost:8080/customers/${parseInt(userData.id)}`,
-                    // headers: {'Content-Type': 'application/json'},
-                    data: toSend
-                    //TODO axios headers
+                    data: toSend,
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
+                    }
                 })
+                refresh();
                 console.log(data);
-            } catch(e){console.error(e.message)}
+                refresh();
+            } catch (e) {
+                console.error(e.message)
+            }
         }
     }
 
@@ -76,9 +109,8 @@ export default function CustomerAccount() {
         history.push("/customer/home")
     }
 
-    function setImage() {
-        //TODO set image
-    }
+
+
 
     return (
         <>
@@ -90,14 +122,18 @@ export default function CustomerAccount() {
             <form className={styles.form} name="account-form" onSubmit={handleSubmit(saveFunction)}>
                 <aside className={styles.aside}>
                     <div className={styles['image-container']}>
-                        <div className={styles.image}>
-                        </div>
-                        <button type="button" className={styles['foto-wijzigen']} onClick={setImage}>foto wijzigen
-                        </button>
+                        {photo ?
+                            <img src={`data:image/jpeg;base64,${photo}`} className={styles.image}/>
+                            :
+                            <img src={photo} className={styles.image}/>
+                        }
+                        <input type="file" accept="image/*" className={styles['foto-wijzigen']} onChange={(e) => {
+                            setImage(e, setPhoto, data.username)
+                        }}/>
                     </div>
                 </aside>
                 <aside className={styles.aside}>
-                    <LabeledInput register={register} title="klantnummer" value = {userData.id}/>
+                    <LabeledInput register={register} title="klantnummer" value={userData.id}/>
                     <LabeledInput errors={errors} register={register} title="gebruikersnaam"/>
                     <LabeledInput errors={errors} title="naam" register={register}/>
                     <LabeledInput register={register} title="adres">
