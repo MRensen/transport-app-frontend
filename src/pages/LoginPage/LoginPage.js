@@ -8,7 +8,7 @@ export default function LoginPage() {
     const [passwordValue, setPasswordValue] = useState("");
     const [nameValue, setNameValue] = useState("");
     const [error, setError] = useState("");
-    const {login} = useContext(AuthContext);
+    const {login, loggedIn} = useContext(AuthContext);
 
 
     async function applyLogin() {
@@ -21,9 +21,11 @@ export default function LoginPage() {
         }
         setError("");
         try {
-            await login({username: nameValue, password: passwordValue});
-            setError("Deze inlog gegevens zijn niet bekend");
-        } catch(e){console.error(e.message)}
+            if(! await login({username: nameValue, password: passwordValue})){
+                setError("Deze inlog gegevens zijn niet bekend");
+            }
+        } catch(e){console.error(e.message);
+        }
 
     }
 
