@@ -5,7 +5,6 @@ export default function CustomerHomeButton({path, name, logo}){
     return(
     <div className={styles.button}>
         <input type="image" src={logo} id={name} onClick={() => {
-            console.log(name);
             history.push(path);
         }}/>
         <label htmlFor={name} className={styles.label}> {name} </label>

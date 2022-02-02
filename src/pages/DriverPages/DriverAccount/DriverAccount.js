@@ -7,7 +7,7 @@ import {useHistory} from "react-router-dom";
 import LabeledInput from "../../../components/LabeledInput/LabeledInput";
 import ModalPassword from "../../../components/ModalPassword/ModalPassword";
 import axios from "axios";
-import {setImage, setImageDataInUseEffect} from "../../../components/Helpers/HelperFunctions";
+import {setImage, setImageDataInUseEffect} from "../../../components/Helpers/ImageFunctions";
 
 export default function DriverAccount() {
     const {refresh, data} = useContext(AuthContext);

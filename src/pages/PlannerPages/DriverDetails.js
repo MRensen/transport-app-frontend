@@ -5,7 +5,7 @@ import axios from "axios";
 import {useContext, useEffect, useState} from "react";
 import {useHistory} from "react-router-dom";
 import {AuthContext} from "../../components/Context/AuthContextProvider";
-import {getStandardProfilePic, setImageDataInUseEffect} from "../../components/Helpers/HelperFunctions";
+import {getStandardProfilePic, setImageDataInUseEffect} from "../../components/Helpers/ImageFunctions";
 
 export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
     const {refresh} = useContext(AuthContext);

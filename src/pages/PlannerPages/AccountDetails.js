@@ -6,7 +6,7 @@ import axios from "axios";
 import {AuthContext} from "../../components/Context/AuthContextProvider";
 import {useForm} from "react-hook-form";
 import {useHistory} from "react-router-dom";
-import {setImage, setImageDataInUseEffect} from "../../components/Helpers/HelperFunctions";
+import {setImage, setImageDataInUseEffect} from "../../components/Helpers/ImageFunctions";
 
 export default function AccountDetails({setMenuDisplay, create, checkedMenu}) {
     const [show, setShow] = useState(false);

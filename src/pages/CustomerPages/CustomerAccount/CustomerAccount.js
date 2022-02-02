@@ -7,7 +7,7 @@ import {useForm} from "react-hook-form";
 import {useContext, useEffect, useState} from "react";
 import {AuthContext} from "../../../components/Context/AuthContextProvider";
 import axios from "axios";
-import {setImage, setImageDataInUseEffect} from "../../../components/Helpers/HelperFunctions";
+import {setImage, setImageDataInUseEffect} from "../../../components/Helpers/ImageFunctions";
 
 export default function CustomerAccount() {
     const {data, refresh} = useContext(AuthContext);
