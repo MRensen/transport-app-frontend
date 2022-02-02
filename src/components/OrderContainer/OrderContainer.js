@@ -15,7 +15,6 @@ export default function OrderContainer({endpoint, noButton}) {
                         Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
                 }})
                 setOrderData(result.data);
-                console.log(result.data)
             } catch (e) {
                 console.log("error fetching data: " + e.error);
             }
@@ -48,31 +47,21 @@ export default function OrderContainer({endpoint, noButton}) {
                 {orderData.deliveryStreet + " " + orderData.deliveryHouseNumber}<br/>
                 type: {orderData.type}<br/>
                 aantal: {orderData.pallets && orderData.pallets.length}<br/>
-                beschrijving: {orderData.pallets.map((p)=>{return "-|"+p.load +"|-"})}</p>
-                {/*creator: {id: 1001}*/}
-                {/*deliveryCity: "houten"*/}
-                {/*deliveryDate: null*/}
-                {/*deliveryHouseNumber: "65"*/}
-                {/*deliveryName: "hendriksen"*/}
-                {/*deliveryPostal: "6006it"*/}
-                {/*deliveryStreet: "achterweg"*/}
-                {/*id: 3002*/}
-                {/*isPickup: null*/}
-                {/*loadingCity: "Didam"*/}
-                {/*loadingDate: null*/}
-                {/*loadingHouseNumber: "5"*/}
-                {/*loadingName: "fabriek"*/}
-                {/*loadingPostal: "7062xs"*/}
-                {/*loadingStreet: "wasstraat"*/}
-                {/*orderStatus: null*/}
-                {/*pallets: []*/}
-                {/*route: {id: 5001}*/}
+                beschrijving: {orderData.pallets.length < 4
+                        ?
+                        orderData.pallets.map((p)=>{return "-|"+p.load +"|-"})
+                        :
+                        orderData.pallets.slice(0,4).map((p)=>{return "-|"+p.load +"|-"})}</p>
             </main>
             <main className={styles.main}>
                 <p><strong>{orderData.isPickup ? "laden: " : "afzender: "}</strong>{orderData.loadingName}<br/>
                     {orderData.loadingPostal + " " + orderData.loadingCity}<br/>
                     {orderData.loadingStreet + " " + orderData.loadingHouseNumber}<br/>
-                    opmerkingen: {orderData.description}
+                    opmerkingen: {orderData.description && (orderData.description.length < 30
+                        ?
+                        orderData.description
+                        :
+                        orderData.description.substring(0, 30) + "...")}
                 </p>
             </main>
         </article>
