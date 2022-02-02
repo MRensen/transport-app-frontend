@@ -19,13 +19,11 @@ import CustomerOrders from "./pages/CustomerPages/CustomerOrders/CustomerOrders"
 
 
 function App() {
-    const {data: userData} = useContext(AuthContext);
     return (
         <Switch>
             <Route path="/" exact>
                 <LoginPage/>
             </Route>
-            {console.log(userData.role)}
             <PrivateRoute path="/driver/home" role="driver">
                 <DriverHome/>
             </PrivateRoute>
@@ -47,9 +45,6 @@ function App() {
             <PrivateRoute path="/order/:id/laden" role="driver">
                 <Laden/>
             </PrivateRoute>
-            {/*{(userData.role == "planner") &&*/}
-            {/*   <HeaderPlain/>*/}
-            {/*/!*}*!/*/}
             <PrivateRoute path="/planner" role="planner">
                 <PlannerHome/>
             </PrivateRoute>
@@ -68,13 +63,6 @@ function App() {
             <PrivateRoute path="/customer/orders" role="customer">
                 <CustomerOrders/>
             </PrivateRoute>
-            {/*{(loggedIn && (name === "driver")) &&*/}
-            {/*<Route path="/driver/home">*/}
-            {/*    <DriverHome/>*/}
-            {/*</Route>*/}
-            {/*}*/}
-            {/*{(loggedIn && (name === "driver")) &&*/}
-
             }
         </Switch>
     );
