@@ -8,7 +8,7 @@ export default function LoginPage() {
     const [passwordValue, setPasswordValue] = useState("");
     const [nameValue, setNameValue] = useState("");
     const [error, setError] = useState("");
-    const {login, loggedIn} = useContext(AuthContext);
+    const {login} = useContext(AuthContext);
 
 
     async function applyLogin() {
@@ -30,7 +30,7 @@ export default function LoginPage() {
     }
 
     return (
-        <div>
+        <div >
             <HeaderPlain/>
             <main className={styles.main}>
                 <button type="button" className={styles.title} onClick={applyLogin}>inloggen</button>
@@ -47,6 +47,7 @@ export default function LoginPage() {
                                setNameValue(e.target.value);
                                setError("");
                            }}
+                           onKeyPress={(e)=>{if(e.key==="Enter"){applyLogin()}}}
                     />
                 </section>
                 <section>
@@ -59,6 +60,7 @@ export default function LoginPage() {
                                setPasswordValue(e.target.value);
                                setError("");
                            }}
+                           onKeyPress={(e)=>{if(e.key==="Enter"){applyLogin()}}}
                     />
                 </section>
             </main>

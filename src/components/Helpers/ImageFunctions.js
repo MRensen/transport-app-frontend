@@ -21,8 +21,6 @@ async function sendImage(toSend, username) {
 }
 
 export function setImage(e, setPhoto, username) {
-    // console.log(e.target.files[0])
-
     const formData = new FormData();
     formData.append("image", e.target.files[0])
     sendImage(formData, username);
@@ -32,7 +30,6 @@ export function setImage(e, setPhoto, username) {
         let base64Data = fileLoadedEvent.target.result;
         const [header, data] = base64Data.split(",")
         setPhoto(data)
-        console.log(fileLoadedEvent)
     }
     fileReader.readAsDataURL(e.target.files[0]);
 
@@ -49,7 +46,6 @@ export async function setImageDataInUseEffect(username, setPhoto){
                 Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
             }
         })
-        console.log(image.data)
         setPhoto(image.data);
     } catch(e) {console.error(e.message)}
 }

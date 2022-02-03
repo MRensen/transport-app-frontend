@@ -35,13 +35,6 @@ export default function CustomerAccount() {
                         Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
                     }
                 })
-                // const inputFileReader = new FileReader();
-                // inputFileReader.onload= (event)=>{
-                //     const base64 = event.target.result
-                //     setPhoto(base64)
-                // }
-                // inputFileReader.readAsDataURL(image.data)
-                // setPhoto(image.data)
                 setuserData(result.data)
                 reset({
                     naam: result.data.name,
@@ -53,15 +46,6 @@ export default function CustomerAccount() {
                     "telefoon nummer": result.data.phoneNumber,
                     enabled: result.data.enabled
                 })
-            //     const fileReader = new FileReader();
-            //
-            //     fileReader.onload = (fileLoadedEvent) => {
-            //         const base64Data = fileLoadedEvent.target.result;
-            //         setPhoto(base64Data)
-            //         console.log(base64Data)
-            //
-            //     }
-            //     fileReader.readAsDataURL(result.data.image);
             } catch (e) {
                 console.error(e.message)
             }

@@ -24,7 +24,6 @@ export default function CustomerOrders() {
                         Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
                     }
                 })
-                console.log(result.data)
                 setCustomerOrders(result.data);
             } catch (e) {
                 console.error(e.message)
@@ -99,8 +98,8 @@ export default function CustomerOrders() {
                         <tr>
                             <th>select</th>
                             <th>id</th>
-                            <th>laad adres</th>
                             <th>los adres</th>
+                            <th>laad adres</th>
                             <th>laden/ lossen</th>
                             <th> status</th>
                             <th> type</th>
@@ -114,11 +113,11 @@ export default function CustomerOrders() {
                             return <tr key={order.id}>
                                 <td><input type={'checkbox'} id={order.id} onChange={checkboxChangeHandler}/></td>
                                 <td>{order.id}</td>
-                                <td><p>{order.loadingName}<br/>
+                                <td><p>{order.deliveryName}<br/>
                                     {order.deliveryPostal + " " + order.deliveryCity}<br/>
                                     {order.deliveryStreet + " " + order.deliveryHouseNumber}</p>
                                 </td>
-                                <td><p>{order.deliveryName}<br/>
+                                <td><p>{order.loadingName}<br/>
                                     {order.loadingPostal + " " + order.loadingCity}<br/>
                                     {order.loadingStreet + " " + order.loadingHouseNumber}</p>
                                 </td>

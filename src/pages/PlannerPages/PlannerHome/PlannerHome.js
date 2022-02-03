@@ -14,7 +14,7 @@ import {AuthContext} from "../../../components/Context/AuthContextProvider";
 import NewUser from "../NewUser";
 
 export default function PlannerHome() {
-    const {id} = useContext(AuthContext);
+    // const {id} = useContext(AuthContext);
     const [checked, setChecked] = useState("");
     const [checkedMenu, setCheckedMenu] = useState(null);
     const [drivers, setDrivers] = useState([]);
@@ -90,10 +90,6 @@ export default function PlannerHome() {
         getRoutes();
     }, [checked, checkedMenu])
 
-
-    function setImage() {
-        //TODO set image
-    };
 
     return (
         <>
