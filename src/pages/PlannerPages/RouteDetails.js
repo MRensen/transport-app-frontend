@@ -234,7 +234,7 @@ export default function RouteDetails({checkedMenu, setCheckedMenu}) {
                                             {order.deliveryStreet + " " + order.deliveryHouseNumber}</p></td>
                                         <td> {order.loadingPostal + " " + order.loadingCity}<br/>
                                             {order.loadingStreet + " " + order.loadingHouseNumber}</td>
-                                        <td>{order.isPickup}</td>
+                                        <td>{order.isPickup? "laden" : "lossen"}</td>
                                         <td>{order.orderStatus}</td>
                                         <td>{order.deliveryDate}</td>
                                         <td>{order.loadingDate}</td>
