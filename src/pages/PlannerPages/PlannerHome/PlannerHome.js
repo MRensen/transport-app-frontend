@@ -1,26 +1,22 @@
 import styles from "./PlannerHome.module.css";
 import HeaderPlain from "../../../components/Header/Header";
-import {useContext, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import PlannerNavItem from "../../../components/PlannerNavItem/PlannerNavItem";
 import axios from "axios";
 import PlannerMenuItem from "../../../components/PlannerMenuItem/PlannerMenuItem";
-import {useForm} from "react-hook-form";
 import DriverDetails from "../DriverDetails";
 import OrderDetails from "../OrderDetails";
 import RouteDetails from "../RouteDetails";
 import AccountDetails from "../AccountDetails";
-import {Route, Switch, useHistory, useRouteMatch} from "react-router-dom";
-import {AuthContext} from "../../../components/Context/AuthContextProvider";
+import {Route, Switch} from "react-router-dom";
 import NewUser from "../NewUser";
 
 export default function PlannerHome() {
-    // const {id} = useContext(AuthContext);
     const [checked, setChecked] = useState("");
     const [checkedMenu, setCheckedMenu] = useState(null);
     const [drivers, setDrivers] = useState([]);
     const [orders, setOrders] = useState([]);
     const [routes, setRoutes] = useState([]);
-    // const [planner, setPlanner] = useState({});
     const [menuDisplay, setMenuDisplay] = useState(true);
     const [newDisplay, setNewDisplay] = useState(true);
 

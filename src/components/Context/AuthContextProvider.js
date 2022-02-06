@@ -101,7 +101,6 @@ export default function AuthContextProvider({children}){
         localStorage.removeItem("logitoken");
         history.push("/")
     }
-    const id = data.id;
     const value = {
         loggedIn: isAuth,
         login,

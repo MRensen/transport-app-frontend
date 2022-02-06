@@ -1,9 +1,7 @@
 import axios from "axios";
-import {useContext} from "react";
-import {AuthContext} from "../Context/AuthContextProvider";
 
 async function sendImage(toSend, username) {
-    console.log(username)
+    console.log(toSend)
     try {
         await axios({
             method: "patch",

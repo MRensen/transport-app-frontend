@@ -23,7 +23,6 @@ export default function RouteDetails({checkedMenu, setCheckedMenu}) {
                         Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
                     }
                 })
-                console.log(routeData)
                 setRouteDate(result.data)
             } catch (e) {
                 console.error(e.message)
@@ -37,7 +36,6 @@ export default function RouteDetails({checkedMenu, setCheckedMenu}) {
                         Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
                     }
                 })
-                console.log(orderData)
                 setOrderData(result.data)
             } catch (e) {
                 console.error(e.message)
@@ -66,7 +64,7 @@ export default function RouteDetails({checkedMenu, setCheckedMenu}) {
                         Authorization: `Bearer ${localStorage.getItem("logitoken")}`,
                     }
                 })
-                console.log(result.data);
+
                 setDrivers(result.data);
             } catch (e) {
                 console.error(e.message)
@@ -77,8 +75,7 @@ export default function RouteDetails({checkedMenu, setCheckedMenu}) {
 
     async function addDriverFunction() {
         setShowOptionsScreen(false)
-        console.log(selectedDriver);
-        const result = await axios({
+        await axios({
             method: "patch",
             url: `http://localhost:8080/routes/${checkedMenu}`,
             data: {driver: {id: selectedDriver}},
@@ -93,9 +90,8 @@ export default function RouteDetails({checkedMenu, setCheckedMenu}) {
 
 
     async function deleteFunction() {
-        const filteredList = orderData.filter((order)=>( !selectedOrders.includes(order)))
+        orderData.filter((order)=>( !selectedOrders.includes(order)))
         const data = selectedOrders
-        console.log(data)
         try{
             await axios({
                 method: "delete",
@@ -107,7 +103,7 @@ export default function RouteDetails({checkedMenu, setCheckedMenu}) {
                 }
             })
             async function setOrder(order) {
-                const result = await axios({
+                await axios({
                     method: "patch",
                     url: `http://localhost:8080/orders/${order.id}`,
                     headers: {
@@ -176,9 +172,6 @@ export default function RouteDetails({checkedMenu, setCheckedMenu}) {
     }
 
 
-    function moveDownFunction() {
-
-    }
 
     function checkboxChangeHandler(event) {
         const checked = event.target.checked;
@@ -221,10 +214,6 @@ export default function RouteDetails({checkedMenu, setCheckedMenu}) {
                                     <th>laad datum</th>
                                 </tr>
                                 </thead>
-                                {/*{routeData.orders && routeData.orders.forEach((orderId)=>{console.log(orderId);getOrder(orderId.id)})}*/}
-                                {/*    .map((order)=>{*/}
-                                {/*    if(order){*/}
-                                {/*        console.log(order)*/}
                                 <tbody>
                                 {orderData && orderData.map((order) => {
                                     return <tr key={order.id}>
@@ -241,8 +230,6 @@ export default function RouteDetails({checkedMenu, setCheckedMenu}) {
                                     </tr>
                                 })}
                                 </tbody>
-                                {/*    } else {console.log(orderData)}*/}
-                                {/*})}*/}
                             </table>
 
                         </>

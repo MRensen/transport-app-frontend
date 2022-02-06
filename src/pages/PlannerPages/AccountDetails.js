@@ -122,9 +122,9 @@ export default function AccountDetails({setMenuDisplay, create, checkedMenu}) {
                 {!create &&
                 <div className={styles['image-container']}>
                     {photo ?
-                        <img src={`data:image/jpeg;base64,${photo}`} className={styles.image} alt="profile image"/>
+                        <img src={`data:image/jpeg;base64,${photo}`} className={styles.image} alt="profile pic"/>
                         :
-                        <img src={photo} className={styles.image} alt="profile image"/>
+                        <img src={photo} className={styles.image} alt="profile pic"/>
                     }
                     <input type="file" accept="image/*" className={styles['foto-wijzigen']} onChange={(e) => {
                         setImage(e, setPhoto, data.username)

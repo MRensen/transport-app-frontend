@@ -48,7 +48,7 @@ export default function DriverAccount() {
             phoneNumber : data['telefoon nummer']
         }
         try{
-            const result = await axios({
+            await axios({
                 method : "patch",
                 data: toSend,
                 url: `http://localhost:8080/drivers/${id}`,
@@ -81,9 +81,9 @@ export default function DriverAccount() {
                 <aside className={styles.aside}>
                     <div className={styles['image-container']}>
                         {photo ?
-                            <img src={`data:image/jpeg;base64,${photo}`} className={styles.image} alt="profile image"/>
+                            <img src={`data:image/jpeg;base64,${photo}`} className={styles.image} alt="profile pic"/>
                             :
-                            <img src={photo} className={styles.image} alt="profile image"/>
+                            <img src={photo} className={styles.image} alt="profile pic"/>
                         }
                         <input type="file" accept="image/*" className={styles['foto-wijzigen']} onChange={(e) => {
                             setImage(e, setPhoto, data.username)

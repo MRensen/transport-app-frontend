@@ -40,7 +40,7 @@ export default function CustomerOrders() {
 
     async function deleteOrder(order) {
         try {
-            const result = await axios({
+            await axios({
                 method: "delete",
                 url: `http://localhost:8080/orders/${order.id}`,
                 headers: {
@@ -55,7 +55,7 @@ export default function CustomerOrders() {
 
     function deleteOrders() {
         selectedOrders.map((order)=>{
-            deleteOrder(order);
+            return deleteOrder(order);
         })
         setSelectedOrders([]);
     }

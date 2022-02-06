@@ -33,7 +33,7 @@ function Header({ismenu, titleName, logo, left, leftFunction, right, rightFuncti
                 {!disableSave ?
                     <img src={right} alt="button-header-right" onClick={rightFunction}/>
                     :
-                    <img src={right} className="header-image-disabled"/>
+                    <img src={right} className="header-image-disabled" alt="button-disabled"/>
                 }
             </div>
             }

@@ -1,7 +1,6 @@
 import styles from "./PlannerHome/PlannerHome.module.css";
 import {useEffect, useState} from "react";
 import axios from "axios";
-import OrderContainer from "../../components/OrderContainer/OrderContainer";
 import {useForm} from "react-hook-form";
 
 export default function OrderDetails({checkedMenu, setOrders, orders, setCheckedMenu, create}) {
@@ -9,7 +8,7 @@ export default function OrderDetails({checkedMenu, setOrders, orders, setChecked
     const [selectRoute, setSelectRoute] = useState(false)
     const [routes, setRoutes] = useState(null)
     const [selectedRoute, setSelectedRoute] = useState("")
-    const {register, handleSbmit, formState: {errors}, reset} = useForm()
+    const {reset} = useForm()
 
     useEffect(() => {
         async function getOrder() {
@@ -87,7 +86,7 @@ export default function OrderDetails({checkedMenu, setOrders, orders, setChecked
     async function afkeurFunction() {
         if (orderData.orderStatus === "processing") {
             try {
-                const result = await axios({
+                await axios({
                     method: "patch",
                     url: `http://localhost:8080/orders/${orderData.id}`,
                     data: {orderStatus: "declined"},

@@ -2,8 +2,6 @@ import './App.css';
 import {Redirect, Route, Switch} from "react-router-dom";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import DriverHome from "./pages/DriverPages/DriverHome/DriverHome";
-import {useContext} from "react";
-import {AuthContext} from "./components/Context/AuthContextProvider";
 import PrivateRoute from "./components/Helpers/PrivateRoute";
 import DriverAccount from "./pages/DriverPages/DriverAccount/DriverAccount";
 import DriverPlanning from "./pages/DriverPages/DriverPlanning/DriverPlanning";

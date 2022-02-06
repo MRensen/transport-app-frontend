@@ -16,7 +16,7 @@ export default function Lossen() {
         async function patch() {
             const orderStatus = input.gelost? "delivered" : "not delivered";
             try {
-                const result = await axios({
+                await axios({
                     method: 'patch',
                     url: `http://localhost:8080/orders/${orderId}`,
                     data: {orderStatus: orderStatus},

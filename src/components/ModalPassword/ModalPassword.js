@@ -1,5 +1,5 @@
 import styles from "./ModalPassword.module.css";
-import {useContext, useEffect, useState} from "react";
+import {useContext} from "react";
 import {AuthContext} from "../Context/AuthContextProvider";
 import {useForm} from "react-hook-form";
 import axios from "axios";

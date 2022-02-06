@@ -5,7 +5,7 @@ import axios from "axios";
 import {useContext, useEffect, useState} from "react";
 import {useHistory} from "react-router-dom";
 import {AuthContext} from "../../components/Context/AuthContextProvider";
-import {getStandardProfilePic, setImageDataInUseEffect} from "../../components/Helpers/ImageFunctions";
+import {setImageDataInUseEffect} from "../../components/Helpers/ImageFunctions";
 
 export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
     const {refresh} = useContext(AuthContext);
@@ -158,13 +158,10 @@ export default function DriverDetails({checkedMenu, setCheckedMenu, create}) {
                     {!create &&
                     <div className={styles['image-container']}>
                         {photo ?
-                            <img src={`data:image/jpeg;base64,${photo}`} className={styles.image}/>
+                            <img src={`data:image/jpeg;base64,${photo}`} className={styles.image} alt="profile pic"/>
                             :
-                            <img src={photo} className={styles.image}/>
+                            <img src={photo} className={styles.image} alt="profile pic"/>
                         }
-                        {/*<input type="file" accept="image/*" className={styles['foto-wijzigen']} onChange={(e) => {*/}
-                        {/*    setImage(e)*/}
-                        {/*}}/>*/}
                     </div>
                     }
                     <LabeledInput errors={errors} register={register} title="naam"/>

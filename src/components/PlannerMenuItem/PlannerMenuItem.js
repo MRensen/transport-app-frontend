@@ -1,9 +1,7 @@
 import styles from "./PlannerMenuItem.module.css"
-import {useHistory} from "react-router-dom";
 import {useEffect, useState} from "react";
 
 export default function PlannerMenuItem({newItem, firstline, secondline, thirdline, checked, setChecked, id}) {
-    const history = useHistory();
     const[update, setUpdate] = useState(true);
     useEffect(()=>{
         setUpdate(!update);
